@@ -44,16 +44,21 @@ Berikut ini adalah rincian dari setiap fungsi yang terdapat di dalam `helper.php
 
 2. `execDML($query)`: fungsi ini dapat digunakan untuk mengeksekusi query DML (`INSERT`, `UPDATE`, `DELETE`). Hasil kembalian dari fungsi ini adalah `jumlah baris yang terpengaruh oleh operasi tersebut`.
 
-    Contoh Penggunaan:\
+    Contoh Penggunaan:
     ```
-    execDML(
+    $sql = execDML(
         "UPDATE courses
         SET name = 'Belajar PHP'
         WHERE id = 1"
     );
+
+    if ($sql > 0) {
+        echo "Eksekusi query berhasil";
+    } else {
+        echo "Eksekusi query gagal";
+    }
     ```
 > SELALU GUNAKAN KEDUA FUNGSI INI UNTUK OPERASI PADA DATABASE.
-
 
 ### `utils/date.php`
 File ini mengandung fungsi `convert($epoch)` untuk mengubah Unix Epoch Time ke dalam bentuk string yang dapat dibaca.
