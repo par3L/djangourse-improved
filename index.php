@@ -1,7 +1,11 @@
 <?php
 
-/*
-Untuk sementara ini, ketika pengguna mengakses root url /
-maka akan langsung diarahkan ke login.php
-*/
-header('Location: pages/login.php');
+session_start();
+var_dump($_SESSION);
+
+// temporary code
+if (isset($_SESSION['login'])) {
+    if ($_SESSION['user']['role_id'] == 3) {
+        header('Location: pages/admin/views/dashboard.php');
+    }
+}
