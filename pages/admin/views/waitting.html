@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masuk</title>
+    <style>
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #8AC7A4, #D4E8DB, #68B19F);
+            background-size: 200% 200%;
+            animation: gradientAnimation 3s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .main-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            background: #D9D9D9;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            width: 1000px;
+            height: 550px;
+            position: relative;
+            padding-top: 80px;
+        }
+        .top-buttons {
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            padding: 0 60px; /* Tambahkan padding kiri dan kanan */
+            position: absolute;
+            top: 20px;
+            margin: 10px 0; /* Margin atas dan bawah untuk memberikan jarak lebih pada tombol */
+        }
+        .top-buttons button {
+            height: 40px;
+            padding: 1px 60px; /* Tambahkan jarak dalam */
+            font-size: 14px;
+            background-color: #245044;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 20px 60px; /* Margin kanan dan kiri untuk memberikan jarak tombol */
+        }
+        .top-buttons button:hover {
+            background-color: #2C8577;
+        }
+        .logo {
+            margin-top: 20px;
+            width: 150px;
+        }
+        .image-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-grow: 1;
+        }
+        .image-section img {
+            max-width: 500px;
+            height: auto;
+            margin-top: 50px;
+            margin-bottom: 20px;
+        }
+        .main-container p {
+            text-align: center;
+            font-size: 26px;
+            font-family: 'Poppins', sans-serif;
+            margin: 0 0 100px 0;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-container">
+        <div class="top-buttons">
+            <button onclick="window.location.href='index.html';">Kembali</button>
+            <img src="img/logo.png" alt="Logo" class="logo">
+            <button onclick="window.location.href='masuk.html';">Masuk</button>
+        </div>
+        
+        <div class="image-section">
+            <img src="img/image7.png" alt="Register" style="width: 250px;">
+        </div>
+        <p>Masuk Menggunakan Username yang sudah <br> dikirim Melalui Email ya</p>
+    </div>
+</body>
+</html>
