@@ -360,6 +360,7 @@
         flex-direction: column;
         align-items: center;
         margin-right: 100px;
+        font-size: 14px;
       }
 
       footer .footer-logo img {
@@ -367,7 +368,7 @@
         height: 82px;
         margin-bottom: 10px;
       }
-
+  
       footer .grid div {
         display: flex;
         flex-direction: column;
@@ -379,12 +380,13 @@
       }
 
       footer .siswa h3 {
+        font-size: 20px;
         text-align: left;
       }
 
       footer .siswa li,
-      footer .alamat li,
       footer .instruktur li {
+        font-size: 14px;
         text-align: left;
         align-self: flex-start;
         width: 200px;
@@ -402,6 +404,7 @@
       ul {
         padding: 0;
         list-style-type: none;
+        font-size: 14px;
       }
 
       li {
@@ -630,8 +633,8 @@
         <div class="footer-logo">
           <img alt="Logo" src="assets/django-3.png" />
           <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Ut
-            consequat mauris.
+            Django adalah platform edukasi yang menyediakan kursus untuk mengembangkan keterampilan di berbagai bidang teknologi. 
+            Kami siap membantu Anda menguasai teknologi dengan pendekatan yang praktis dan bimbingan ahli.
           </p>
         </div>
         <div class="instruktur">
