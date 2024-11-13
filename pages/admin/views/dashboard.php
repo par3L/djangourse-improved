@@ -412,7 +412,7 @@
                         <img src="../../../assets/img/dashboard.png" alt="Profil Logo" class="icon" />
                         <p>Dashboard</p>
                     </a>
-                    <a href="#">
+                    <a href="student-management.php">
                         <img src="../../../assets/img/siswa.png" alt="Login Logo" class="icon" />
                         <p>Siswa</p>
                     </a>
@@ -424,7 +424,7 @@
                         <img src="../../../assets/img/setting.png" alt="Pengaturan Logo" class="icon" />
                         <p>Pengaturan</p>
                     </a>
-                    <a href="#">
+                    <a href="../../logout.php">
                         <img src="../../../assets/img/keluar.png" alt="Pengaturan Logo" class="icon" />
                         <p>Keluar</p>
                     </a>
