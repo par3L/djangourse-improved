@@ -194,11 +194,11 @@
 
 <div id="register" class="main-container">
     <div class="image-section">
-        <img src="img/join.png" alt="Register" style="display: block; margin: 20px auto 20px; width: 300px;">
+        <img src="../assets/img/join.png" alt="Register" style="display: block; margin: 20px auto 20px; width: 300px;">
     </div>
     <div class="form-section">
         <form method="POST" action="#">
-            <img src="img/logo.png" alt="Logo" style="display: block; margin: 20px auto 20px; width: 110px; ">
+            <img src="../assets/img/logo.png" alt="Logo" style="display: block; margin: 20px auto 20px; width: 110px; ">
             <h2>Mendaftar</h2>
             <p>Masukan email dan kata sandi Anda untuk mendaftar</p>
             <input type="hidden" id="role" name="role" value="siswa">
@@ -229,60 +229,5 @@
         </form>
     </div>
 </div>
-
-<!-- <div id="login" class="main-container" >
-    <div class="image-section">
-        <img src="img/login.png" alt="Login Illustration"  style="display: block; margin: 0px auto 20px; width: 300px;">
-    </div>
-    <div class="form-section-1">
-        <form method="POST" action="login.php">
-            <img src="img/logo.png" alt="Logo" style="display: block; margin: 30px auto 20px; width: 110px;">
-            <h2>Login</h2>
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input type="email" id="email" name="email" placeholder="Enter your Email" required>
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input type="password" id="password" name="password" placeholder="Enter your password" required>
-            </div>
-            <div class="text-forgot"><a href="lupapassword.php">Forgot password?</a></div>
-            <div class="form-group">
-                <button type="submit" name="login">Login</button>
-            </div>
-            <div class="switch-form">
-                Don't have an account? <a href="#" onclick="switchToRegister()">Sign Up</a>
-            </div>
-        </form>
-    </div>
-</div> -->
-
-<!-- <script>
-    function selectTab(role) {
-        document.getElementById('role').value = role;
-        const siswaTab = document.getElementById('siswaTab');
-        const pengajarTab = document.getElementById('pengajarTab');
-        
-        if (role === 'siswa') {
-            siswaTab.classList.add('active');
-            pengajarTab.classList.remove('active');
-        } else if (role === 'pengajar') {
-            pengajarTab.classList.add('active');
-            siswaTab.classList.remove('active');
-        }
-    }
-
-    function switchToLogin() {
-        document.getElementById('register').style.display = 'none';
-        document.getElementById('login').style.display = 'flex';
-    }
-
-    function switchToRegister() {
-        document.getElementById('login').style.display = 'none';
-        document.getElementById('register').style.display = 'flex';
-    }
-
-</script> -->
-
 </body>
 </html>
