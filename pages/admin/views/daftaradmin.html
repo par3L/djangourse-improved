@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Register</title>
+    <style>
+        @keyframes gradientAnimation {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #8AC7A4, #D4E8DB, #68B19F);
+            background-size: 200% 200%;
+            animation: gradientAnimation 3s ease infinite;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .main-container {
+            display: flex;
+            justify-content: center;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            width: 1000px;
+            height: 620px;
+        }
+        .image-section {
+            flex: 60%;
+            background: linear-gradient(180deg, #d1d9db, #558c8c);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        .image-section img {
+            max-width: 500px;
+            height: auto;
+        }
+        .form-section {
+            flex: 40%;
+            padding: 20px 40px 20px 40px;
+            justify-content: center;
+            align-items: center;
+        }
+        .form-section h2 {
+            text-align: center;
+            font-family: 'Poppins', sans-serif;
+            font-size: 20px;
+            font-weight: 400;
+            margin-bottom: 10px;
+        }
+        .form-section p {
+            text-align: center;
+            font-size: 12px;
+            font-family: 'Poppins', sans-serif;
+            margin: 0 0 30px 0;
+        }
+        @keyframes fadeInUp {
+            0% {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            100% {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        #register, #login {
+            transition: opacity 0.5s ease, transform 0.5s ease;
+        }
+
+        #register.hidden, #login.hidden {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+
+        .form-section, .form-section-1 {
+            animation: fadeInUp 0.8s ease-out;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-size: 13px;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 10px;
+            font-size: 12px;
+        }
+        .form-group button {
+            width: 100%;
+            padding: 10px;
+            font-size: 14px;
+            background-color: #245044;
+            color: white;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .form-group button:hover {
+            background-color: #2C8577;
+        }
+        .switch-form {
+            text-align: start;
+            margin-top: 15px;
+            margin-bottom: 20px;
+            font-size: 13px;
+        }
+        .switch-form a {
+            color: #245044;
+            text-decoration: none;
+        }
+        .switch-form a:hover {
+            text-decoration: underline;
+        }
+        .text-forgot {
+            text-align: left;
+            margin-bottom: 30px;
+        }
+        .text-forgot a {
+            color: #245044;
+            text-decoration: none;
+            font-size:12px;
+        }
+        .text-forgot a:hover {
+            text-decoration: underline;
+        }
+        .tab-container {
+            display: flex;
+            position: relative;
+            margin-bottom: 20px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        .tab {
+            flex: 1;
+            text-align: center;
+            font-size: 14px;
+            padding: 8px;
+            cursor: pointer;
+            background-color: #e0e0e0;
+            transition: background-color 0.3s;
+        }
+        .tab.active {
+            background-color: #15A3A1;
+            color: white;
+            border-radius: 4px;
+        }
+        .tab-container .tab {
+            position: relative;
+            z-index: 1;
+        }
+        .checkmark {
+            width: 20px;
+            height: 20px;
+            background-color: #f0f0f0;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+            margin-right: 8px;
+            position: relative;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .switch-form input[type="checkbox"]:checked + .checkmark {
+            background-color: #4caf50;
+            border-color: #4caf50;
+        }     
+    </style>
+</head>
+<body>
+
+<div id="register" class="main-container">
+    <div class="image-section">
+        <img src="img/join.png" alt="Register" style="display: block; margin: 20px auto 20px; width: 300px;">
+    </div>
+    <div class="form-section">
+        <form method="POST" action="#">
+            <img src="img/logo.png" alt="Logo" style="display: block; margin: 20px auto 20px; width: 110px; ">
+            <h2>Mendaftar</h2>
+            <p>Masukan email dan kata sandi Anda untuk mendaftar</p>
+            <input type="hidden" id="role" name="role" value="siswa">
+            <div class="form-group">
+                <label for="nama">Nama Lengkap</label>
+                <input type="text" id="nama" name="nama" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+                <label for="email">Surel</label>
+                <input type="email" id="email" name="email" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Kata Sandi</label>
+                <input type="password" id="password" name="password" placeholder="Create a password" required>
+            </div>
+            <div class="form-group">
+                <label for="konfirmasi">Konfirmasi Ulang Kata Sandi</label>
+                <input type="password" id="konfirmasi" name="konfirmasi" placeholder="Confirm your password" required>
+            </div>
+            <div class="switch-form">
+                <input type="checkbox" name="terms" required>
+                <span class="checkmark"></span>
+                Saya setuju dengan <a href="#" >Syarat dan Ketentuan</a>
+            </div>
+            <div class="form-group">
+                <button type="submit" name="signup">Daftarkan</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- <div id="login" class="main-container" >
+    <div class="image-section">
+        <img src="img/login.png" alt="Login Illustration"  style="display: block; margin: 0px auto 20px; width: 300px;">
+    </div>
+    <div class="form-section-1">
+        <form method="POST" action="login.php">
+            <img src="img/logo.png" alt="Logo" style="display: block; margin: 30px auto 20px; width: 110px;">
+            <h2>Login</h2>
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" placeholder="Enter your Email" required>
+            </div>
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" placeholder="Enter your password" required>
+            </div>
+            <div class="text-forgot"><a href="lupapassword.php">Forgot password?</a></div>
+            <div class="form-group">
+                <button type="submit" name="login">Login</button>
+            </div>
+            <div class="switch-form">
+                Don't have an account? <a href="#" onclick="switchToRegister()">Sign Up</a>
+            </div>
+        </form>
+    </div>
+</div> -->
+
+<!-- <script>
+    function selectTab(role) {
+        document.getElementById('role').value = role;
+        const siswaTab = document.getElementById('siswaTab');
+        const pengajarTab = document.getElementById('pengajarTab');
+        
+        if (role === 'siswa') {
+            siswaTab.classList.add('active');
+            pengajarTab.classList.remove('active');
+        } else if (role === 'pengajar') {
+            pengajarTab.classList.add('active');
+            siswaTab.classList.remove('active');
+        }
+    }
+
+    function switchToLogin() {
+        document.getElementById('register').style.display = 'none';
+        document.getElementById('login').style.display = 'flex';
+    }
+
+    function switchToRegister() {
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('register').style.display = 'flex';
+    }
+
+</script> -->
+
+</body>
+</html>
