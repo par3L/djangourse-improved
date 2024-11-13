@@ -408,7 +408,7 @@
             </div>
             <div class="sidebar">
                 <nav>
-                    <a href="#">
+                    <a href="dashboard.php">
                         <img src="../../../assets/img/dashboard.png" alt="Profil Logo" class="icon" />
                         <p>Dashboard</p>
                     </a>
@@ -416,13 +416,9 @@
                         <img src="../../../assets/img/siswa.png" alt="Login Logo" class="icon" />
                         <p>Siswa</p>
                     </a>
-                    <a href="#">
+                    <a href="instructor-management.php">
                         <img src="../../../assets/img/pengajar.png" alt="Register Logo" class="icon" />
                         <p>Pengajar</p>
-                    </a>
-                    <a href="#">
-                        <img src="../../../assets/img/persetujuan-penarikan.png" alt="Instructor Logo" class="icon" />
-                        <p>Persetujuan Penarikan</p>
                     </a>
                     <a href="#">
                         <img src="../../../assets/img/setting.png" alt="Pengaturan Logo" class="icon" />
