@@ -70,9 +70,22 @@ git clone https://github.com/abdalrizky/djangourse.git
 ```
 Setelah selesai mengubah satu atau beberapa file, jalankan:
 ```
-git add .
+git add <path> atau git add . (akan menambahkan semua file yang berubah di repository local / git folder)
 git commit -m "[masukkan deskripsi perubahan]"
 git push
+```
+Jika ingin membuat branch/cabang di Github repository
+```
+git add <path> atau git add . (akan menambahkan semua file yang berubah di repository local / git folder)
+git checkout -b <branch-name> 
+git commit -m "[masukkan deskripsi perubahan]"
+git push -u origin <branch-name>
+```
+
+Note :
+```
+git branch (mengecek anda di branch mana pada local repo, ditandai dengan *<branch-name>)
+git switch <branch-name>  (untuk pindah branch di local repo)
 ```
 
 ## Tim Pengembang
