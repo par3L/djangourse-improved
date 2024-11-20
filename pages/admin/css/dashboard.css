@@ -10,50 +10,8 @@
     font-size: 28px;
 }
 
-/* .sidebar-item {
-    display: flex;
-    justify-content: space-between;
-} */
-
 .icon {
     margin-right: 12px;
-}
-
-.sidebar .logo {
-    font-size: 28px;
-}
-
-.logo span {
-    color: orange;
-    font-style: italic;
-}
-
-.job-card {
-    background-color: #ffffff;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    margin-bottom: 16px;
-}
-
-.job-card a {
-    text-decoration: none;
-    color: #0066CC;
-}
-
-.job-card:first-of-type {
-    margin-top: 16px;
-}
-
-.search-input {
-    width: 100%;
-    height: 50px;
-    border-radius: 16px;
-    padding: 16px;
-}
-
-.hide {
-    display: none;
 }
 
 /* Sidebar Styling */
@@ -137,7 +95,7 @@
 
 .profile-widget h2 {
     font-size: 1.8rem;
-    margin-bottom: 15px;
+    margin-bottom: 8px;
 }
 
 .profile-widget p {
@@ -215,29 +173,29 @@
     font-size: 48px;
 }
 
-form label {
-    display: block;
+.text-wrapper {
+    font-size: 32px;
 }
 
-form label:first-of-type {
-    margin-top: 16px;
-}
-
-form input {
+.common-table {
     width: 100%;
-    height: 40px;
-    border-radius: 8px;
-    padding: 8px;
-    border: none;
-    margin-bottom: 16px;
+    border-collapse: collapse;
 }
 
-form button {
+.common-table, .common-table th, .common-table td {
+    border: 1px solid white;
+    padding: 12px;
+}
+
+.table-box {
     width: 100%;
-    height: 40px;
-    border: none;
-    background-color: #2c8577;
+    background-color: black;
     color: white;
-    border-radius: 8px;
-    cursor: pointer;
+    padding: 24px;
+    border-radius: 16px;
+}
+
+.table-title {
+    margin-top: 16px;
+    margin-bottom: 8px;
 }
