@@ -190,7 +190,9 @@
 
         /* Footer */
         footer {
-            background-color: #073e3a;
+            background-image: url('assets/img/footer.png');
+            background-size: cover;
+            background-position: center;
             color: #fff;
             padding: 2rem 4rem;
             display: flex;
