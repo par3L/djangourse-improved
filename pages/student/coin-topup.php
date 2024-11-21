@@ -247,6 +247,17 @@
             margin-bottom: 0;
         }
 
+        .contact-section a {
+            text-decoration: none;
+            color: #fff;
+            transition: color 0.3s ease;
+        }
+
+        .contact-section a:hover {
+            color: #A1D1B6;
+            text-decoration: underline;
+        }
+
         /* Styling untuk modal */
         #confirmationModal {
             display: none;
@@ -417,10 +428,20 @@
             </div>
             <div class="contact-section">
                 <h3>Alamat</h3>
-                <p><i class="fas fa-map-marker-alt"></i>  Jalan Gubeng, Surabaya</p>
-                <p><i class="fas fa-envelope"></i>  info@dingcourse.com</p>
-                <p><i class="fas fa-phone-alt"></i> +62 123 456 789</p>
+                <p>
+                    <i class="fas fa-map-marker-alt"></i> 
+                    <a href="https://www.google.com/maps?q=Jalan+Gubeng+Surabaya" target="_blank">Jalan Gubeng, Surabaya</a>
+                </p>
+                <p>
+                    <i class="fas fa-envelope"></i> 
+                    <a href="mailto:info@dingcourse.com">info@dingcourse.com</a>
+                </p>
+                <p>
+                    <i class="fas fa-phone-alt"></i> 
+                    <a href="tel:+62123456789">+62 123 456 789</a>
+                </p>
             </div>
+            
         </div>
     </footer>
 </body>
