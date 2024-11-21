@@ -338,6 +338,16 @@ footer {
     margin-right: 5px;
 }
 
+.contact-section a {
+    text-decoration: none;        
+    color: #fff;
+    transition: color 0.3s ease; 
+}
+
+.contact-section a:hover {
+    color: #A1D1B6;
+    text-decoration: underline;
+}
 .header {
     display: flex;
     justify-content: space-between;
