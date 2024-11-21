@@ -14,7 +14,7 @@
 <style>
 .footer {
     padding: 40px 50px;
-    background-image: url('asset/footer.png');
+    background-image: url('assets/footer.png');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -183,7 +183,7 @@
         <div class="isi">
             <!-- Bagian Penjelasan -->
             <div class="penjelasan">
-                <img src="asset/django-20.png" alt="logo" class="logo" />
+                <img src="assets/django-20.png" alt="logo" class="logo" />
                 <div class="penjelasan1">
                     Lorem ipsum dolor sit amet, consectetur<br />
                     adipiscing elit. Ut consequat mauris Lorem<br />

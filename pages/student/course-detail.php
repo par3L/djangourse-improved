@@ -418,7 +418,7 @@
 <body>
     <!-- HEADER -->
     <header class="header">
-        <img class="logo" src="asset/django-20.png" alt="Logo Django">
+        <img class="logo" src="assets/django-20.png" alt="Logo Django">
         <div class="hamburger" id="hamburger" onclick="toggleMenu()">
             <div></div>
             <div></div>
@@ -459,7 +459,7 @@
         <div class="container">
             <div class="content">
                 <div class="left">
-                    <img src="asset/course.png" alt="HTML Illustration">
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/NBZ9Ro6UKV8?si=Qjuuv5c-2EtEcQxs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sem magna, gravida eu eros in,
                         fermentum vulputate sem. Quisque at ipsum pretium, ullamcorper tellus non, feugiat eros. Nunc
@@ -546,28 +546,28 @@
             <div class="alat" id="alat">
                 <div class="item">
                     <div class="card">
-                        <img src="asset/vscode.png" alt="Visual Studio Code">
+                        <img src="assets/vscode.png" alt="Visual Studio Code">
                         <div class="card-content">
                             <span>Visual Studio Code</span>
                             <span>Code Editor</span>
                         </div>
                     </div>
                     <div class="card">
-                        <img src="asset/apache.png" alt="Apache">
+                        <img src="assets/apache.png" alt="Apache">
                         <div class="card-content">
                             <span>Apache</span>
                             <span>Web Server</span>
                         </div>
                     </div>
                     <div class="card">
-                        <img src="asset/chrome.png" alt="Google Chrome">
+                        <img src="assets/chrome.png" alt="Google Chrome">
                         <div class="card-content">
                             <span>Google Chrome</span>
                             <span>Web Browser</span>
                         </div>
                     </div>
                     <div class="card">
-                        <img src="asset/sql.png" alt="MySQL">
+                        <img src="assets/sql.png" alt="MySQL">
                         <div class="card-content">
                             <span>MySQL</span>
                             <span>Database</span>
@@ -577,6 +577,9 @@
             </div>
         </div>
     </div>
+
+    <?php include '../../components/footer.php'; ?>
+
     <script>
     function toggleContent(element) {
         const parent = element.parentElement;
@@ -598,7 +601,7 @@
         document.getElementById(section).style.display = 'block';
     }
     </script>
-    <?php include 'footer.php'; ?>
+    
 </body>
 
 </html>

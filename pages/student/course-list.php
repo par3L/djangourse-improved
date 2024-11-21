@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <title>Navbar-kursus</title>
+    <title>Daftar Kursus - Djangourse</title>
     <style>
     /* Global Box Sizing */
     *,
@@ -29,23 +28,57 @@
         padding-top: 100px;
     }
 
+    .navbar {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 4rem;
+    background-color: #245044;
+}
 
-    /* Header Styling */
-    .header {
-        position: fixed;
-        z-index: 9999;
-        top: 0;
-        left: 0;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 16px 64px;
-        background-color: #245044;
-        height: 100px;
-        width: 100%;
-        box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-    }
+.navbar ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.navbar ul li {
+    margin-left: 20px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.navbar a:hover {
+    color: #A1D1B6;
+    border-bottom: 2px solid #A1D1B6;
+}
+
+
+
+.auth-buttons button {
+    margin-left: 10px;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: #245044;
+    color: #fff;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.auth-buttons button:hover {
+    background-color: #15A3A1;
+    transform: scale(1.05); 
+}
 
     .logo {
         max-width: 120px;
@@ -85,11 +118,6 @@
         font-weight: 500;
         cursor: pointer;
         transition: background-color 0.3s ease;
-    }
-
-    .style-daftar {
-        background: #eff3fd;
-        color: #245044;
     }
 
     .style-daftar:hover {
@@ -325,15 +353,19 @@
 <body>
     <!-- HEADER -->
     <header class="header">
-        <img class="logo" src="asset/django-20.png" alt="Logo Django">
-        <nav class="menu">
-            <a href="#" class="menu-item">Beranda</a>
-            <a href="#" class="menu-item">Kursus</a>
-            <a href="#" class="menu-item">Cara Penggunaan</a>
-        </nav>
-        <div class="auth-buttons">
-            <button class="style-daftar">Daftar</button>
-            <button class="style-masuk">Masuk</button>
+        <div class="navbar">
+            <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
+            <nav>
+                <ul>
+                    <li><a href="home.php">Beranda</a></li>
+                    <li><a href="course-list.php">Kursus</a></li>
+                    <li><a href="#">Cara Penggunaan</a></li>
+                </ul>
+            </nav>
+            <div class="auth-buttons">
+                <button class="style-daftar" onclick="location.href='../auth.php'">Daftar</button>
+                <button class="style-masuk" onclick="location.href='../auth.php'">Masuk</button>
+            </div>
         </div>
     </header>
 
@@ -360,7 +392,7 @@
                         <i class="fas fa-heart"></i>
                     </button>
                 </div>
-                <img class="course-image" src="asset/komputer.png" alt="Course Image">
+                <img class="course-image" src="assets/komputer.png" alt="Course Image">
                 <div class="catalog-footer">
                     <div class="koin">5 Koin</div>
                     <button class="button-rental">Beli</button>
@@ -375,7 +407,7 @@
                         <i class="fas fa-heart"></i>
                     </button>
                 </div>
-                <img class="course-image" src="asset/komputer.png" alt="Course Image">
+                <img class="course-image" src="assets/komputer.png" alt="Course Image">
                 <div class="catalog-footer">
                     <div class="koin">5 Koin</div>
                     <button class="button-rental">Beli</button>
@@ -390,7 +422,7 @@
                         <i class="fas fa-heart"></i>
                     </button>
                 </div>
-                <img class="course-image" src="asset/layarhitam-jpg0.png" alt="Course Image">
+                <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
                 <div class="catalog-footer">
                     <div class="koin">5 Koin</div>
                     <button class="button-rental">Beli</button>
@@ -405,7 +437,7 @@
                         <i class="fas fa-heart"></i>
                     </button>
                 </div>
-                <img class="course-image" src="asset/layarhitam-jpg0.png" alt="Course Image">
+                <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
                 <div class="catalog-footer">
                     <div class="koin">5 Koin</div>
                     <button class="button-rental">Beli</button>
@@ -420,7 +452,7 @@
                         <i class="fas fa-heart"></i>
                     </button>
                 </div>
-                <img class="course-image" src="asset/layarhitam-jpg0.png" alt="Course Image">
+                <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
                 <div class="catalog-footer">
                     <div class="koin">5 Koin</div>
                     <button class="button-rental">Beli</button>
@@ -435,7 +467,7 @@
                         <i class="fas fa-heart"></i>
                     </button>
                 </div>
-                <img class="course-image" src="asset/layarhitam-jpg0.png" alt="Course Image">
+                <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
                 <div class="catalog-footer">
                     <div class="koin">5 Koin</div>
                     <button class="button-rental">Beli</button>
@@ -450,7 +482,7 @@
                         <i class="fas fa-heart"></i>
                     </button>
                 </div>
-                <img class="course-image" src="asset/layarhitam-jpg0.png" alt="Course Image">
+                <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
                 <div class="catalog-footer">
                     <div class="koin">5 Koin</div>
                     <button class="button-rental">Beli</button>
@@ -465,7 +497,7 @@
                         <i class="fas fa-heart"></i>
                     </button>
                 </div>
-                <img class="course-image" src="asset/layarhitam-jpg0.png" alt="Course Image">
+                <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
                 <div class="catalog-footer">
                     <div class="koin">5 Koin</div>
                     <button class="button-rental">Beli</button>
@@ -480,7 +512,7 @@
                         <i class="fas fa-heart"></i>
                     </button>
                 </div>
-                <img class="course-image" src="asset/layarhitam-jpg0.png" alt="Course Image">
+                <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
                 <div class="catalog-footer">
                     <div class="koin">5 Koin</div>
                     <button class="button-rental">Beli</button>
@@ -509,7 +541,7 @@
         display: none;
     }
     </style>
-    <?php include 'footer.php'; ?>
+    <?php include '../../components/footer.php'; ?>
 </body>
 
 </html>
