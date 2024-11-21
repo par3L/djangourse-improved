@@ -164,7 +164,7 @@ if (isset($_SESSION['login'])) {
     <footer>
         <div class="footer-content">
             <div class="logo-section">
-                <img src="img/logo.png" alt="Logo" class="footer-logo">
+                <img src="assets/img/logo-django.png" alt="Logo" class="footer-logo">
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
             </div>
             <div class="links-section">
