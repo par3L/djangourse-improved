@@ -18,6 +18,7 @@ if (isset($_SESSION['login'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Djangourse - Kursus Programmer</title>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Just+Another+Hand&display=swap" rel="stylesheet">
@@ -35,10 +36,46 @@ if (isset($_SESSION['login'])) {
                     <li><a href="#">Cara Penggunaan</a></li>
                 </ul>
             </nav>
-            <div class="auth-buttons">
-                <button class="style-daftar" onclick="location.href='pages/auth.php'">Daftar</button>
-                <button class="style-masuk" onclick="location.href='pages/auth.php'">Masuk</button>
-            </div>
+            <?php if (isset($_SESSION['login'])): ?>
+                <div class="navbar-info">
+                    <p>Hai, <?= $_SESSION['user']['name'] ?></p>
+                    <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
+                    <p>0 Koin</p>
+                    <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
+                        <a href="pages/student/profile.php">
+                            <div class="navbar-info-dropdown-content">
+                                <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
+                                <span>Profil</span>
+                            </div>
+                        </a>
+                        <a href="pages/student/wishlist.php">
+                            <div class="navbar-info-dropdown-content">
+                                <iconify-icon icon="weui:like-filled"></iconify-icon>
+                                <span>Wishlist</span>
+                            </div>
+                            
+                        </a>
+                        <a href="pages/student/setting.php">
+                            <div class="navbar-info-dropdown-content">
+                                <iconify-icon icon="uil:setting"></iconify-icon>
+                                <span>Pengaturan</span>
+                            </div>
+                        </a>
+                        <a href="pages/logout.php">
+                            <div class="navbar-info-dropdown-content">
+                                <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
+                                <span>Keluar</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+            <?php else: ?>
+                <div class="auth-buttons">
+                    <button class="style-daftar" onclick="location.href='pages/auth.php'">Daftar</button>
+                    <button class="style-masuk" onclick="location.href='pages/auth.php'">Masuk</button>
+                </div>
+            <?php endif; ?>
         </div>
     </header>
 
@@ -169,6 +206,7 @@ if (isset($_SESSION['login'])) {
         </div>
     </footer>
 </body>
+<script src="index.js"></script>
 <script>
     function toggleHeart(element) {
       element.classList.toggle('text-red-500');

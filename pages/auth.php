@@ -82,10 +82,10 @@ if (isset($_POST['login'])) {
             if ($credentials['role_id'] == 1) {
                 $user = fetch("SELECT students.id, students.name, credentials.email, credentials.role_id
                                 FROM students
-                                JOIN credentials ON students.credential_id = students.id
+                                JOIN credentials ON students.credential_id = credentials.id
                                 WHERE credentials.email = '$email'")[0];
             } elseif ($credentials['role_id'] == 2) {
-                $user = fetch("SELECT instructors.id, employers.name, credentials.email, credentials.role_id
+                $user = fetch("SELECT instructors.id, instructors.name, credentials.email, credentials.role_id
                                 FROM instructors
                                 JOIN credentials ON instructors.credential_id = credentials.id
                                 WHERE credentials.email = '$email'")[0];
