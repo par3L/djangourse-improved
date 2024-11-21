@@ -1,6 +1,54 @@
+<?php
+require "connection.php";
+require "helper.php";
+
+$sql = fetch("SELECT * FROM students JOIN credentials ON (students.credential_id = credentials.id)");
+
+$django = [];
+foreach ($sql as $row) {
+    $django[] = [
+        'id' => $row['id'], 
+        'credential_id' => $row['credential_id'], 
+        'name' => $row['name'],  
+        'email' => $row['email'], 
+        'date_of_birth' => $row['date_of_birth'],
+        'city' => $row['city'],
+        'phone_number' => $row['phone_number']
+    ];
+}
+if (isset($_POST["submit"])) {
+    $city = $_POST['city'] ?? '';
+    $phone_number = $_POST['phone_number'] ?? '';
+    $date_of_birth = $_POST['date_of_birth'] ?? '';
+    $name = $_POST['name'] ?? '';
+    if ($city && $phone_number && $date_of_birth && $name) {
+        $sql2 = execDML(
+            "UPDATE students
+            SET name = '$name', 
+                date_of_birth = '$date_of_birth',
+                city = '$city', 
+                phone_number = '$phone_number'
+            WHERE id = 1"
+        );
+
+        if ($sql2 > 0) {
+            echo "Update berhasil!";
+        } else {
+            echo "Gagal mengupdate data.";
+        }
+    } else {
+        echo "Error: Semua field harus diisi.";
+    }
+}
+
+if(isset($_POST["submit2"])){
+
+}
+?>
+
+
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -245,7 +293,7 @@
 
     .container {
         display: flex;
-        height: calc(100vh - 50px);
+        height: calc(115vh - 50px);
         flex-direction: column;
         font-family: 'Poppins', sans-serif;
     }
@@ -427,7 +475,7 @@
         color: #fff;
         border-radius: 8px;
         margin-top: 20px;
-        margin-left: 710px;
+        margin-left: 696px;
         background: #245044;
         padding: 12px 20px;
         gap: 10px;
@@ -688,73 +736,82 @@
         <div class="pengaturan_setting">
             <h3>Pengaturan</h3>
             <ul>
-                <li class="active"><img src="asset/akun.png">Profil</li>
+                <li class="active"><img src="asset/account_circle.png">Profil</li>
                 <li><img src="asset/keyhole.png"><a href="pengaturan_sandi.php">Kata Sandi</a></li>
             </ul>
         </div>
         <div class="content">
             <div class="box_setting">
                 <h2>Pengaturan Profil</h2>
-                <form>
+                    <form action="" method="POST" enctype="multipart/form-data">
                     <div class="form-group-nama">
-                        <label for="nama">Nama Lengkap</label>
-                        <input type="text" id="nama" placeholder="Masukkan nama lengkap">
+                        <label for="name">Nama Lengkap</label>
+                        <input type="text" name="name" id="name" placeholder="Masukkan nama lengkap"
+                        value="<?= htmlspecialchars($row['name']) ?>">
                     </div>
                     <div class="form-row">
                         <div class="form-group">
-                            <label for="kota">Kota Domisili</label>
-                            <input type="text" id="kota" placeholder="Masukkan kota domisili">
+                            <label for="city">Kota Domisili</label>
+                            <input type="text" name="city" id="city" placeholder="Masukkan kota domisili"
+                            value="<?= htmlspecialchars($row['city']) ?>">
                         </div>
                         <div class="form-group">
-                            <label for="tanggal">Tanggal Lahir</label>
-                            <input type="date" id="tanggal">
+                            <label for="date_of_birth">Tanggal Lahir</label>
+                            <input type="date" name="date_of_birth" id="date_of_birth"
+                            value="<?= $row['date_of_birth'] ?>">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="email">Alamat Surel</label>
-                            <input type="email" id="email" placeholder="Masukkan alamat surel">
+                            <input type="email" name="email" id="email" placeholder="Masukkan alamat surel"
+                            value="<?= htmlspecialchars($row['email']) ?>"disabled>
                         </div>
                         <div class="form-group">
-                            <label for="nohp">No. HP</label>
-                            <input type="tel" id="nohp" placeholder="Masukkan nomor HP">
+                            <label for="phone_number">No. HP</label>
+                            <input type="number" name="phone_number" id="phone_number" placeholder="Masukkan nomor HP"
+                            value="<?= htmlspecialchars($row['phone_number']) ?>">
                         </div>
                     </div>
-                    <button type="button" class="delete-button">Hapus Akun</button>
-                    <p class="note">
-                        *Semua informasi akun dan kelas yang telah dibeli akan dihapus dari database kami.
-                    </p>
-                    <button type="submit" class="save-button">Simpan Perubahan</button>
+    <button type="submit" name="submit2" class="delete-button" onclick="deleteAccount()">Hapus Akun</button>
+    <p class="note">
+        *Semua informasi akun dan kelas yang telah dibeli akan dihapus dari database kami.
+    </p>
+    <button type="submit" name = "submit" class="save-button">Simpan Perubahan</button>
                 </form>
             </div>
         </div>
     </div>
 </body>
 <script>
-function toggleDropdown() {
-    const dropdown = document.getElementById('dropdown');
-    const arrow = document.getElementById('arrow');
-
-    // Toggle visibility of dropdown
-    if (dropdown.style.display === 'none' || dropdown.style.display === '') {
-        dropdown.style.display = 'flex';
-        arrow.textContent = '▲'; // Ubah ikon ke "^"
-    } else {
-        dropdown.style.display = 'none';
-        arrow.textContent = '▼'; // Kembali ke ikon "V"
+function deleteAccount() {
+    if (confirm("Apakah Anda yakin ingin menghapus akun? Semua data akan hilang.")) {
+        fetch('delete_account.php', { method: 'POST' })
+            .then(response => response.text())
+            .then(data => alert(data))
+            .catch(error => console.error('Error:', error));
     }
 }
 
-// Klik di luar dropdown untuk menutupnya
+function toggleDropdown() {
+    const dropdown = document.getElementById('dropdown');
+    const arrow = document.getElementById('arrow');
+    if (dropdown.style.display === 'none' || dropdown.style.display === '') {
+        dropdown.style.display = 'flex';
+        arrow.textContent = '▲'; 
+    } else {
+        dropdown.style.display = 'none';
+        arrow.textContent = '▼'; 
+    }
+}
+
 document.addEventListener('click', function(event) {
     const userInfo = document.querySelector('.user-info');
     const dropdown = document.getElementById('dropdown');
     const arrow = document.getElementById('arrow');
-
-    // Tutup dropdown jika mengklik di luar area dropdown
     if (!userInfo.contains(event.target)) {
         dropdown.style.display = 'none';
-        arrow.textContent = '▼'; // Pastikan ikon kembali ke "V"
+        arrow.textContent = '▼'; 
     }
 });
 </script>
