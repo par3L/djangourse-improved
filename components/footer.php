@@ -12,236 +12,122 @@
     <!-- <link rel="stylesheet" href="css/footer.css" /> -->
 </head>
 <style>
-.footer {
-    padding: 40px 50px;
-    background-image: url('assets/footer.png');
+footer {
+    background-image: url('asset/footer.png');
     background-size: cover;
     background-position: center;
-    background-repeat: no-repeat;
-    font-family: "Inter-Regular", sans-serif;
-    min-height: 200px;
-}
-
-/* FOOTER */
-.logo {
-    width: 150px;
-    position: relative;
-    object-fit: cover;
-}
-
-.isi {
+    color: #fff;
+    padding: 2rem 4rem;
     display: flex;
     justify-content: space-between;
-    align-items: flex-start;
-    gap: 40px;
 }
 
-.penjelasan {
-    flex: 1 1 30%;
+.footer-content {
     display: flex;
-    flex-direction: column;
-    gap: 20px;
+    justify-content: space-between;
+    width: 100%;
 }
 
-.penjelasan1,
-.penjelasan2 {
-    font-size: 14px;
-    line-height: 1.6;
-    color: white;
+.footer-content .logo-section p {
+    padding-left: 10px;
+    margin-top: 10px;
 }
 
-.django-3 {
-    width: 120px;
-    height: auto;
-    object-fit: contain;
-    margin-bottom: 10px;
+.footer-logo {
+    width: 100px;
 }
 
-.instruktur,
-.siswa,
-.alamat {
-    flex: 1 1 20%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    gap: 26px;
-}
-
-.instruktur a,
-.siswa a,
-.alamat a {
-    color: white;
+.links-section a {
     text-decoration: none;
-    font-size: 14px;
+    color: #fff;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
 }
 
-.instruktur a:hover,
-.siswa a:hover,
-.alamat a:hover {
-    color: #00bcd4;
+.links-section a:hover {
+    color: #A1D1B6;
+    border-bottom: 2px solid #A1D1B6;
 }
 
-.alamat a:hover {
-    color: #00bcd4;
+.links-section ul {
+    list-style: none;
+    margin-top: 20px;
+    padding-left: 0;
 }
 
-.heading-2 {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: white;
+.links-section ul li {
+    margin: 20px 0;
 }
 
-.alamat {
-    flex: 1 1 30%;
+.contact-section p {
+    margin: 20px 0;
 }
 
-.alamat div {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
+.contact-section i {
+    margin-right: 5px;
 }
 
-.alamat a {
-    display: flex;
-    align-items: center;
+.contact-section a {
     text-decoration: none;
+    color: #fff;
+    transition: color 0.3s ease;
 }
 
-.alamat a:hover i {
-    color: #51aea8;
-}
-
-.alamat a:hover span {
-    color: #00bcd4;
-}
-
-.alamat i {
-    font-size: 20px;
-    color: white;
-    line-height: 1;
-    margin-right: 20px;
-    transition: color 0.3s;
-}
-
-.alamat span {
-    font-size: 14px;
-    color: white;
-    line-height: 1.2;
-    transition: color 0.3s;
-}
-
-@media screen and (max-width: 1024px) {
-    .isi {
-        gap: 30px;
-    }
-
-    .penjelasan,
-    .instruktur,
-    .siswa,
-    .alamat {
-        flex: 1 1 45%;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .isi {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-    }
-
-    .penjelasan,
-    .instruktur,
-    .siswa,
-    .alamat {
-        flex: 1 1 100%;
-    }
-
-    .django-3 {
-        margin-bottom: 20px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .footer {
-        padding: 20px;
-    }
-
-    .penjelasan1,
-    .penjelasan2,
-    .alamat p {
-        font-size: 12px;
-        line-height: 1.4;
-    }
+.contact-section a:hover {
+    color: #A1D1B6;
+    text-decoration: underline;
 }
 </style>
 
 <body>
     <!-- FOOTER -->
-    <div class="footer">
-        <div class="isi">
-            <!-- Bagian Penjelasan -->
-            <div class="penjelasan">
-                <img src="assets/django-20.png" alt="logo" class="logo" />
-                <div class="penjelasan1">
-                    Lorem ipsum dolor sit amet, consectetur<br />
-                    adipiscing elit. Ut consequat mauris Lorem<br />
-                    ipsum dolor sit amet, consectetur adipiscing<br />
-                    elit. Ut consequat mauris
-                </div>
-                <div class="penjelasan2">
-                    Lorem ipsum dolor sit amet, consectetur<br />
-                    adipiscing elit. Ut consequat mauris Lorem<br />
-                    ipsum dolor sit amet, consectetur adipiscing<br />
-                    elit. Ut consequat mauris
-                </div>
+    <footer>
+        <div class="footer-content">
+            <div class="logo-section">
+                <img src="asset/django-20.png" alt="Logo" class="footer-logo">
+                <p>Bergabunglah bersama kami untuk menguasai<br> berbagai keahlian
+                    dibidang teknologi dan membuka<br>peluang karier di dunia teknologi
+                    yang terus berkembang.<br><br> Kami menyediakan kursus
+                    berkualitas yang membantu <br> kamu berkembang dari pemula
+                    hingga ahli.</p>
             </div>
-
-            <div class="instruktur">
-                <div class="heading-2">Instruktur</div>
-                <a href="#">Profil</a>
-                <a href="#"> Login</a>
-                <a href="#">Register</a>
-                <a href="#">Instructor</a>
-                <a href="#">Dashboard</a>
+            <div class="links-section">
+                <h3>Instruktur</h3>
+                <ul>
+                    <li><a href="#">Profil</a></li>
+                    <li><a href="#">Login</a></li>
+                    <li><a href="#">Register</a></li>
+                    <li><a href="#">Instructor</a></li>
+                    <li><a href="#">Dashboard</a></li>
+                </ul>
             </div>
-
-            <div class="siswa">
-                <div class="heading-2">Siswa</div>
-                <a href="#">Profil</a>
-                <a href="#">Jelajahi Kursus</a>
-                <a href="#"> Wishlist Kursus</a>
-                <a href="#">Student</a>
-                <a href="#">Dashboard</a>
+            <div class="links-section">
+                <h3>Siswa</h3>
+                <ul>
+                    <li><a href="#">Profil</a></li>
+                    <li><a href="#">Jelajahi Kursus</a></li>
+                    <li><a href="#">Wishlist Kursus</a></li>
+                    <li><a href="#">Student</a></li>
+                    <li><a href="#">Dashboard</a></li>
+                </ul>
             </div>
-
-            <div class="alamat">
-                <div class="heading-2">Alamat</div>
-
-                <div class="alamat2">
-                    <a href="https://www.google.com/maps?q=Jalan+Gelatik,+Samarinda" target="_blank">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Jalan Gelatik, Samarinda</span>
-                    </a>
-                </div>
-
-                <div class="email">
-                    <a href="mailto:admin@django.com">
-                        <i class="fas fa-envelope"></i>
-                        <span>admin@django.com</span>
-                    </a>
-                </div>
-
-                <div class="no-tlp">
-                    <a href="tel:+48731819948">
-                        <i class="fas fa-phone"></i>
-                        <span>+48 731 819 948</span>
-                    </a>
-                </div>
+            <div class="contact-section">
+                <h3>Alamat</h3>
+                <p>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <a href="https://www.google.com/maps?q=Jalan+Gubeng+Surabaya" target="_blank">Jalan Gubeng,
+                        Surabaya</a>
+                </p>
+                <p>
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:info@dingcourse.com">info@djangourse.com</a>
+                </p>
+                <p>
+                    <i class="fas fa-phone-alt"></i>
+                    <a href="tel:+62123456789">+62 123 456 789</a>
+                </p>
             </div>
         </div>
-    </div>
+    </footer>
 </body>
 
 </html>
