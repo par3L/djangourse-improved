@@ -89,6 +89,7 @@ footer {
                     yang terus berkembang.<br><br> Kami menyediakan kursus
                     berkualitas yang membantu <br> kamu berkembang dari pemula
                     hingga ahli.</p>
+                <p>Hak cipta dilindungi 2024</p>
             </div>
             <div class="links-section">
                 <h3>Instruktur</h3>
