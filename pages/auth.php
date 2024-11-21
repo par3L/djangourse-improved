@@ -28,7 +28,7 @@ if (isset($_POST['signup'])) {
             $credentialRecentlyCreated = fetch("SELECT * FROM credentials WHERE email='$email'")[0]['id'];
 
             if ($roleId == 1) {
-                execDML("INSERT INTO students VALUES (null, $credentialRecentlyCreated, '$name')");
+                execDML("INSERT INTO students VALUES (null, $credentialRecentlyCreated, '$name', null, null, null)");
             } else if ($roleId == 2) {
                 execDML("INSERT INTO instructors VALUES (null, $credentialRecentlyCreated, '$name')");
             }
