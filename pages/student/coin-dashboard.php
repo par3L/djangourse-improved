@@ -139,7 +139,7 @@
             align-items: center;
             justify-content: space-between;
             background-color: #e0e8f1;
-            padding: 20px;
+            padding: 20px 35px;
             margin: 20px 0 20px 0;
             border-radius: 12px;
             box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
@@ -296,7 +296,9 @@
 
         /* FOOTER */
         footer {
-            background-color: #073e3a;
+            background-image: url('assets/img/footer.png');
+            background-size: cover;
+            background-position: center;
             color: #fff;
             padding: 2rem 4rem;
             display: flex;
