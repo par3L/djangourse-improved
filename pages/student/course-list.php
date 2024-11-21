@@ -25,118 +25,57 @@
             linear-gradient(180deg, rgba(217, 217, 217, 0.65) 0%, rgba(44, 133, 119, 0.65) 67.5%);
         color: #333;
         margin: 0;
-        padding-top: 100px;
     }
 
     .navbar {
-    position: fixed;
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 4rem;
-    background-color: #245044;
-}
-
-.navbar ul {
-    display: flex;
-    list-style: none;
-    gap: 30px;
-}
-
-.navbar ul li {
-    margin-left: 20px;
-}
-
-.navbar a {
-    text-decoration: none;
-    color: #fff;
-    transition: color 0.3s ease, border-bottom 0.3s ease;
-}
-
-.navbar a:hover {
-    color: #A1D1B6;
-    border-bottom: 2px solid #A1D1B6;
-}
-
-
-
-.auth-buttons button {
-    margin-left: 10px;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    background-color: #245044;
-    color: #fff;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.auth-buttons button:hover {
-    background-color: #15A3A1;
-    transform: scale(1.05); 
-}
-
-    .logo {
-        max-width: 120px;
-        height: auto;
-    }
-
-    /* Navigation Menu */
-    .menu {
         display: flex;
-        gap: 32px;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 4rem;
+        background-color: #245044;
     }
 
-    .menu-item {
-        color: #ffffff;
+    .navbar ul {
+        display: flex;
+        list-style: none;
+        gap: 30px;
+    }
+
+    .navbar ul li {
+        margin-left: 20px;
+    }
+
+    .navbar a {
         text-decoration: none;
-        font-size: 16px;
-        font-weight: 400;
-        transition: color 0.3s ease;
+        color: #fff;
+        transition: color 0.3s ease, border-bottom 0.3s ease;
     }
 
-    .menu-item:hover {
-        color: #d6e4f8;
+    .navbar a:hover {
+        color: #A1D1B6;
+        border-bottom: 2px solid #A1D1B6;
     }
 
-    /* Authentication Buttons */
-    .auth-buttons {
-        display: flex;
-        gap: 16px;
-    }
-
-    .style-daftar,
-    .style-masuk {
+    .auth-buttons button {
+        margin-left: 10px;
+        padding: 0.5rem 1rem;
         border: none;
-        border-radius: 50px;
-        padding: 10px 24px;
-        font-size: 16px;
-        font-weight: 500;
+        border-radius: 20px;
         cursor: pointer;
-        transition: background-color 0.3s ease;
+        background-color: #245044;
+        color: #fff;
+        transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
-    .style-daftar:hover {
-        background: #d6e4f8;
-    }
-
-    .style-masuk {
-        background: #15a3a1;
-        color: #ffffff;
-    }
-
-    .style-masuk:hover {
-        background: #128e8c;
+    .auth-buttons button:hover {
+        background-color: #15A3A1;
+        transform: scale(1.05);
     }
 
     .main-content {
         padding: 40px 20px;
         text-align: center;
-
+        padding-bottom: 0;
         /* background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
                   linear-gradient(180deg, rgba(217, 217, 217, 0.65) 0%, rgba(44, 133, 119, 0.65) 67.5%); */
     }
@@ -207,16 +146,20 @@
 
     .pilihan {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 18px;
-        margin: 50px;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        justify-content: center;
+        margin: 0 auto;
+        max-width: 1000px;
+        padding-top: 50px;
+        padding-bottom: 40px;
     }
 
     .catalog {
         background: #ffffff;
         border-radius: 10px;
-        width: 100%;
-        display: flex;
+        width: 260px;
+        height: 340px;
         flex-direction: column;
         padding: 20px;
         position: relative;
@@ -294,6 +237,8 @@
 
     #loadMore {
         margin: 20px auto;
+        margin-bottom: 40px;
+        margin-top: 0;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -311,6 +256,42 @@
     #loadMore:hover {
         background-color: #1e888c;
     }
+
+    #loadLess {
+        margin: 20px auto;
+        margin-bottom: 40px;
+        margin-top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 20px 12px 20px;
+        font-size: 18px;
+        font-weight: bold;
+        background: #245044;
+        color: #ffffff;
+        border: none;
+        border-radius: 50px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    #loadLess:hover {
+        background-color: #1e888c;
+    }
+
+    .controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        margin: 0 auto;
+        width: 100%;
+    }
+
+    .catalog.hidden {
+        display: none !important;
+    }
+
 
     /* Responsive Design */
     @media (max-width: 768px) {
@@ -352,19 +333,19 @@
 
 <body>
     <!-- HEADER -->
-    <header class="header">
+    <header>
         <div class="navbar">
-            <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
+             <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
             <nav>
                 <ul>
-                    <li><a href="../../index.php">Beranda</a></li>
-                    <li><a href="course-list.php">Kursus</a></li>
+                    <li><a href="#">Beranda</a></li>
+                    <li><a href="#">Kursus</a></li>
                     <li><a href="#">Cara Penggunaan</a></li>
                 </ul>
             </nav>
             <div class="auth-buttons">
-                <button class="style-daftar" onclick="location.href='../auth.php'">Daftar</button>
-                <button class="style-masuk" onclick="location.href='../auth.php'">Masuk</button>
+                <button class="login">Masuk</button>
+                <button class="signup">Daftar</button>
             </div>
         </div>
     </header>
@@ -374,7 +355,7 @@
         <h1>Daftar Kursus</h1>
         <p>Pelajari semua kursus yang tersedia di Djangourse</p>
         <div class="search-bar">
-            <input placeholder="Cari..." type="text" />
+            <input placeholder="Cari..." type="text" id="searchInput" />
         </div>
         <div class="tabs">
             <a class="web-development" href="#">Web Development</a>
@@ -521,19 +502,57 @@
     </main>
 
     <!-- Tombol untuk Tampilkan Lebih Banyak -->
-    <button id="loadMore">Tampilkan Lebih Banyak</button>
+    <div class="controls">
+        <button id="loadMore">Tampilkan Lebih Banyak</button>
+        <button id="loadLess" style="display: none;">Tampilkan Lebih Sedikit</button>
+    </div>
+
 
     <script>
     function toggleFavorite(button) {
         button.classList.toggle('active');
     }
 
+    // Fungsi untuk menampilkan lebih banyak katalog
     document.getElementById('loadMore').addEventListener('click', function() {
         const hiddenCatalogs = document.querySelectorAll('.catalog.hidden');
         hiddenCatalogs.forEach((catalog) => {
             catalog.classList.remove('hidden');
         });
+        document.getElementById('loadLess').style.display =
+            'inline-block';
         this.style.display = 'none';
+    });
+
+    // Fungsi untuk menampilkan lebih sedikit katalog
+    document.getElementById('loadLess').addEventListener('click', function() {
+        const catalogs = document.querySelectorAll('.catalog');
+        const maxVisible = 8;
+
+        catalogs.forEach((catalog, index) => {
+            if (index >= maxVisible) {
+                catalog.classList.add('hidden');
+            }
+        });
+
+        document.getElementById('loadMore').style.display =
+            'inline-block';
+        this.style.display = 'none';
+    });
+
+    // Fungsi pencarian katalog
+    document.getElementById("searchInput").addEventListener("input", function() {
+        const searchQuery = this.value.toLowerCase();
+        const catalogs = document.querySelectorAll(".catalog");
+
+        catalogs.forEach(catalog => {
+            const title = catalog.querySelector(".catalog-title").textContent.toLowerCase();
+            if (title.includes(searchQuery)) {
+                catalog.style.display = "block";
+            } else {
+                catalog.style.display = "none";
+            }
+        });
     });
     </script>
     <style>
@@ -541,7 +560,7 @@
         display: none;
     }
     </style>
-    <?php include '../../components/footer.php'; ?>
+  <?php include '../../components/footer.php'; ?>
 </body>
 
 </html>
