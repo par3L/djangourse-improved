@@ -127,7 +127,7 @@ if (isset($_SESSION['login'])) {
     <footer>
         <div class="footer-content">
             <div class="logo-section">
-                <img src="assets/img/logo.png" alt="Logo" class="footer-logo">
+                <img src="img/logo.png" alt="Logo" class="footer-logo">
                 <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
             </div>
             <div class="links-section">
@@ -152,10 +152,20 @@ if (isset($_SESSION['login'])) {
             </div>
             <div class="contact-section">
                 <h3>Alamat</h3>
-                <p><i class="fas fa-map-marker-alt"></i>  Jalan Gubeng, Surabaya</p>
-                <p><i class="fas fa-envelope"></i>  info@dingcourse.com</p>
-                <p><i class="fas fa-phone-alt"></i> +62 123 456 789</p>
+                <p>
+                    <i class="fas fa-map-marker-alt"></i> 
+                    <a href="https://www.google.com/maps?q=Jalan+Gubeng+Surabaya" target="_blank">Jalan Gubeng, Surabaya</a>
+                </p>
+                <p>
+                    <i class="fas fa-envelope"></i> 
+                    <a href="mailto:info@dingcourse.com">info@dingcourse.com</a>
+                </p>
+                <p>
+                    <i class="fas fa-phone-alt"></i> 
+                    <a href="tel:+62123456789">+62 123 456 789</a>
+                </p>
             </div>
+            
         </div>
     </footer>
 </body>
