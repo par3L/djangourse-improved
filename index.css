@@ -1,4 +1,4 @@
-@import "../../style.css";
+@import "pages/style.css";
 
 body {
     color: #333;
@@ -74,7 +74,7 @@ body {
     padding: 150px 70px 70px 70px;
     background: linear-gradient(135deg, #2C8577, #18A49F, #8FC8A5, #71CF66, #BCE9D5, #E6F8EE);
     color: #fff;
-    background-image: url('../assets/gradient.png');
+    background-image: url('assets/img/gradient.png');
     background-size: cover;
     background-position: center; 
     /* background: 
@@ -210,7 +210,7 @@ body {
     text-align: center;
     padding: 2rem;
     padding-bottom: 4rem;
-    background-image: url('../assets/Image.png');
+    background-image: url('assets/img/Image.png');
     background-size: cover;
     background-position: center;
 }

@@ -357,7 +357,7 @@
             <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
             <nav>
                 <ul>
-                    <li><a href="home.php">Beranda</a></li>
+                    <li><a href="../../index.php">Beranda</a></li>
                     <li><a href="course-list.php">Kursus</a></li>
                     <li><a href="#">Cara Penggunaan</a></li>
                 </ul>
