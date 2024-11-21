@@ -183,7 +183,7 @@
         <div class="isi">
             <!-- Bagian Penjelasan -->
             <div class="penjelasan">
-                <img src="assets/django-20.png" alt="logo" class="logo" />
+                <img src="../assets/img/logo-django.png" alt="logo" class="logo" />
                 <div class="penjelasan1">
                     Lorem ipsum dolor sit amet, consectetur<br />
                     adipiscing elit. Ut consequat mauris Lorem<br />
