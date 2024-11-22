@@ -143,7 +143,7 @@ header .user-info img {
 /* Profile Section */
 .profil {
     background-color: #f4f4f4;
-    background-image: url('bgsiswa.png');
+    background-image: url('/pages/student/assets/bgsiswa.png');
     background-size: cover;
     background-position: center;
     padding: 100px 60px;
@@ -240,7 +240,7 @@ header .user-info img {
 <body>
     <!-- Navbar Section -->
     <header class="navbar">
-        <img src="assets/img/django-20.png" alt="Logo" class="logo" style="  width: 110px; ">
+        <img src="/pages/student/assets/django-20.png" alt="Logo" class="logo" style="  width: 110px; ">
         <nav>
             <ul>
                 <li><a href="#">Beranda</a></li>
@@ -268,7 +268,7 @@ header .user-info img {
     <!-- Profile Section -->
     <div class="profil">
         <div class="profile-container">
-            <img src="pictprofil.png" alt="Profile Picture" class="profile-picture">
+            <img src="/pages/student/assets/pictprofil.png" alt="Profile Picture" class="profile-picture">
             <p class="profile-name">Christian Farrel Argya Putra</p>
         </div>
     </div>
@@ -288,31 +288,31 @@ header .user-info img {
         <div class="certificate-card">
             <h3>Sertifikat Penyelesaian</h3>
             <p>HTML</p>
-            <img src="assets/img/sertif.png" alt="Certificate Icon">
+            <img src="/pages/student/assets/sertif.png" alt="Certificate Icon">
             <p>27 Juni 2024</p>
         </div>
         <div class="certificate-card">
             <h3>Sertifikat Penyelesaian</h3>
             <p>HTML</p>
-            <img src="assets/img/sertif.png" alt="Certificate Icon">
+            <img src="/pages/student/assets/sertif.png" alt="Certificate Icon">
             <p>27 Juni 2024</p>
         </div>
         <div class="certificate-card">
             <h3>Sertifikat Penyelesaian</h3>
             <p>HTML</p>
-            <img src="assets/img/sertif.png" alt="Certificate Icon">
+            <img src="/pages/student/assets/sertif.png" alt="Certificate Icon">
             <p>27 Juni 2024</p>
         </div>
         <div class="certificate-card">
             <h3>Sertifikat Penyelesaian</h3>
             <p>HTML</p>
-            <img src="assets/img/sertif.png" alt="Certificate Icon">
+            <img src="/pages/student/assets/sertif.png" alt="Certificate Icon">
             <p>27 Juni 2024</p>
         </div>
         <div class="certificate-card">
             <h3>Sertifikat Penyelesaian</h3>
             <p>HTML</p>
-            <img src="assets/img/sertif.png" alt="Certificate Icon">
+            <img src="/pages/student/assets/sertif.png" alt="Certificate Icon">
             <p>27 Juni 2024</p>
         </div>
     </section>
