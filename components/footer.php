@@ -12,7 +12,7 @@
 </head>
 <style>
 footer {
-    background-image: url('asset/footer.png');
+    background-image: url('assets/bg-footer.png');
     background-size: cover;
     background-position: center;
     color: #fff;
@@ -82,7 +82,7 @@ footer {
     <footer>
         <div class="footer-content">
             <div class="logo-section">
-                <img src="asset/django-20.png" alt="Logo" class="footer-logo">
+                <img src="assets/django-20.png" alt="Logo" class="footer-logo">
                 <p>Bergabunglah bersama kami untuk menguasai<br> berbagai keahlian
                     dibidang teknologi dan membuka<br>peluang karier di dunia teknologi
                     yang terus berkembang.<br><br> Kami menyediakan kursus
