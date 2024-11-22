@@ -42,20 +42,20 @@ if (isset($_SESSION['login'])) {
                     <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
                     <p>0 Koin</p>
                     <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
-                        <a href="pages/student/profile.php">
+                        <a href="pages/student/pro.php">
                             <div class="navbar-info-dropdown-content">
                                 <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
                                 <span>Profil</span>
                             </div>
                         </a>
-                        <a href="pages/student/wishlist.php">
+                        <a href="./pages/student/favourite-course.php">
                             <div class="navbar-info-dropdown-content">
                                 <iconify-icon icon="weui:like-filled"></iconify-icon>
                                 <span>Wishlist</span>
                             </div>
                             
                         </a>
-                        <a href="pages/student/setting.php">
+                        <a href="./pages/siswa/pengaturan_profil.php">
                             <div class="navbar-info-dropdown-content">
                                 <iconify-icon icon="uil:setting"></iconify-icon>
                                 <span>Pengaturan</span>

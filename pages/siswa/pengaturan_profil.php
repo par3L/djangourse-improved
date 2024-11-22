@@ -1,6 +1,6 @@
 <?php
-require "connection.php";
-require "helper.php";
+require "../../utils/database/connection.php";
+require "../../utils/database/helper.php";
 
 $sql = fetch("SELECT * FROM students JOIN credentials ON (students.credential_id = credentials.id)");
 
@@ -44,6 +44,17 @@ if (isset($_POST["submit"])) {
 if(isset($_POST["submit2"])){
 
 }
+
+session_start();
+var_dump($_SESSION);
+
+// temporary code
+if (isset($_SESSION['login'])) {
+    if ($_SESSION['user']['role_id'] == 3) {
+        header('Location: pages/admin/views/dashboard.php');
+    }
+}
+
 ?>
 
 
@@ -55,6 +66,7 @@ if(isset($_POST["submit2"])){
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="fo.css" />
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -614,6 +626,103 @@ if(isset($_POST["submit2"])){
         gap: 16px;
     }
 
+    
+.navbar {
+    position: fixed;
+    z-index: 9999;
+    top: 0;
+    left: 0;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 4rem;
+    background-color: #245044;
+}
+
+.style-daftar, .style-masuk {
+    border: none;
+    border-radius: 50px;
+    padding: 10px 24px;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.navbar ul {
+    display: flex;
+    list-style: none;
+    gap: 30px;
+}
+
+.navbar ul li {
+    margin-left: 20px;
+}
+
+.navbar a {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.navbar a:hover {
+    color: #A1D1B6;
+    border-bottom: 2px solid #A1D1B6;
+}
+
+.navbar-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+}
+
+.navbar-info-dropdown {
+    position: absolute;
+    top:80px;
+    right: 48px;
+    width: 220px;
+    display: block;
+    padding: 16px;
+    background-color: #005955;
+}
+
+.hide {
+    display: none;
+}
+
+.navbar-info-dropdown a {
+    display: block;
+    padding: 16px;
+}
+
+.navbar-info-dropdown iconify-icon {
+    font-size: 24px;
+}
+
+.navbar-info-dropdown .navbar-info-dropdown-content {
+    display: flex;
+    gap: 16px;
+}
+
+.auth-buttons button {
+    margin-left: 10px;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    background-color: #245044;
+    color: #fff;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.auth-buttons button:hover {
+    background-color: #15A3A1;
+    transform: scale(1.05); 
+}
+
+
     /* Responsif untuk layar sedang */
     @media screen and (max-width: 1024px) {
         .isi {
@@ -695,34 +804,57 @@ if(isset($_POST["submit2"])){
 </head>
 
 <body>
-    <header class="header">
-        <img class="logo" src="asset/django-20.png" alt="Logo Django">
-        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-            <div></div>
-            <div></div>
-            <div></div>
+<header>
+        <div class="navbar">
+            <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
+            <nav>
+                <ul>
+                    <li><a href="../../index.php">Beranda</a></li>
+                    <li><a href="../student/course-list.php">Kursus</a></li>
+                    <li><a href="#">Cara Penggunaan</a></li>
+                </ul>
+            </nav>
+            <?php if (isset($_SESSION['login'])): ?>
+                <div class="navbar-info">
+                    <p>Hai, <?= $_SESSION['user']['name'] ?></p>
+                    <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
+                    <p>0 Koin</p>
+                    <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
+                        <a href="pages/student/pro.php">
+                            <div class="navbar-info-dropdown-content">
+                                <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
+                                <span>Profil</span>
+                            </div>
+                        </a>
+                        <a href="pages/student/favourite-course.php">
+                            <div class="navbar-info-dropdown-content">
+                                <iconify-icon icon="weui:like-filled"></iconify-icon>
+                                <span>Wishlist</span>
+                            </div>
+                            
+                        </a>
+                        <a href="./pages/siswa/pengaturan_profil.php">
+                            <div class="navbar-info-dropdown-content">
+                                <iconify-icon icon="uil:setting"></iconify-icon>
+                                <span>Pengaturan</span>
+                            </div>
+                        </a>
+                        <a href="pages/logout.php">
+                            <div class="navbar-info-dropdown-content">
+                                <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
+                                <span>Keluar</span>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+                
+            <?php else: ?>
+                <div class="auth-buttons">
+                    <button class="style-daftar" onclick="location.href='pages/auth.php'">Daftar</button>
+                    <button class="style-masuk" onclick="location.href='pages/auth.php'">Masuk</button>
+                </div>
+            <?php endif; ?>
         </div>
-        <nav class="menu">
-            <a href="#" class="menu-item">Beranda</a>
-            <a href="#" class="menu-item">Kursus</a>
-            <a href="#" class="menu-item">Cara Penggunaan</a>
-        </nav>
-        <div class="user-info" onclick="toggleDropdown()">
-            <span>Hai, Christian Farrel</span>
-            <span class="arrow" id="arrow">▼</span>
-            <div class="dropdown" id="dropdown">
-                <a href="#profile"><i class="fas fa-user"></i> Profil</a>
-                <a href="#wishlist"><i class="fas fa-heart"></i> Wishlist</a>
-                <a href="#settings"><i class="fas fa-cog"></i> Pengaturan</a>
-                <a href="#logout"><i class="fas fa-sign-out-alt"></i> Keluar</a>
-            </div>
-            <span>0 Koin</span>
-        </div>
-        <nav class="menu-collapsed" id="menu-collapsed">
-            <a href="#" class="menu-item">Beranda</a>
-            <a href="#" class="menu-item">Kursus</a>
-            <a href="#" class="menu-item">Cara Penggunaan</a>
-        </nav>
     </header>
     <script>
     function toggleMenu() {
@@ -736,7 +868,7 @@ if(isset($_POST["submit2"])){
         <div class="pengaturan_setting">
             <h3>Pengaturan</h3>
             <ul>
-                <li class="active"><img src="asset/account_circle.png">Profil</li>
+                <li class="active"><img src="./asset/akun.png">Profil</li>
                 <li><img src="asset/keyhole.png"><a href="pengaturan_sandi.php">Kata Sandi</a></li>
             </ul>
         </div>
@@ -783,7 +915,7 @@ if(isset($_POST["submit2"])){
         </div>
     </div>
 </body>
-<script>
+<!-- <script>
 function deleteAccount() {
     if (confirm("Apakah Anda yakin ingin menghapus akun? Semua data akan hilang.")) {
         fetch('delete_account.php', { method: 'POST' })
@@ -814,7 +946,242 @@ document.addEventListener('click', function(event) {
         arrow.textContent = '▼'; 
     }
 });
+</script> -->
+
+<script>
+    document.getElementById('btn-dropdown').addEventListener('click', () => {
+    console.log('click')
+    document.getElementById('navbar-info-dropdown').classList.toggle('hide')
+})
 </script>
-<?php include 'footer.php'; ?>
+<style>
+.footer {
+    padding: 40px 50px;
+    background-image: url('../../assets/img/footer.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    font-family: "Inter-Regular", sans-serif;
+    min-height: 200px;
+}
+
+/* FOOTER */
+.logo {
+    width: 150px;
+    position: relative;
+    object-fit: cover;
+}
+
+.isi {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 40px;
+}
+
+.penjelasan {
+    flex: 1 1 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.penjelasan1,
+.penjelasan2 {
+    font-size: 14px;
+    line-height: 1.6;
+    color: white;
+}
+
+.django-3 {
+    width: 120px;
+    height: auto;
+    object-fit: contain;
+    margin-bottom: 10px;
+}
+
+.instruktur,
+.siswa,
+.alamat {
+    flex: 1 1 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    gap: 26px;
+}
+
+.instruktur a,
+.siswa a,
+.alamat a {
+    color: white;
+    text-decoration: none;
+    font-size: 14px;
+}
+
+.instruktur a:hover,
+.siswa a:hover,
+.alamat a:hover {
+    color: #00bcd4;
+}
+
+.alamat a:hover {
+    color: #00bcd4;
+}
+
+.heading-2 {
+    font-size: 16px;
+    font-weight: bold;
+    margin-bottom: 10px;
+    color: white;
+}
+
+.alamat {
+    flex: 1 1 30%;
+}
+
+.alamat div {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.alamat a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.alamat a:hover i {
+    color: #51aea8;
+}
+
+.alamat a:hover span {
+    color: #00bcd4;
+}
+
+.alamat i {
+    font-size: 20px;
+    color: white;
+    line-height: 1;
+    margin-right: 20px;
+    transition: color 0.3s;
+}
+
+.alamat span {
+    font-size: 14px;
+    color: white;
+    line-height: 1.2;
+    transition: color 0.3s;
+}
+
+@media screen and (max-width: 1024px) {
+    .isi {
+        gap: 30px;
+    }
+
+    .penjelasan,
+    .instruktur,
+    .siswa,
+    .alamat {
+        flex: 1 1 45%;
+    }
+}
+
+@media screen and (max-width: 768px) {
+    .isi {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    .penjelasan,
+    .instruktur,
+    .siswa,
+    .alamat {
+        flex: 1 1 100%;
+    }
+
+    .django-3 {
+        margin-bottom: 20px;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .footer {
+        padding: 20px;
+    }
+
+    .penjelasan1,
+    .penjelasan2,
+    .alamat p {
+        font-size: 12px;
+        line-height: 1.4;
+    }
+}
+</style>
+    <!-- FOOTER -->
+    <div class="footer">
+        <div class="isi">
+            <!-- Bagian Penjelasan -->
+            <div class="penjelasan">
+                <img src="../../assets/img/logo-django.png" alt="logo" class="logo" />
+                <div class="penjelasan1">
+                    Lorem ipsum dolor sit amet, consectetur<br />
+                    adipiscing elit. Ut consequat mauris Lorem<br />
+                    ipsum dolor sit amet, consectetur adipiscing<br />
+                    elit. Ut consequat mauris
+                </div>
+                <div class="penjelasan2">
+                    Lorem ipsum dolor sit amet, consectetur<br />
+                    adipiscing elit. Ut consequat mauris Lorem<br />
+                    ipsum dolor sit amet, consectetur adipiscing<br />
+                    elit. Ut consequat mauris
+                </div>
+            </div>
+
+            <div class="instruktur">
+                <div class="heading-2">Instruktur</div>
+                <a href="#">Profil</a>
+                <a href="#"> Login</a>
+                <a href="#">Register</a>
+                <a href="#">Instructor</a>
+                <a href="#">Dashboard</a>
+            </div>
+
+            <div class="siswa">
+                <div class="heading-2">Siswa</div>
+                <a href="#">Profil</a>
+                <a href="#">Jelajahi Kursus</a>
+                <a href="#"> Wishlist Kursus</a>
+                <a href="#">Student</a>
+                <a href="#">Dashboard</a>
+            </div>
+
+            <div class="alamat">
+                <div class="heading-2">Alamat</div>
+
+                <div class="alamat2">
+                    <a href="https://www.google.com/maps?q=Jalan+Gelatik,+Samarinda" target="_blank">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Jalan Gelatik, Samarinda</span>
+                    </a>
+                </div>
+
+                <div class="email">
+                    <a href="mailto:admin@django.com">
+                        <i class="fas fa-envelope"></i>
+                        <span>admin@django.com</span>
+                    </a>
+                </div>
+
+                <div class="no-tlp">
+                    <a href="tel:+48731819948">
+                        <i class="fas fa-phone"></i>
+                        <span>+48 731 819 948</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </html>

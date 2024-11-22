@@ -79,16 +79,23 @@ footer {
 
 <body>
     <!-- FOOTER -->
-    <footer>
-        <div class="footer-content">
-            <div class="logo-section">
-                <img src="assets/django-20.png" alt="Logo" class="footer-logo">
-                <p>Bergabunglah bersama kami untuk menguasai<br> berbagai keahlian
-                    dibidang teknologi dan membuka<br>peluang karier di dunia teknologi
-                    yang terus berkembang.<br><br> Kami menyediakan kursus
-                    berkualitas yang membantu <br> kamu berkembang dari pemula
-                    hingga ahli.</p>
-                <p>Hak cipta dilindungi 2024</p>
+    <div class="footer">
+        <div class="isi">
+            <!-- Bagian Penjelasan -->
+            <div class="penjelasan">
+                <img src="../assets/img/logo-django.png" alt="logo" class="logo" />
+                <div class="penjelasan1">
+                    Lorem ipsum dolor sit amet, consectetur<br />
+                    adipiscing elit. Ut consequat mauris Lorem<br />
+                    ipsum dolor sit amet, consectetur adipiscing<br />
+                    elit. Ut consequat mauris
+                </div>
+                <div class="penjelasan2">
+                    Lorem ipsum dolor sit amet, consectetur<br />
+                    adipiscing elit. Ut consequat mauris Lorem<br />
+                    ipsum dolor sit amet, consectetur adipiscing<br />
+                    elit. Ut consequat mauris
+                </div>
             </div>
             <div class="links-section">
                 <h3>Instruktur</h3>
