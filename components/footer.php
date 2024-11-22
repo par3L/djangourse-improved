@@ -12,7 +12,7 @@
 </head>
 <style>
 footer {
-    background-image: url('assets/bg-footer.png');
+    background-image: url("/assets/bg-footer.png");
     background-size: cover;
     background-position: center;
     color: #fff;
