@@ -51,14 +51,14 @@ if (isset($_SESSION['login'])) {
                             <span>Profil</span>
                         </div>
                     </a>
-                    <a href="./pages/student/favourite-course.php">
+                    <a href="pages/student/favourite-course.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="weui:like-filled"></iconify-icon>
                             <span>Wishlist</span>
                         </div>
 
                     </a>
-                    <a href="./pages/student/setting.php">
+                    <a href="pages/student/setting.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="uil:setting"></iconify-icon>
                             <span>Pengaturan</span>

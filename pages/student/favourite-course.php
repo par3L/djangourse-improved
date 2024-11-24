@@ -20,7 +20,7 @@ if (isset($_SESSION['login'])) {
     <title>Instructor View - Dashboard</title>
       <link rel="shortcut icon" href="../../assets/img/django-3.png" type="image/x-icon">
       <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
-    <link rel="stylesheet" href="./css/favourite-course.css"/>
+    <link rel="stylesheet" href="css/favourite-course.css"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   </head>
   <body>
@@ -41,26 +41,26 @@ if (isset($_SESSION['login'])) {
                         <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
                         <p>0 Koin</p>
                         <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
-                            <a href="pages/student/pro.php">
+                            <a href="profile.php">
                                 <div class="navbar-info-dropdown-content">
                                     <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
                                     <span>Profil</span>
                                 </div>
                             </a>
-                            <a href="./favourite-course.php">
+                            <a href="favourite-course.php">
                                 <div class="navbar-info-dropdown-content">
                                     <iconify-icon icon="weui:like-filled"></iconify-icon>
                                     <span>Wishlist</span>
                                 </div>
                                 
                             </a>
-                            <a href="./pages/siswa/pengaturan_profil.php">
+                            <a href="setting.php">
                                 <div class="navbar-info-dropdown-content">
                                     <iconify-icon icon="uil:setting"></iconify-icon>
                                     <span>Pengaturan</span>
                                 </div>
                             </a>
-                            <a href="pages/logout.php">
+                            <a href="../logout.php">
                                 <div class="navbar-info-dropdown-content">
                                     <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
                                     <span>Keluar</span>
@@ -125,7 +125,14 @@ if (isset($_SESSION['login'])) {
         <div class="footer-content">
             <div class="logo-section">
                 <img src="../../assets/img/logo-django.png" alt="Logo" class="footer-logo">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                <p>Bergabunglah bersama kami untuk menguasai<br> berbagai keahlian
+                    dibidang teknologi dan membuka<br>peluang karier di dunia teknologi
+                    yang terus berkembang.<br><br> Kami menyediakan kursus
+                    berkualitas yang membantu <br> kamu berkembang dari pemula
+                    hingga ahli.</p>
+                <div class="hak-cipta">
+                    <p>© 2024 Django Course. Semua hak cipta dilindungi.</p>
+                </div>
             </div>
             <div class="links-section">
                 <h3>Instruktur</h3>

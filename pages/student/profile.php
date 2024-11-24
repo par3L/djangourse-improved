@@ -10,19 +10,19 @@ session_start();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Penggunaan Website</title>
+    <title>Profil - vue.pngikat</title>
     <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
-    <link rel="stylesheet" href="how-to-use.css">
+    <link rel="stylesheet" href="css/profile.css" />
 </head>
 
 <body>
     <header>
         <div class="navbar">
-            <img src="../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
+            <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
             <nav>
                 <ul>
-                    <li><a href="../index.php">Beranda</a></li>
-                    <li><a href="student/course-list.php">Kursus</a></li>
+                    <li><a href="../../index.php">Beranda</a></li>
+                    <li><a href="course-list.php">Kursus</a></li>
                     <li><a href="how-to-use.php">Cara Penggunaan</a></li>
                 </ul>
             </nav>
@@ -32,26 +32,26 @@ session_start();
                 <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
                 <p>0 Koin</p>
                 <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
-                    <a href="student/profile.php">
+                    <a href="profile.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
                             <span>Profil</span>
                         </div>
                     </a>
-                    <a href="student/favourite-course.php">
+                    <a href="favourite-course.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="weui:like-filled"></iconify-icon>
                             <span>Wishlist</span>
                         </div>
 
                     </a>
-                    <a href="student/setting.php">
+                    <a href="setting.php">
                         <div class=" navbar-info-dropdown-content">
                             <iconify-icon icon="uil:setting"></iconify-icon>
                             <span>Pengaturan</span>
                         </div>
                     </a>
-                    <a href="logout.php">
+                    <a href="../auth.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
                             <span>Keluar</span>
@@ -68,39 +68,69 @@ session_start();
             <?php endif; ?>
         </div>
     </header>
-    <main>
-        <div class="content">
-            <h1 class="main-title">Cara Penggunaan Website</h1>
-            <p class="subtitle">Berikut adalah tata cara penggunaan Djangourse</p>
 
-            <section class="steps">
-                <div class="step">
-                    <h2>Langkah 1: Daftar atau Masuk</h2>
-                    <img src="https://via.placeholder.com/200x150?text=Cara" alt="Langkah 1" class="step-image">
-                    <p style="color: white;">
-                        Anda perlu mendaftar terlebih dahulu ketika ingin menikmati layanan dari Djangourse.
-                        Klik tombol Daftar atau Masuk yang berada di bagian navigation bar. Lalu isi informasi
-                        yang sesuai ketentuan.
-                    </p>
-                </div>
-
-                <div class="step">
-                    <h2>Langkah 2: Eksplorasi</h2>
-                    <img src="https://via.placeholder.com/200x150?text=Cara" alt="Langkah 2" class="step-image">
-                    <p style="color: white;">
-                        Setelah mendaftar, Anda dapat memilih untuk membeli kursus menggunakan koin atau belajar dengan
-                        kursus
-                        gratis di website kami. Koin dapat diisi melalui laman Saldo.
-                    </p>
-                </div>
+    <section class="profile-section">
+        <div class="profile-picture">
+            <img src="https://via.placeholder.com/200x200?text=profil" alt="Profile Picture">
         </div>
-        </section>
-    </main>
+        <h2>Christian Farrel Argya Putra</h2>
+    </section>
+
+    <section class="tabs-section">
+        <button class="tab active">Kursus Saya</button>
+        <button class="tab">Sertifikat</button>
+    </section>
+
+    <section class="certificates-section">
+        <div class="certificate-card">
+            <h3>HTML</h3>
+            <img src="../../assets/img/Vector.png" alt="Certificate Icon">
+            <div class="progress-bar">
+                <div class="progress" style="width: 100%;"></div>
+            </div>
+        </div>
+
+        <div class="certificate-card">
+            <h3>Vue js</h3>
+            <img src="../../assets/img/vue.png" alt="Certificate Icon">
+            <div class="progress-bar">
+                <div class="progress" style="width: 75%;"></div>
+            </div>
+        </div>
+
+        <div class="certificate-card">
+            <h3>Vue js</h3>
+            <img src="../../assets/img/vue.png" alt="Certificate Icon">
+            <div class="progress-bar">
+                <div class="progress" style="width: 75%;"></div>
+            </div>
+        </div>
+
+        <div class="certificate-card">
+            <h3>Vue js</h3>
+            <img src="../../assets/img/vue.png" alt="Certificate Icon">
+            <div class="progress-bar">
+                <div class="progress" style="width: 75%;"></div>
+            </div>
+        </div>
+
+        <div class="certificate-card">
+            <h3>Vue js</h3>
+            <img src="../../assets/img/vue.png" alt="Certificate Icon">
+            <div class="progress-bar">
+                <div class="progress" style="width: 75%;"></div>
+            </div>
+        </div>
+    </section>
+
+
+    </div>
+    </section>
 
     <footer>
         <div class="footer-content">
             <div class="logo-section">
-                <img src="../assets/img/logo-django.png" alt="Logo" class="footer-logo">
+                <img src="../../assets/img/logo-django.png" alt="Logo" class="footer-logo">
                 <p>Bergabunglah bersama kami untuk menguasai<br> berbagai keahlian
                     dibidang teknologi dan membuka<br>peluang karier di dunia teknologi
                     yang terus berkembang.<br><br> Kami menyediakan kursus

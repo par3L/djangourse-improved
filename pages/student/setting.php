@@ -59,6 +59,7 @@ if (isset($_SESSION['login'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
@@ -70,16 +71,9 @@ if (isset($_SESSION['login'])) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
-    *,
-    *::before,
-    *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
+        @import url('../style.css');
 
     body {
-        font-family: "poppins", sans-serif;
         line-height: 1.6;
         margin: 0;
         height: 100%;
@@ -103,7 +97,6 @@ if (isset($_SESSION['login'])) {
         height: 100px;
         width: 100%;
         box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
-        font-family: 'Poppins', sans-serif;
     }
 
     .logo {
@@ -123,7 +116,6 @@ if (isset($_SESSION['login'])) {
         z-index: 3;
         border-radius: 4px;
         border: 1px solid black;
-        font-family: 'Poppins', sans-serif;
 
     }
 
@@ -158,9 +150,6 @@ if (isset($_SESSION['login'])) {
     }
 
     body {
-        font-family: Arial, sans-serif;
-        margin: 0;
-        padding: 0;
         background: linear-gradient(to right, #e0f3f5, #c1dcd6);
         color: #333;
     }
@@ -306,7 +295,6 @@ if (isset($_SESSION['login'])) {
         display: flex;
         height: calc(115vh - 50px);
         flex-direction: column;
-        font-family: 'Poppins', sans-serif;
     }
 
 
@@ -479,7 +467,6 @@ if (isset($_SESSION['login'])) {
         color: #fff;
         margin-top: 20px;
         margin-left: 32px;
-        font-family: 'Poppins', sans-serif;
     }
 
     .save-button {
@@ -490,7 +477,6 @@ if (isset($_SESSION['login'])) {
         background: #245044;
         padding: 12px 20px;
         gap: 10px;
-        font-family: 'Poppins', sans-serif;
     }
 
     .note {
@@ -625,100 +611,165 @@ if (isset($_SESSION['login'])) {
         gap: 16px;
     }
 
-    
-.navbar {
-    position: fixed;
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1rem 4rem;
-    background-color: #245044;
+
+    .navbar {
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 4rem;
+        background-color: #245044;
+    }
+
+    .style-daftar,
+    .style-masuk {
+        border: none;
+        border-radius: 50px;
+        padding: 10px 24px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .navbar ul {
+        display: flex;
+        list-style: none;
+        gap: 30px;
+    }
+
+    .navbar ul li {
+        margin-left: 20px;
+    }
+
+    .navbar a {
+        text-decoration: none;
+        color: #fff;
+        transition: color 0.3s ease, border-bottom 0.3s ease;
+    }
+
+    .navbar a:hover {
+        color: #A1D1B6;
+        border-bottom: 2px solid #A1D1B6;
+    }
+
+    .navbar-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: white;
+    }
+
+    .navbar-info-dropdown {
+        position: absolute;
+        top: 80px;
+        right: 48px;
+        width: 220px;
+        display: block;
+        padding: 16px;
+        background-color: #005955;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .navbar-info-dropdown a {
+        display: block;
+        padding: 16px;
+    }
+
+    .navbar-info-dropdown iconify-icon {
+        font-size: 24px;
+    }
+
+    .navbar-info-dropdown .navbar-info-dropdown-content {
+        display: flex;
+        gap: 16px;
+    }
+
+    .auth-buttons button {
+        margin-left: 10px;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        background-color: #245044;
+        color: #fff;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .auth-buttons button:hover {
+        background-color: #15A3A1;
+        transform: scale(1.05);
+    }
+
+    footer {
+  background-image: url("../../assets/img/bg-footer.png");
+  background-size: cover;
+  background-position: center;
+  color: #fff;
+  padding: 2rem 4rem;
+  display: flex;
+  justify-content: space-between;
 }
 
-.style-daftar, .style-masuk {
-    border: none;
-    border-radius: 50px;
-    padding: 10px 24px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
+.footer-content {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+}
+.footer-content .logo-section p {
+  padding-left: 10px;
+  margin-top: 10px;
 }
 
-.navbar ul {
-    display: flex;
-    list-style: none;
-    gap: 30px;
+.footer-logo {
+  width: 100px;
 }
 
-.navbar ul li {
-    margin-left: 20px;
+.links-section a {
+  text-decoration: none;
+  color: #fff;
+  transition: color 0.3s ease, border-bottom 0.3s ease;
 }
 
-.navbar a {
-    text-decoration: none;
-    color: #fff;
-    transition: color 0.3s ease, border-bottom 0.3s ease;
+.links-section a:hover {
+  color: #a1d1b6;
+  border-bottom: 2px solid #a1d1b6;
 }
 
-.navbar a:hover {
-    color: #A1D1B6;
-    border-bottom: 2px solid #A1D1B6;
+.links-section ul {
+  list-style: none;
+  margin-top: 20px;
+  padding-left: 0;
 }
 
-.navbar-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: white;
+.links-section ul li {
+  margin: 20px 0;
 }
 
-.navbar-info-dropdown {
-    position: absolute;
-    top:80px;
-    right: 48px;
-    width: 220px;
-    display: block;
-    padding: 16px;
-    background-color: #005955;
+.contact-section p {
+  margin: 20px 0;
 }
 
-.hide {
-    display: none;
+.contact-section i {
+  margin-right: 5px;
 }
 
-.navbar-info-dropdown a {
-    display: block;
-    padding: 16px;
+.contact-section a {
+  text-decoration: none;
+  color: #fff;
+  transition: color 0.3s ease;
 }
 
-.navbar-info-dropdown iconify-icon {
-    font-size: 24px;
-}
-
-.navbar-info-dropdown .navbar-info-dropdown-content {
-    display: flex;
-    gap: 16px;
-}
-
-.auth-buttons button {
-    margin-left: 10px;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    background-color: #245044;
-    color: #fff;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-}
-
-.auth-buttons button:hover {
-    background-color: #15A3A1;
-    transform: scale(1.05); 
+.contact-section a:hover {
+  color: #a1d1b6;
+  text-decoration: underline;
 }
 
 
@@ -803,7 +854,7 @@ if (isset($_SESSION['login'])) {
 </head>
 
 <body>
-<header>
+    <header>
         <div class="navbar">
             <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
             <nav>
@@ -814,44 +865,44 @@ if (isset($_SESSION['login'])) {
                 </ul>
             </nav>
             <?php if (isset($_SESSION['login'])): ?>
-                <div class="navbar-info">
-                    <p>Hai, <?= $_SESSION['user']['name'] ?></p>
-                    <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
-                    <p>0 Koin</p>
-                    <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
-                        <a href="pages/student/pro.php">
-                            <div class="navbar-info-dropdown-content">
-                                <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
-                                <span>Profil</span>
-                            </div>
-                        </a>
-                        <a href="pages/student/favourite-course.php">
-                            <div class="navbar-info-dropdown-content">
-                                <iconify-icon icon="weui:like-filled"></iconify-icon>
-                                <span>Wishlist</span>
-                            </div>
-                            
-                        </a>
-                        <a href="./pages/siswa/pengaturan_profil.php">
-                            <div class="navbar-info-dropdown-content">
-                                <iconify-icon icon="uil:setting"></iconify-icon>
-                                <span>Pengaturan</span>
-                            </div>
-                        </a>
-                        <a href="pages/logout.php">
-                            <div class="navbar-info-dropdown-content">
-                                <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
-                                <span>Keluar</span>
-                            </div>
-                        </a>
-                    </div>
+            <div class="navbar-info">
+                <p>Hai, <?= $_SESSION['user']['name'] ?></p>
+                <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
+                <p>0 Koin</p>
+                <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
+                    <a href="profile.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
+                            <span>Profil</span>
+                        </div>
+                    </a>
+                    <a href="favourite-course.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="weui:like-filled"></iconify-icon>
+                            <span>Wishlist</span>
+                        </div>
+
+                    </a>
+                    <a href="setting.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="uil:setting"></iconify-icon>
+                            <span>Pengaturan</span>
+                        </div>
+                    </a>
+                    <a href="../logout.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
+                            <span>Keluar</span>
+                        </div>
+                    </a>
                 </div>
-                
+            </div>
+
             <?php else: ?>
-                <div class="auth-buttons">
-                    <button class="style-daftar" onclick="location.href='pages/auth.php'">Daftar</button>
-                    <button class="style-masuk" onclick="location.href='pages/auth.php'">Masuk</button>
-                </div>
+            <div class="auth-buttons">
+                <button class="style-daftar" onclick="location.href='pages/auth.php'">Daftar</button>
+                <button class="style-masuk" onclick="location.href='pages/auth.php'">Masuk</button>
+            </div>
             <?php endif; ?>
         </div>
     </header>
@@ -874,45 +925,97 @@ if (isset($_SESSION['login'])) {
         <div class="content">
             <div class="box_setting">
                 <h2>Pengaturan Profil</h2>
-                    <form action="" method="POST" enctype="multipart/form-data">
+                <form action="" method="POST" enctype="multipart/form-data">
                     <div class="form-group-nama">
                         <label for="name">Nama Lengkap</label>
                         <input type="text" name="name" id="name" placeholder="Masukkan nama lengkap"
-                        value="<?= htmlspecialchars($row['name']) ?>">
+                            value="<?= htmlspecialchars($row['name']) ?>">
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="city">Kota Domisili</label>
                             <input type="text" name="city" id="city" placeholder="Masukkan kota domisili"
-                            value="<?= htmlspecialchars($row['city']) ?>">
+                                value="<?= htmlspecialchars($row['city']) ?>">
                         </div>
                         <div class="form-group">
                             <label for="date_of_birth">Tanggal Lahir</label>
                             <input type="date" name="date_of_birth" id="date_of_birth"
-                            value="<?= $row['date_of_birth'] ?>">
+                                value="<?= $row['date_of_birth'] ?>">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="email">Alamat Surel</label>
                             <input type="email" name="email" id="email" placeholder="Masukkan alamat surel"
-                            value="<?= htmlspecialchars($row['email']) ?>"disabled>
+                                value="<?= htmlspecialchars($row['email']) ?>" disabled>
                         </div>
                         <div class="form-group">
                             <label for="phone_number">No. HP</label>
                             <input type="number" name="phone_number" id="phone_number" placeholder="Masukkan nomor HP"
-                            value="<?= htmlspecialchars($row['phone_number']) ?>">
+                                value="<?= htmlspecialchars($row['phone_number']) ?>">
                         </div>
                     </div>
-    <button type="submit" name="submit2" class="delete-button" onclick="deleteAccount()">Hapus Akun</button>
-    <p class="note">
-        *Semua informasi akun dan kelas yang telah dibeli akan dihapus dari database kami.
-    </p>
-    <button type="submit" name = "submit" class="save-button">Simpan Perubahan</button>
+                    <button type="submit" name="submit2" class="delete-button" onclick="deleteAccount()">Hapus
+                        Akun</button>
+                    <p class="note">
+                        *Semua informasi akun dan kelas yang telah dibeli akan dihapus dari database kami.
+                    </p>
+                    <button type="submit" name="submit" class="save-button">Simpan Perubahan</button>
                 </form>
             </div>
         </div>
     </div>
+    <footer>
+        <div class="footer-content">
+            <div class="logo-section">
+                <img src="../../assets/img/logo-django.png" alt="Logo" class="footer-logo">
+                <p>Bergabunglah bersama kami untuk menguasai<br> berbagai keahlian
+                    dibidang teknologi dan membuka<br>peluang karier di dunia teknologi
+                    yang terus berkembang.<br><br> Kami menyediakan kursus
+                    berkualitas yang membantu <br> kamu berkembang dari pemula
+                    hingga ahli.</p>
+                <div class="hak-cipta">
+                    <p>© 2024 Django Course. Semua hak cipta dilindungi.</p>
+                </div>
+            </div>
+            <div class="links-section">
+                <h3>Instruktur</h3>
+                <ul>
+                    <li><a href="#">Profil</a></li>
+                    <li><a href="#">Login</a></li>
+                    <li><a href="#">Register</a></li>
+                    <li><a href="#">Instructor</a></li>
+                    <li><a href="#">Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="links-section">
+                <h3>Siswa</h3>
+                <ul>
+                    <li><a href="#">Profil</a></li>
+                    <li><a href="#">Jelajahi Kursus</a></li>
+                    <li><a href="#">Wishlist Kursus</a></li>
+                    <li><a href="#">Student</a></li>
+                    <li><a href="#">Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="contact-section">
+                <h3>Alamat</h3>
+                <p>
+                    <i class="fas fa-map-marker-alt"></i> 
+                    <a href="https://www.google.com/maps?q=Jalan+Gubeng+Surabaya" target="_blank">Jalan Gubeng, Surabaya</a>
+                </p>
+                <p>
+                    <i class="fas fa-envelope"></i> 
+                    <a href="mailto:info@dingcourse.com">info@dingcourse.com</a>
+                </p>
+                <p>
+                    <i class="fas fa-phone-alt"></i> 
+                    <a href="tel:+62123456789">+62 123 456 789</a>
+                </p>
+            </div>
+            
+        </div>
+    </footer>
 </body>
 <!-- <script>
 function deleteAccount() {
@@ -948,239 +1051,10 @@ document.addEventListener('click', function(event) {
 </script> -->
 
 <script>
-    document.getElementById('btn-dropdown').addEventListener('click', () => {
+document.getElementById('btn-dropdown').addEventListener('click', () => {
     console.log('click')
     document.getElementById('navbar-info-dropdown').classList.toggle('hide')
 })
 </script>
-<style>
-.footer {
-    padding: 40px 50px;
-    background-image: url('../../assets/img/footer.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    font-family: "Inter-Regular", sans-serif;
-    min-height: 200px;
-}
-
-/* FOOTER */
-.logo {
-    width: 150px;
-    position: relative;
-    object-fit: cover;
-}
-
-.isi {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    gap: 40px;
-}
-
-.penjelasan {
-    flex: 1 1 30%;
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-}
-
-.penjelasan1,
-.penjelasan2 {
-    font-size: 14px;
-    line-height: 1.6;
-    color: white;
-}
-
-.django-3 {
-    width: 120px;
-    height: auto;
-    object-fit: contain;
-    margin-bottom: 10px;
-}
-
-.instruktur,
-.siswa,
-.alamat {
-    flex: 1 1 20%;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    gap: 26px;
-}
-
-.instruktur a,
-.siswa a,
-.alamat a {
-    color: white;
-    text-decoration: none;
-    font-size: 14px;
-}
-
-.instruktur a:hover,
-.siswa a:hover,
-.alamat a:hover {
-    color: #00bcd4;
-}
-
-.alamat a:hover {
-    color: #00bcd4;
-}
-
-.heading-2 {
-    font-size: 16px;
-    font-weight: bold;
-    margin-bottom: 10px;
-    color: white;
-}
-
-.alamat {
-    flex: 1 1 30%;
-}
-
-.alamat div {
-    display: flex;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.alamat a {
-    display: flex;
-    align-items: center;
-    text-decoration: none;
-}
-
-.alamat a:hover i {
-    color: #51aea8;
-}
-
-.alamat a:hover span {
-    color: #00bcd4;
-}
-
-.alamat i {
-    font-size: 20px;
-    color: white;
-    line-height: 1;
-    margin-right: 20px;
-    transition: color 0.3s;
-}
-
-.alamat span {
-    font-size: 14px;
-    color: white;
-    line-height: 1.2;
-    transition: color 0.3s;
-}
-
-@media screen and (max-width: 1024px) {
-    .isi {
-        gap: 30px;
-    }
-
-    .penjelasan,
-    .instruktur,
-    .siswa,
-    .alamat {
-        flex: 1 1 45%;
-    }
-}
-
-@media screen and (max-width: 768px) {
-    .isi {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-    }
-
-    .penjelasan,
-    .instruktur,
-    .siswa,
-    .alamat {
-        flex: 1 1 100%;
-    }
-
-    .django-3 {
-        margin-bottom: 20px;
-    }
-}
-
-@media screen and (max-width: 480px) {
-    .footer {
-        padding: 20px;
-    }
-
-    .penjelasan1,
-    .penjelasan2,
-    .alamat p {
-        font-size: 12px;
-        line-height: 1.4;
-    }
-}
-</style>
-    <!-- FOOTER -->
-    <div class="footer">
-        <div class="isi">
-            <!-- Bagian Penjelasan -->
-            <div class="penjelasan">
-                <img src="../../assets/img/logo-django.png" alt="logo" class="logo" />
-                <div class="penjelasan1">
-                    Lorem ipsum dolor sit amet, consectetur<br />
-                    adipiscing elit. Ut consequat mauris Lorem<br />
-                    ipsum dolor sit amet, consectetur adipiscing<br />
-                    elit. Ut consequat mauris
-                </div>
-                <div class="penjelasan2">
-                    Lorem ipsum dolor sit amet, consectetur<br />
-                    adipiscing elit. Ut consequat mauris Lorem<br />
-                    ipsum dolor sit amet, consectetur adipiscing<br />
-                    elit. Ut consequat mauris
-                </div>
-            </div>
-
-            <div class="instruktur">
-                <div class="heading-2">Instruktur</div>
-                <a href="#">Profil</a>
-                <a href="#"> Login</a>
-                <a href="#">Register</a>
-                <a href="#">Instructor</a>
-                <a href="#">Dashboard</a>
-            </div>
-
-            <div class="siswa">
-                <div class="heading-2">Siswa</div>
-                <a href="#">Profil</a>
-                <a href="#">Jelajahi Kursus</a>
-                <a href="#"> Wishlist Kursus</a>
-                <a href="#">Student</a>
-                <a href="#">Dashboard</a>
-            </div>
-
-            <div class="alamat">
-                <div class="heading-2">Alamat</div>
-
-                <div class="alamat2">
-                    <a href="https://www.google.com/maps?q=Jalan+Gelatik,+Samarinda" target="_blank">
-                        <i class="fas fa-map-marker-alt"></i>
-                        <span>Jalan Gelatik, Samarinda</span>
-                    </a>
-                </div>
-
-                <div class="email">
-                    <a href="mailto:admin@django.com">
-                        <i class="fas fa-envelope"></i>
-                        <span>admin@django.com</span>
-                    </a>
-                </div>
-
-                <div class="no-tlp">
-                    <a href="tel:+48731819948">
-                        <i class="fas fa-phone"></i>
-                        <span>+48 731 819 948</span>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
 
 </html>
