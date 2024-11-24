@@ -2,7 +2,7 @@
 
 $host = "localhost";
 $username = "root";
-$password = "";
+$password = "root";
 $dbName = "djangourse";
 
 $conn = mysqli_connect($host, $username, $password, $dbName);

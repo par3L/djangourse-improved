@@ -35,18 +35,38 @@ if (isset($_SESSION['login'])) {
     body {
         font-family: "poppins", sans-serif;
         line-height: 1.6;
-        background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-            linear-gradient(180deg, rgba(217, 217, 217, 0.65) 0%, rgba(44, 133, 119, 0.65) 67.5%);
+        background:
+            linear-gradient(to left, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0)),
+            linear-gradient(180deg,
+                rgba(217, 217, 217, 0.65) 0%,
+                rgba(44, 133, 119, 0.65) 67.49714612960815%);
         color: #333;
         margin: 0;
     }
 
+
     .navbar {
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        width: 100%;
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 1rem 4rem;
         background-color: #245044;
+    }
+
+    .style-daftar,
+    .style-masuk {
+        border: none;
+        border-radius: 50px;
+        padding: 10px 24px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
     }
 
     .navbar ul {
@@ -70,6 +90,41 @@ if (isset($_SESSION['login'])) {
         border-bottom: 2px solid #A1D1B6;
     }
 
+    .navbar-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: white;
+    }
+
+    .navbar-info-dropdown {
+        position: absolute;
+        top: 80px;
+        right: 48px;
+        width: 220px;
+        display: block;
+        padding: 16px;
+        background-color: #005955;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .navbar-info-dropdown a {
+        display: block;
+        padding: 16px;
+    }
+
+    .navbar-info-dropdown iconify-icon {
+        font-size: 24px;
+    }
+
+    .navbar-info-dropdown .navbar-info-dropdown-content {
+        display: flex;
+        gap: 16px;
+    }
+
     .auth-buttons button {
         margin-left: 10px;
         padding: 0.5rem 1rem;
@@ -81,17 +136,23 @@ if (isset($_SESSION['login'])) {
         transition: background-color 0.3s ease, transform 0.3s ease;
     }
 
-    .auth-buttons button:hover {
-        background-color: #15A3A1;
+    .auth-buttons .style-daftar {
+        background-color: #128e8c;
+        padding: 0.5rem 1rem;
+    }
+
+    .auth-buttons .style-daftar:hover,
+    .style-masuk:hover {
+        background-color: #fff;
         transform: scale(1.05);
+        color: #15A3A1;
     }
 
     .main-content {
-        padding: 40px 20px;
+        padding: 120px 20px;
         text-align: center;
         padding-bottom: 0;
-        /* background: linear-gradient(to left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2)),
-                  linear-gradient(180deg, rgba(217, 217, 217, 0.65) 0%, rgba(44, 133, 119, 0.65) 67.5%); */
+
     }
 
     .main-content h1 {
@@ -195,7 +256,7 @@ if (isset($_SESSION['login'])) {
 
     .heart {
         font-size: 24px;
-        color: rgba(0, 0, 0, 0.3);
+        color: black;
         background: transparent;
         border: none;
         cursor: pointer;
@@ -306,101 +367,68 @@ if (isset($_SESSION['login'])) {
         display: none !important;
     }
 
-
-    
-.navbar {
-    position: fixed;
-    z-index: 9999;
-    top: 0;
-    left: 0;
-    width: 100%;
+    footer {
+    background-image: url('../../assets/img/footer.png');
+    background-size: cover;        
+    background-position: center;
+    color: #fff;
+    padding: 2rem 4rem;
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 1rem 4rem;
-    background-color: #245044;
 }
 
-.style-daftar, .style-masuk {
-    border: none;
-    border-radius: 50px;
-    padding: 10px 24px;
-    font-size: 16px;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.navbar ul {
+.footer-content {
     display: flex;
-    list-style: none;
-    gap: 30px;
+    justify-content: space-between;
+    width: 100%;
+}
+.footer-content .logo-section p {
+    padding-left: 10px;
+    margin-top: 10px;
 }
 
-.navbar ul li {
-    margin-left: 20px;
+.footer-logo {
+    width: 100px;
 }
 
-.navbar a {
+.links-section a {
     text-decoration: none;
     color: #fff;
     transition: color 0.3s ease, border-bottom 0.3s ease;
 }
 
-.navbar a:hover {
+.links-section a:hover {
     color: #A1D1B6;
     border-bottom: 2px solid #A1D1B6;
 }
 
-.navbar-info {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    color: white;
+.links-section ul {
+    list-style: none;
+    margin-top: 20px;
+    padding-left: 0;
 }
 
-.navbar-info-dropdown {
-    position: absolute;
-    top:80px;
-    right: 48px;
-    width: 220px;
-    display: block;
-    padding: 16px;
-    background-color: #005955;
+.links-section ul li {
+    margin: 20px 0;
 }
 
-.hide {
-    display: none;
+.contact-section p {
+    margin: 20px 0;
 }
 
-.navbar-info-dropdown a {
-    display: block;
-    padding: 16px;
+.contact-section i {
+    margin-right: 5px;
 }
 
-.navbar-info-dropdown iconify-icon {
-    font-size: 24px;
-}
-
-.navbar-info-dropdown .navbar-info-dropdown-content {
-    display: flex;
-    gap: 16px;
-}
-
-.auth-buttons button {
-    margin-left: 10px;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: 20px;
-    cursor: pointer;
-    background-color: #245044;
+.contact-section a {
+    text-decoration: none;        
     color: #fff;
-    transition: background-color 0.3s ease, transform 0.3s ease;
+    transition: color 0.3s ease; 
 }
 
-.auth-buttons button:hover {
-    background-color: #15A3A1;
-    transform: scale(1.05); 
+.contact-section a:hover {
+    color: #A1D1B6;
+    text-decoration: underline;
 }
 
     /* Responsive Design */
@@ -445,59 +473,53 @@ if (isset($_SESSION['login'])) {
     <!-- HEADER -->
     <header>
         <div class="navbar">
-             <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
+            <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
             <nav>
                 <ul>
-                    <li><a href="#">Beranda</a></li>
-                    <li><a href="#">Kursus</a></li>
                     <li><a href="../../index.php">Beranda</a></li>
-                        <li><a href="./course-list.php">Kursus</a></li>
-                    <li><a href="#">Cara Penggunaan</a></li>
+                    <li><a href="course-list.php">Kursus</a></li>
+                    <li><a href="../how-to-use.php">Cara Penggunaan</a></li>
                 </ul>
             </nav>
-            <div class="auth-buttons">
-                <button class="login">Masuk</button>
-                <button class="signup">Daftar</button>
-            </div>
             <?php if (isset($_SESSION['login'])): ?>
-                <div class="navbar-info">
-                    <p>Hai, <?= $_SESSION['user']['name'] ?></p>
-                    <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
-                    <p>0 Koin</p>
-                    <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
-                        <a href="pages/student/pro.php">
-                            <div class="navbar-info-dropdown-content">
-                                <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
-                                <span>Profil</span>
-                            </div>
-                        </a>
-                        <a href="../student/favourite-course.php">
-                            <div class="navbar-info-dropdown-content">
-                                <iconify-icon icon="weui:like-filled"></iconify-icon>
-                                <span>Wishlist</span>
-                            </div>
-                            
-                        </a>
-                        <a href="./pages/siswa/pengaturan_profil.php">
-                            <div class="navbar-info-dropdown-content">
-                                <iconify-icon icon="uil:setting"></iconify-icon>
-                                <span>Pengaturan</span>
-                            </div>
-                        </a>
-                        <a href="pages/logout.php">
-                            <div class="navbar-info-dropdown-content">
-                                <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
-                                <span>Keluar</span>
-                            </div>
-                        </a>
-                    </div>
+            <div class="navbar-info">
+                <p>Hai, <?= $_SESSION['user']['name'] ?></p>
+                <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
+                <p>0 Koin</p>
+                <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
+                    <a href="../student/kursus-course.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
+                            <span>Profil</span>
+                        </div>
+                    </a>
+                    <a href="../student/favourite-course.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="weui:like-filled"></iconify-icon>
+                            <span>Wishlist</span>
+                        </div>
+
+                    </a>
+                    <a href="../siswa/pengaturan_profil.php">
+                        <div class=" navbar-info-dropdown-content">
+                            <iconify-icon icon="uil:setting"></iconify-icon>
+                            <span>Pengaturan</span>
+                        </div>
+                    </a>
+                    <a href="../auth.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
+                            <span>Keluar</span>
+                        </div>
+                    </a>
                 </div>
-                
+            </div>
+
             <?php else: ?>
-                <div class="auth-buttons">
-                    <button class="style-daftar" onclick="location.href='pages/auth.php'">Daftar</button>
-                    <button class="style-masuk" onclick="location.href='pages/auth.php'">Masuk</button>
-                </div>
+            <div class="auth-buttons">
+                <button class="style-daftar" onclick="location.href='../auth.php'">Daftar</button>
+                <button class="style-masuk" onclick="location.href='../auth.php'">Masuk</button>
+            </div>
             <?php endif; ?>
         </div>
     </header>
@@ -521,7 +543,7 @@ if (isset($_SESSION['login'])) {
                 <div class="catalog-header">
                     <div class="catalog-title">HTML</div>
                     <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="fas fa-heart"></i>
+                        <i class="far fa-heart"></i>
                     </button>
                 </div>
                 <img class="course-image" src="assets/komputer.png" alt="Course Image">
@@ -536,7 +558,7 @@ if (isset($_SESSION['login'])) {
                 <div class="catalog-header">
                     <div class="catalog-title">CSS</div>
                     <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="fas fa-heart"></i>
+                        <i class="far fa-heart"></i>
                     </button>
                 </div>
                 <img class="course-image" src="assets/komputer.png" alt="Course Image">
@@ -551,7 +573,7 @@ if (isset($_SESSION['login'])) {
                 <div class="catalog-header">
                     <div class="catalog-title">Javascript</div>
                     <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="fas fa-heart"></i>
+                        <i class="far fa-heart"></i>
                     </button>
                 </div>
                 <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
@@ -566,7 +588,7 @@ if (isset($_SESSION['login'])) {
                 <div class="catalog-header">
                     <div class="catalog-title">PHP</div>
                     <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="fas fa-heart"></i>
+                        <i class="far fa-heart"></i>
                     </button>
                 </div>
                 <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
@@ -581,7 +603,7 @@ if (isset($_SESSION['login'])) {
                 <div class="catalog-header">
                     <div class="catalog-title">PHP</div>
                     <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="fas fa-heart"></i>
+                        <i class="far fa-heart"></i>
                     </button>
                 </div>
                 <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
@@ -596,7 +618,7 @@ if (isset($_SESSION['login'])) {
                 <div class="catalog-header">
                     <div class="catalog-title">PHP</div>
                     <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="fas fa-heart"></i>
+                        <i class="far fa-heart"></i>
                     </button>
                 </div>
                 <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
@@ -611,7 +633,7 @@ if (isset($_SESSION['login'])) {
                 <div class="catalog-header">
                     <div class="catalog-title">PHP</div>
                     <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="fas fa-heart"></i>
+                        <i class="far fa-heart"></i>
                     </button>
                 </div>
                 <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
@@ -622,12 +644,26 @@ if (isset($_SESSION['login'])) {
             </div>
 
             <!-- Catalog 8 -->
+            <div class="catalog">
+                <div class="catalog-header">
+                    <div class="catalog-title">PHP</div>
+                    <button class="heart" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
+                <div class="catalog-footer">
+                    <div class="koin">5 Koin</div>
+                    <button class="button-rental">Beli</button>
+                </div>
+            </div>
+
             <!-- Catalog 4 (Tersembunyi Awalnya) -->
             <div class="catalog hidden">
                 <div class="catalog-header">
                     <div class="catalog-title">PHP</div>
                     <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="fas fa-heart"></i>
+                        <i class="far fa-heart"></i>
                     </button>
                 </div>
                 <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
@@ -644,67 +680,58 @@ if (isset($_SESSION['login'])) {
         <button id="loadLess" style="display: none;">Tampilkan Lebih Sedikit</button>
     </div>
 
-
-    <button id="loadMore">Tampilkan Lebih Banyak</button>
-<!-- 
-    <script>
-    function toggleFavorite(button) {
-        button.classList.toggle('active');
-    }
-
-    // Fungsi untuk menampilkan lebih banyak katalog
-    document.getElementById('loadMore').addEventListener('click', function() {
-        const hiddenCatalogs = document.querySelectorAll('.catalog.hidden');
-        hiddenCatalogs.forEach((catalog) => {
-            catalog.classList.remove('hidden');
-        });
-        document.getElementById('loadLess').style.display =
-            'inline-block';
-        this.style.display = 'none';
-    });
-
-    // Fungsi untuk menampilkan lebih sedikit katalog
-    document.getElementById('loadLess').addEventListener('click', function() {
-        const catalogs = document.querySelectorAll('.catalog');
-        const maxVisible = 8;
-
-        catalogs.forEach((catalog, index) => {
-            if (index >= maxVisible) {
-                catalog.classList.add('hidden');
-            }
-        });
-
-        document.getElementById('loadMore').style.display =
-            'inline-block';
-        this.style.display = 'none';
-    });
-
-    // Fungsi pencarian katalog
-    document.getElementById("searchInput").addEventListener("input", function() {
-        const searchQuery = this.value.toLowerCase();
-        const catalogs = document.querySelectorAll(".catalog");
-
-        catalogs.forEach(catalog => {
-            const title = catalog.querySelector(".catalog-title").textContent.toLowerCase();
-            if (title.includes(searchQuery)) {
-                catalog.style.display = "block";
-            } else {
-                catalog.style.display = "none";
-            }
-        });
-    });
-    </script>
-    <style>
-    </script> -->
-    <!-- <style>
-    .hidden {
-        display: none;
-    }
-    </style>
-  <?php include '../../components/footer.php'; ?>
-    </style> -->
+    <footer>
+        <div class="footer-content">
+            <div class="logo-section">
+                <img src="../../assets/img/logo-django.png" alt="Logo" class="footer-logo">
+                <p>Bergabunglah bersama kami untuk menguasai<br> berbagai keahlian
+                    dibidang teknologi dan membuka<br>peluang karier di dunia teknologi
+                    yang terus berkembang.<br><br> Kami menyediakan kursus
+                    berkualitas yang membantu <br> kamu berkembang dari pemula
+                    hingga ahli.</p>
+                <div class="hak-cipta">
+                    <p>© 2024 Django Course. Semua hak cipta dilindungi.</p>
+                </div>
+            </div>
+            <div class="links-section">
+                <h3>Instruktur</h3>
+                <ul>
+                    <li><a href="#">Profil</a></li>
+                    <li><a href="#">Login</a></li>
+                    <li><a href="#">Register</a></li>
+                    <li><a href="#">Instructor</a></li>
+                    <li><a href="#">Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="links-section">
+                <h3>Siswa</h3>
+                <ul>
+                    <li><a href="#">Profil</a></li>
+                    <li><a href="#">Jelajahi Kursus</a></li>
+                    <li><a href="#">Wishlist Kursus</a></li>
+                    <li><a href="#">Student</a></li>
+                    <li><a href="#">Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="contact-section">
+                <h3>Alamat</h3>
+                <p>
+                    <i class="fas fa-map-marker-alt"></i> 
+                    <a href="https://www.google.com/maps?q=Jalan+Gubeng+Surabaya" target="_blank">Jalan Gubeng, Surabaya</a>
+                </p>
+                <p>
+                    <i class="fas fa-envelope"></i> 
+                    <a href="mailto:info@dingcourse.com">info@dingcourse.com</a>
+                </p>
+                <p>
+                    <i class="fas fa-phone-alt"></i> 
+                    <a href="tel:+62123456789">+62 123 456 789</a>
+                </p>
+            </div>
+            
+        </div>
+    </footer>
     <script src="./js/course-list.js"></script>
-    <?php include '../../components/footer.php'; ?>
 </body>
 
 </html>

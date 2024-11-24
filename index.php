@@ -1,7 +1,6 @@
 <?php
 
 session_start();
-var_dump($_SESSION);
 
 // temporary code
 if (isset($_SESSION['login'])) {
@@ -14,6 +13,7 @@ if (isset($_SESSION['login'])) {
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -21,10 +21,13 @@ if (isset($_SESSION['login'])) {
     <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
     <link rel="stylesheet" href="index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
-    <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Just+Another+Hand&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Just+Another+Hand&display=swap"
+        rel="stylesheet">
     <style>
     </style>
 </head>
+
 <body>
     <header>
         <div class="navbar">
@@ -33,48 +36,48 @@ if (isset($_SESSION['login'])) {
                 <ul>
                     <li><a href="index.php">Beranda</a></li>
                     <li><a href="pages/student/course-list.php">Kursus</a></li>
-                    <li><a href="#">Cara Penggunaan</a></li>
+                    <li><a href="pages/how-to-use.php">Cara Penggunaan</a></li>
                 </ul>
             </nav>
             <?php if (isset($_SESSION['login'])): ?>
-                <div class="navbar-info">
-                    <p>Hai, <?= $_SESSION['user']['name'] ?></p>
-                    <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
-                    <p>0 Koin</p>
-                    <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
-                        <a href="pages/student/pro.php">
-                            <div class="navbar-info-dropdown-content">
-                                <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
-                                <span>Profil</span>
-                            </div>
-                        </a>
-                        <a href="./pages/student/favourite-course.php">
-                            <div class="navbar-info-dropdown-content">
-                                <iconify-icon icon="weui:like-filled"></iconify-icon>
-                                <span>Wishlist</span>
-                            </div>
-                            
-                        </a>
-                        <a href="./pages/siswa/pengaturan_profil.php">
-                            <div class="navbar-info-dropdown-content">
-                                <iconify-icon icon="uil:setting"></iconify-icon>
-                                <span>Pengaturan</span>
-                            </div>
-                        </a>
-                        <a href="pages/logout.php">
-                            <div class="navbar-info-dropdown-content">
-                                <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
-                                <span>Keluar</span>
-                            </div>
-                        </a>
-                    </div>
+            <div class="navbar-info">
+                <p>Hai, <?= $_SESSION['user']['name'] ?></p>
+                <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
+                <p>0 Koin</p>
+                <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
+                    <a href="pages/student/profile.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
+                            <span>Profil</span>
+                        </div>
+                    </a>
+                    <a href="./pages/student/favourite-course.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="weui:like-filled"></iconify-icon>
+                            <span>Wishlist</span>
+                        </div>
+
+                    </a>
+                    <a href="./pages/student/setting.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="uil:setting"></iconify-icon>
+                            <span>Pengaturan</span>
+                        </div>
+                    </a>
+                    <a href="pages/logout.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
+                            <span>Keluar</span>
+                        </div>
+                    </a>
                 </div>
-                
+            </div>
+
             <?php else: ?>
-                <div class="auth-buttons">
-                    <button class="style-daftar" onclick="location.href='pages/auth.php'">Daftar</button>
-                    <button class="style-masuk" onclick="location.href='pages/auth.php'">Masuk</button>
-                </div>
+            <div class="auth-buttons">
+                <button class="style-daftar" onclick="location.href='pages/auth.php'">Daftar</button>
+                <button class="style-masuk" onclick="location.href='pages/auth.php'">Masuk</button>
+            </div>
             <?php endif; ?>
         </div>
     </header>
@@ -86,7 +89,7 @@ if (isset($_SESSION['login'])) {
             <div class="buttons">
                 <button class="filled">Cari Kursus</button>
                 <button class="outlined">Jelajahi</button>
-            </div>            
+            </div>
             <div class="trusted-by">
                 <p>Telah dipercaya oleh:</p>
             </div>
@@ -120,52 +123,65 @@ if (isset($_SESSION['login'])) {
             <span class="label">Siswa Aktif</span>
         </div>
     </section>
-    
+
     <section class="popular-courses">
         <h2>Kursus Terpopuler</h2>
         <p>Pelajari kursus dengan tingkat peminat tinggi belakangan ini</p>
         <div class="courses">
-            <div class="course-card">
-                <div class="header">
-                    <h3>HTML</h3>
-                    <i class="far fa-heart" style="color: #245044; font-size: 1.5rem; margin-bottom: 15px;" onclick="toggleHeart(this)"></i>
-                </div>                     
-                <img src="assets/img/html.png" alt="HTML">
-                <div class="buy">
-                    <p class="coins">5 Koin</p>
-                    <button>Beli</button>
+            <div class="catalog">
+                <div class="catalog-header">
+                    <div class="catalog-title">HTML</div>
+                    <button class="heart" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
+                </div>
+                <img class="course-image" src="assets/img/html.png" alt="Course Image">
+                <div class="catalog-footer">
+                    <div class="koin">5 Koin</div>
+                    <button class="button-rental">Beli</button>
                 </div>
             </div>
-            <div class="course-card">
-                <div class="header">
-                    <h3>CSS</h3>
-                    <i class="far fa-heart" style="color: #245044; font-size: 1.5rem; margin-bottom: 15px;" onclick="toggleHeart(this)"></i>
+            <div class="catalog">
+                <div class="catalog-header">
+                    <div class="catalog-title">HTML</div>
+                    <button class="heart" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
                 </div>
-                <img src="assets/img/css.png" alt="CSS">
-                <div class="buy">
-                    <p class="coins">5 Koin</p>
-                    <button>Beli</button>
+                <img class="course-image" src="assets/img/html.png" alt="Course Image">
+                <div class="catalog-footer">
+                    <div class="koin">5 Koin</div>
+                    <button class="button-rental">Beli</button>
                 </div>
             </div>
-            <div class="course-card">
-                <div class="header">
-                    <h3>Javascript</h3>
-                    <i class="far fa-heart" style="color: #245044; font-size: 1.5rem; margin-bottom: 15px;" onclick="toggleHeart(this)"></i>
+            <div class="catalog">
+                <div class="catalog-header">
+                    <div class="catalog-title">HTML</div>
+                    <button class="heart" onclick="toggleFavorite(this)">
+                        <i class="far fa-heart"></i>
+                    </button>
                 </div>
-                <img src="assets/img/js.png" alt="Javascript">
-                <div class="buy">
-                    <p class="coins">5 Koin</p>
-                    <button>Beli</button>
+                <img class="course-image" src="assets/img/html.png" alt="Course Image">
+                <div class="catalog-footer">
+                    <div class="koin">5 Koin</div>
+                    <button class="button-rental">Beli</button>
                 </div>
             </div>
         </div>
     </section>
-    
+
     <footer>
         <div class="footer-content">
             <div class="logo-section">
                 <img src="assets/img/logo-django.png" alt="Logo" class="footer-logo">
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit.</p>
+                <p>Bergabunglah bersama kami untuk menguasai<br> berbagai keahlian
+                    dibidang teknologi dan membuka<br>peluang karier di dunia teknologi
+                    yang terus berkembang.<br><br> Kami menyediakan kursus
+                    berkualitas yang membantu <br> kamu berkembang dari pemula
+                    hingga ahli.</p>
+                <div class="hak-cipta">
+                    <p>© 2024 Django Course. Semua hak cipta dilindungi.</p>
+                </div>
             </div>
             <div class="links-section">
                 <h3>Instruktur</h3>
@@ -190,28 +206,30 @@ if (isset($_SESSION['login'])) {
             <div class="contact-section">
                 <h3>Alamat</h3>
                 <p>
-                    <i class="fas fa-map-marker-alt"></i> 
-                    <a href="https://www.google.com/maps?q=Jalan+Gubeng+Surabaya" target="_blank">Jalan Gubeng, Surabaya</a>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <a href="https://www.google.com/maps?q=Jalan+Gubeng+Surabaya" target="_blank">Jalan Gubeng,
+                        Surabaya</a>
                 </p>
                 <p>
-                    <i class="fas fa-envelope"></i> 
-                    <a href="mailto:info@dingcourse.com">info@dingcourse.com</a>
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:info@djangourse.com">info@dingcourse.com</a>
                 </p>
                 <p>
-                    <i class="fas fa-phone-alt"></i> 
+                    <i class="fas fa-phone-alt"></i>
                     <a href="tel:+62123456789">+62 123 456 789</a>
                 </p>
             </div>
-            
+
         </div>
     </footer>
 </body>
 <script src="index.js"></script>
 <script>
-    function toggleHeart(element) {
-      element.classList.toggle('text-red-500');
-      element.classList.toggle('far');
-      element.classList.toggle('fas');
-    }
-   </script>
+function toggleHeart(element) {
+    element.classList.toggle('text-red-500');
+    element.classList.toggle('far');
+    element.classList.toggle('fas');
+}
+</script>
+
 </html>

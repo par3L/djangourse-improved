@@ -1,5 +1,4 @@
 <?php
-require "../../utils/database/connection.php";
 require "../../utils/database/helper.php";
 
 $sql = fetch("SELECT * FROM students JOIN credentials ON (students.credential_id = credentials.id)");
