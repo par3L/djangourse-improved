@@ -17,6 +17,83 @@ if (isset($_SESSION["login"])) {
     }
 }
 
+// Ambil kategori dari database
+$categories = fetch("SELECT * FROM course_categories");
+
+// Validasi $categories
+if (!isset($categories) || !is_array($categories)) {
+    $categories = [];
+}
+
+// Ambil kursus sesuai kategori
+$kategori = $_GET['kategori'] ?? null;
+$offset = intval($_GET['offset'] ?? 0);
+$limit = 4;
+
+$query = "SELECT c.*, cc.name AS category_name
+          FROM courses c
+          JOIN course_categories cc ON c.category_id = cc.id
+          WHERE c.status = 'Disetujui'";
+
+if ($kategori) {
+    $query .= " AND cc.name = '$kategori'";
+}
+
+$query .= " LIMIT $limit OFFSET $offset";
+$courses = fetch($query);
+
+// Tangani pembelian kursus
+$success_message = null;
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
+    $course_id = intval($_POST['course_id']);
+    $student_id = $_SESSION['user']['id']; // ID siswa dari session
+
+    // Ambil harga kursus
+    $course = fetch("SELECT price, name FROM courses WHERE id = '$course_id' AND status = 'Disetujui'");
+    if (empty($course)) {
+        die("Kursus tidak ditemukan atau belum disetujui.");
+    }
+    $price = floatval($course[0]['price'] / 1000); // Harga kursus dalam koin
+    $course_name = $course[0]['name'];
+
+    // Cek saldo koin siswa
+    $student = fetch("SELECT coin_balance FROM students WHERE id = '$student_id'");
+    if (empty($student)) {
+        die("Data siswa tidak ditemukan.");
+    }
+    $saldo_koin = intval($student[0]['coin_balance']);
+
+    // Debugging saldo dan harga
+    $log_message = "Saldo koin siswa: $saldo_koin, Harga kursus: $price";
+    error_log($log_message);
+
+    if ($saldo_koin < $price) {
+        die("Saldo koin Anda tidak mencukupi untuk membeli kursus ini.");
+    }
+
+    // Cek apakah kursus sudah dibeli
+    $existing_purchase = fetch("SELECT * FROM transactions WHERE student_id = '$student_id' AND course_id = '$course_id'");
+    if (!empty($existing_purchase)) {
+        die("Anda sudah membeli kursus ini.");
+    }
+
+    // Kurangi saldo koin siswa
+    $query_update_balance = "
+        UPDATE students
+        SET coin_balance = coin_balance - $price
+        WHERE id = '$student_id'";
+    execDML($query_update_balance);
+
+    // Catat pembelian di tabel transactions
+    $query_transaction = "
+        INSERT INTO transactions (student_id, course_id, price)
+        VALUES ('$student_id', '$course_id', '$price')";
+    execDML($query_transaction);
+
+    // Pesan sukses
+    $success_message = "Anda berhasil membeli kursus: $course_name.";
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -376,68 +453,69 @@ if (isset($_SESSION["login"])) {
     }
 
     footer {
-    background-image: url('../../assets/img/footer.png');
-    background-size: cover;        
-    background-position: center;
-    color: #fff;
-    padding: 2rem 4rem;
-    display: flex;
-    justify-content: space-between;
-}
+        background-image: url('../../assets/img/footer.png');
+        background-size: cover;
+        background-position: center;
+        color: #fff;
+        padding: 2rem 4rem;
+        display: flex;
+        justify-content: space-between;
+    }
 
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-.footer-content .logo-section p {
-    padding-left: 10px;
-    margin-top: 10px;
-}
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
 
-.footer-logo {
-    width: 100px;
-}
+    .footer-content .logo-section p {
+        padding-left: 10px;
+        margin-top: 10px;
+    }
 
-.links-section a {
-    text-decoration: none;
-    color: #fff;
-    transition: color 0.3s ease, border-bottom 0.3s ease;
-}
+    .footer-logo {
+        width: 100px;
+    }
 
-.links-section a:hover {
-    color: #A1D1B6;
-    border-bottom: 2px solid #A1D1B6;
-}
+    .links-section a {
+        text-decoration: none;
+        color: #fff;
+        transition: color 0.3s ease, border-bottom 0.3s ease;
+    }
 
-.links-section ul {
-    list-style: none;
-    margin-top: 20px;
-    padding-left: 0;
-}
+    .links-section a:hover {
+        color: #A1D1B6;
+        border-bottom: 2px solid #A1D1B6;
+    }
 
-.links-section ul li {
-    margin: 20px 0;
-}
+    .links-section ul {
+        list-style: none;
+        margin-top: 20px;
+        padding-left: 0;
+    }
 
-.contact-section p {
-    margin: 20px 0;
-}
+    .links-section ul li {
+        margin: 20px 0;
+    }
 
-.contact-section i {
-    margin-right: 5px;
-}
+    .contact-section p {
+        margin: 20px 0;
+    }
 
-.contact-section a {
-    text-decoration: none;        
-    color: #fff;
-    transition: color 0.3s ease; 
-}
+    .contact-section i {
+        margin-right: 5px;
+    }
 
-.contact-section a:hover {
-    color: #A1D1B6;
-    text-decoration: underline;
-}
+    .contact-section a {
+        text-decoration: none;
+        color: #fff;
+        transition: color 0.3s ease;
+    }
+
+    .contact-section a:hover {
+        color: #A1D1B6;
+        text-decoration: underline;
+    }
 
     /* Responsive Design */
     @media (max-width: 768px) {
@@ -522,20 +600,20 @@ if (isset($_SESSION["login"])) {
                     </a>
                 </div>
                 <?php elseif ($_SESSION['user']['role_id'] == 2): ?>
-                    <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
-                        <a href="../../pages/instructor/dashboard.php">
-                            <div class="navbar-info-dropdown-content">
-                                <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
-                                <span>Dasbor</span>
-                            </div>
-                        </a>
-                        <a href="../../pages/logout.php">
-                            <div class="navbar-info-dropdown-content">
-                                <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
-                                <span>Keluar</span>
-                            </div>
-                        </a>
-                    </div>
+                <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
+                    <a href="../../pages/instructor/dashboard.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
+                            <span>Dasbor</span>
+                        </div>
+                    </a>
+                    <a href="../../pages/logout.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
+                            <span>Keluar</span>
+                        </div>
+                    </a>
+                </div>
                 <?php endif; ?>
             </div>
 
@@ -547,161 +625,66 @@ if (isset($_SESSION["login"])) {
             <?php endif; ?>
         </div>
     </header>
-    <!-- pilihan -->
     <main class="main-content">
         <h1>Daftar Kursus</h1>
         <p>Pelajari semua kursus yang tersedia di Djangourse</p>
+        <?php if (isset($success_message)): ?>
+        <p style="color: green; text-align: center;"><?= $success_message ?></p>
+        <?php endif; ?>
         <div class="search-bar">
             <input placeholder="Cari..." type="text" id="searchInput" />
         </div>
+
         <div class="tabs">
-            <a class="web-development" href="#">Web Development</a>
-            <a class="mobile-development" href="#">Mobile Development</a>
-            <a class="soft-skills" href="#">Soft Skills</a>
-            <a class="i-os-development" href="#">iOS Development</a>
+            <?php if (!empty($categories)): ?>
+            <?php foreach ($categories as $category): ?>
+            <a href="#" class="tab <?= (isset($kategori) && $kategori === $category['name']) ? 'active' : '' ?>"
+                onclick="loadCourses('<?= htmlspecialchars($category['name']) ?>', true); return false;">
+                <?= htmlspecialchars($category['name']) ?>
+            </a>
+            <?php endforeach; ?>
+            <?php endif; ?>
         </div>
 
-        <div class="pilihan">
-            <!-- Catalog 1 -->
-            <div class="catalog">
-                <div class="catalog-header">
-                    <div class="catalog-title">HTML</div>
-                    <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="far fa-heart"></i>
-                    </button>
-                </div>
-                <img class="course-image" src="assets/komputer.png" alt="Course Image">
-                <div class="catalog-footer">
-                    <div class="koin">5 Koin</div>
-                    <button class="button-rental">Beli</button>
-                </div>
-            </div>
+        <?php if (!empty($courses)): ?>
+        
 
-            <!-- Catalog 2 -->
-            <div class="catalog">
+        <div class="pilihan" id="courses-container">
+            
+            <?php foreach ($courses as $course): ?>
+            <div class="catalog" data-category="<?= htmlspecialchars($course['category_name']) ?>">
                 <div class="catalog-header">
-                    <div class="catalog-title">CSS</div>
-                    <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="far fa-heart"></i>
-                    </button>
+                    <a href="../student/course-detail.php?id=<?= $course['id'] ?>" class="catalog-link">
+                        <div class="catalog-title"><?= htmlspecialchars($course['name']) ?></div>
+                    </a>
+                    <button class="heart"><i class="far fa-heart"></i></button>
                 </div>
-                <img class="course-image" src="assets/komputer.png" alt="Course Image">
+                <img class="course-image" src="<?= htmlspecialchars($course['thumbnail']) ?>" alt="Thumbnail Kursus">
                 <div class="catalog-footer">
-                    <div class="koin">5 Koin</div>
-                    <button class="button-rental">Beli</button>
+                    <div class="koin"><?= number_format($course['price'] / 1000, 0, ',', '.') ?> Koin</div>
+                    <form method="POST" action="course-list.php" style="display: inline;">
+                        <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
+                        <button type="submit" class="button-rental">Beli</button>
+                    </form>
                 </div>
             </div>
-
-            <!-- Catalog 3 -->
-            <div class="catalog">
-                <div class="catalog-header">
-                    <div class="catalog-title">Javascript</div>
-                    <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="far fa-heart"></i>
-                    </button>
-                </div>
-                <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
-                <div class="catalog-footer">
-                    <div class="koin">5 Koin</div>
-                    <button class="button-rental">Beli</button>
-                </div>
-            </div>
-
-            <!-- Catalog 4 -->
-            <div class="catalog">
-                <div class="catalog-header">
-                    <div class="catalog-title">PHP</div>
-                    <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="far fa-heart"></i>
-                    </button>
-                </div>
-                <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
-                <div class="catalog-footer">
-                    <div class="koin">5 Koin</div>
-                    <button class="button-rental">Beli</button>
-                </div>
-            </div>
-
-            <!-- Catalog 5 -->
-            <div class="catalog">
-                <div class="catalog-header">
-                    <div class="catalog-title">PHP</div>
-                    <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="far fa-heart"></i>
-                    </button>
-                </div>
-                <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
-                <div class="catalog-footer">
-                    <div class="koin">5 Koin</div>
-                    <button class="button-rental">Beli</button>
-                </div>
-            </div>
-
-            <!-- Catalog 6 -->
-            <div class="catalog">
-                <div class="catalog-header">
-                    <div class="catalog-title">PHP</div>
-                    <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="far fa-heart"></i>
-                    </button>
-                </div>
-                <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
-                <div class="catalog-footer">
-                    <div class="koin">5 Koin</div>
-                    <button class="button-rental">Beli</button>
-                </div>
-            </div>
-
-            <!-- Catalog 7 -->
-            <div class="catalog">
-                <div class="catalog-header">
-                    <div class="catalog-title">PHP</div>
-                    <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="far fa-heart"></i>
-                    </button>
-                </div>
-                <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
-                <div class="catalog-footer">
-                    <div class="koin">5 Koin</div>
-                    <button class="button-rental">Beli</button>
-                </div>
-            </div>
-
-            <!-- Catalog 8 -->
-            <div class="catalog">
-                <div class="catalog-header">
-                    <div class="catalog-title">PHP</div>
-                    <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="far fa-heart"></i>
-                    </button>
-                </div>
-                <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
-                <div class="catalog-footer">
-                    <div class="koin">5 Koin</div>
-                    <button class="button-rental">Beli</button>
-                </div>
-            </div>
-
-            <!-- Catalog 4 (Tersembunyi Awalnya) -->
-            <div class="catalog hidden">
-                <div class="catalog-header">
-                    <div class="catalog-title">PHP</div>
-                    <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="far fa-heart"></i>
-                    </button>
-                </div>
-                <img class="course-image" src="assets/layarhitam-jpg0.png" alt="Course Image">
-                <div class="catalog-footer">
-                    <div class="koin">5 Koin</div>
-                    <button class="button-rental">Beli</button>
-                </div>
-            </div>
+            <?php endforeach; ?>
+        </div>
+        <?php else: ?>
+            <p style="height: 300px;">Belum ada kursus yang tersedia.</p>
+        <?php endif; ?>
     </main>
 
     <!-- Tombol untuk Tampilkan Lebih Banyak -->
     <div class="controls">
-        <button id="loadMore">Tampilkan Lebih Banyak</button>
-        <button id="loadLess" style="display: none;">Tampilkan Lebih Sedikit</button>
+        <?php if (count($courses) === $limit): ?>
+        <a href="?kategori=<?= urlencode($kategori) ?>&offset=<?= $offset + $limit ?>" id="loadMore">Tampilkan Lebih
+            Banyak</a>
+        <?php endif; ?>
+        <?php if ($offset > 0): ?>
+        <a href="?kategori=<?= urlencode($kategori) ?>&offset=<?= max($offset - $limit, 0) ?>" id="loadLess">Tampilkan
+            Lebih Sedikit</a>
+        <?php endif; ?>
     </div>
 
     <footer>
@@ -740,19 +723,20 @@ if (isset($_SESSION["login"])) {
             <div class="contact-section">
                 <h3>Alamat</h3>
                 <p>
-                    <i class="fas fa-map-marker-alt"></i> 
-                    <a href="https://www.google.com/maps?q=Jalan+Gubeng+Surabaya" target="_blank">Jalan Gubeng, Surabaya</a>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <a href="https://www.google.com/maps?q=Jalan+Gubeng+Surabaya" target="_blank">Jalan Gubeng,
+                        Surabaya</a>
                 </p>
                 <p>
-                    <i class="fas fa-envelope"></i> 
+                    <i class="fas fa-envelope"></i>
                     <a href="mailto:info@dingcourse.com">info@dingcourse.com</a>
                 </p>
                 <p>
-                    <i class="fas fa-phone-alt"></i> 
+                    <i class="fas fa-phone-alt"></i>
                     <a href="tel:+62123456789">+62 123 456 789</a>
                 </p>
             </div>
-            
+
         </div>
     </footer>
     <script src="./js/course-list.js"></script>

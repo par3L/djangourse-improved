@@ -192,7 +192,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     /* Bagian isi utama */
     .main-content {
         text-align: center;
-        padding: 40px;
+        padding: 70px;
         margin-top: 90px;
     }
 

@@ -408,7 +408,7 @@ body {
                 </p>
                 <p>
                     <i class="fas fa-envelope"></i>
-                    <a href="mailto:info@djangourse.com">info@dingcourse.com</a>
+                    <a href="mailto:info@djangourse.com">info@djangourse.com</a>
                 </p>
                 <p>
                     <i class="fas fa-phone-alt"></i>

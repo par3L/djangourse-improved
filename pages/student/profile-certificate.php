@@ -156,7 +156,7 @@ header .user-info img {
 .profile-container {
     display: flex;
     align-items: center;
-    padding: 20px;
+    padding: 20px 70px;
 }
 
 .profile-container img {
@@ -174,7 +174,7 @@ header .user-info img {
     font-size: 37px;
     letter-spacing: 0.5px;
     font-weight: 500;
-    margin-left: 50px;
+    margin-left: 32px;
 }
 
 .tabs-section {
