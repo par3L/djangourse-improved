@@ -1,27 +1,37 @@
 <?php
-
-require '../../utils/database/helper.php';
-
 session_start();
+include '../../utils/database/helper.php';
+include '../../utils/middleware.php';
 
-$instructorId = $_SESSION['user']['id'];
-$instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
+ensureAuthenticated();
+ensureRole(2);
 
+$user_id = $_SESSION['user']['id']; // ID instruktur dari sesi pengguna
+
+// Query untuk mengambil kursus berdasarkan ID instruktur
+$query = "SELECT id, name, thumbnail, status, price FROM courses WHERE instructor_id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param("i", $user_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$instructor = fetch("SELECT * FROM instructors WHERE id = $user_id")[0];
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Instructor View - Dashboard</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Instructor Dashboard</title>
     <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
-    <link rel="shortcut icon" href="../../assets/img/django-3.png" type="image/x-icon">
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
     /* Global Styles */
+
     * {
         margin: 0;
         padding: 0;
@@ -42,6 +52,7 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
             "navbar navbar"
             "sidebar main";
         width: 100%;
+        min-height: 100vh;
     }
 
     @media (max-width: 768px) {
@@ -134,14 +145,12 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
 
     /* Sidebar */
     .sidebar {
-        margin-top: 20px;
         grid-area: sidebar;
         background-color: #ffffff;
         padding: 20px;
         border-right: 1px solid #ddd;
-        position: sticky;
-        top: 0;
-        overflow-y: auto;
+        transition: all 0.3s ease-in-out;
+        margin-top: 20px;
     }
 
     .sidebar .profile {
@@ -183,22 +192,17 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
 
     .sidebar .add-course:hover {
         background-color: #2C8577;
-        color: white;
     }
 
     .sidebar .menu ul {
         list-style: none;
         padding: 0;
-        margin: 0;
     }
 
     .sidebar .menu ul .section-title {
         font-weight: bold;
-        color: #333;
         font-size: 14px;
-        margin: 15px 0 10px 0;
-        text-transform: uppercase;
-        letter-spacing: 1px;
+        margin: 15px 0 10px;
     }
 
     .sidebar .menu ul li a {
@@ -206,11 +210,11 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
         align-items: center;
         gap: 10px;
         text-decoration: none;
-        color: #333;
         font-size: 14px;
         padding: 10px 15px;
         border-radius: 5px;
-        transition: background-color 0.3s ease, color 0.3s ease;
+        transition: all 0.3s ease-in-out;
+        color: #333;
     }
 
     .sidebar .menu ul li a.active {
@@ -223,22 +227,14 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
         color: white;
     }
 
-    .sidebar .menu ul li a i {
-        font-size: 16px;
-        color: #888;
-        transition: color 0.3s ease;
-    }
-
-    .sidebar .menu ul li a:hover i {
-        color: white;
-    }
-
     /* Main Content */
     .main-content {
         grid-area: main;
         padding: 20px;
         margin-top: 20px;
         overflow-y: auto;
+        /* Membuat konten utama dapat di-scroll */
+        height: calc(100vh - 60px);
     }
 
     .main-content .judul {
@@ -260,166 +256,99 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
         color: #fff;
     }
 
-
-    .right-content {
-        margin: 0 0 0 20px;
-        width: 80%;
-    }
-
-    .header {
+    .body-content {
         display: flex;
         flex-direction: column;
         gap: 20px;
+        align-items: flex-start;
     }
 
-    .header h2 {
-        color: white;
-    }
-
-    .header h3 {
-        color: grey;
-    }
-
-    .icons {
-        padding-top: 3rem;
-    }
-
-    .icons .icon-btn {
-        background: none;
-        border: none;
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+    .course-list {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 20px;
         padding: 10px;
-        transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+        margin: 0 auto;
+        overflow: hidden;
     }
 
-    .icons .upload-icon,
-    .icons .trash-icon {
-        font-size: 2.5rem;
-        color: #216C68;
-        transition: color 0.3s, transform 0.3s;
+
+    .content-card {
+        max-width: 100%;
+        overflow: hidden;
+        word-wrap: break-word;
+        box-sizing: border-box;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 15px;
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
     }
 
-    .icons .icon-btn:hover .upload-icon,
-    .icons .icon-btn:hover .trash-icon {
-        color: #1A534E;
-        transform: scale(1.2);
+    .content-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
     }
 
-    .icons .icon-btn:active .upload-icon,
-    .icons .icon-btn:active .trash-icon {
-        transform: scale(1);
+    .content-header {
+        font-size: 1.5rem;
+        font-weight: bold;
+        margin-bottom: 10px;
     }
 
-    .content {
-        background-color: white;
-        display: flex;
-        gap: 5rem;
-        padding: 2rem;
-        /* border-style: solid;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: grey;
-    border-width: 1px; */
+    .course-image {
+        width: 100%;
+        height: 150px;
+        object-fit: cover;
+        border-radius: 8px;
     }
 
-    .img img {
-        width: 200px;
-        padding: 1rem;
-    }
+    /* .img img {
+        justify-content: center;
+        width: 240px;
+        border-radius: 10px;
+        max-width: 300px;
+        height: 250px;
+        margin-bottom: 10px;
+    } */
 
-    .right-hand {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .icons {
-        display: flex;
-        gap: 3rem;
-    }
-
-    .edit-section {
-        background-color: white;
-        padding: 0rem 2rem 2rem 2rem;
-        border-top: lightgray;
-        border-width: 1px;
-        border-style: solid;
-        border-bottom: none;
-        border-right: none;
-        border-left: none;
-    }
-
-    .edit-header {
-        padding: 3rem;
-    }
-
-    .form {
-        padding: 3rem;
-    }
-
-    .form-row {
+    .content-end {
+        margin-top: 10px;
         display: flex;
         justify-content: space-between;
-        gap: 20px;
-        margin-bottom: 2rem;
     }
 
-    .half-width {
-        flex: 1;
+    .content-end a {
+        margin-right: 10px;
+        color: rgba(33, 108, 104, 1);
+        text-decoration: none;
     }
 
-    .half-width input {
-        width: 95%;
-    }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .form-group label {
-        font-size: 16px;
-        color: #333;
-        margin-bottom: 5px;
-    }
-
-    .form-group input,
-    .form-group textarea {
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
+    .sunting,
+    .hapus {
+        text-decoration: none;
+        color: rgba(33, 108, 104, 1);
         font-size: 14px;
-        background-color: #C9C9C9;
+        transition: color 0.3s ease;
     }
 
-    textarea {
-        resize: none;
+    .sunting:hover,
+    .hapus:hover {
+        color: #0056b3;
     }
 
-    .end {
-        margin-top: 2rem;
+    .content-end a:hover {
+        text-decoration: underline;
     }
 
-    .submit-btn {
-        background-color: #216C68;
-        color: white;
-        border: none;
-        padding: 10px 20px;
+
+    .alert-success {
+        background-color: #d4edda;
+        color: #155724;
+        padding: 10px;
         border-radius: 5px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: all 0.3s;
-    }
-
-    .submit-btn:hover {
-        background-color: #1A534E;
-    }
-
-    .submit-btn:active {
-        background-color: #143E3B;
+        margin-bottom: 20px;
     }
 
     .navbar-info-dropdown {
@@ -521,7 +450,8 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
 
 <body>
     <div class="container">
-    <header class="navbar">
+        <!-- Navbar -->
+        <header class="navbar">
             <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="width: 110px;">
             <nav>
                 <ul id="navbar-menu">
@@ -555,6 +485,8 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
             </div>
             <div class="hamburger" onclick="toggleSidebar()">&#9776;</div>
         </header>
+
+        <!-- Sidebar -->
         <aside class="sidebar">
             <div class="profile">
                 <img id="profile-pic"
@@ -567,61 +499,70 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
             <div class="menu">
                 <ul>
                     <li class="section-title">Dasbor</li>
-                    <li><a href="./dashboard.php"><i class="fas fa-tachometer-alt"></i> Dasbor</a></li>
-                    <li><a href="./profile.php"><i class="fas fa-user"></i> Profil Saya</a></li>
+                    <li><a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dasbor</a></li>
+                    <li><a href="profile.php"><i class="fas fa-user"></i> Profil Saya</a></li>
                     <li class="section-title">Pengajar</li>
-                    <li><a href="./my-courses.php"><i class="fas fa-chalkboard-teacher"></i> Kursus Saya</a></li>
+                    <li><a href="my-courses.php" class="active"><i class="fas fa-chalkboard-teacher" style="color: white;"></i> Kursus Saya</a></li>
                     <li><a href="withdrawal-record.php"><i class="fas fa-wallet"></i> Tarik Saldo</a></li>
                     <li class="section-title">Pengaturan Akun</li>
                     <li><a href="./edit-profile.php"><i class="fas fa-cogs"></i> Edit Profil</a></li>
-                    <li><a href="./change-password.php" class="active"><i class="fas fa-key" style="color: white;"></i> Ubah Kata Sandi</a></li>
+                    <li><a href="./change-password.php"><i class="fas fa-key"></i> Ubah Kata Sandi</a></li>
                     <li><a href="./withdrawal-setting.php"><i class="fas fa-money-bill-wave"></i> Penarikan</a></li>
                     <li><a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
                 </ul>
             </div>
         </aside>
+
+        <!-- Main Content -->
         <main class="main-content">
             <div class="judul">
-                <h1>Ubah Kata Sandi</h1>
-                <span class="breadcrumb">Beranda > Ubah Kata Sandi</span>
+                <h1>Kursus Saya</h1>
+                <span class="breadcrumb">Beranda > Kursus Saya</span>
             </div>
-            <div class="header">
-                <h3>Ubah Kata Sandi</h3>
+
+            <?php if (isset($_GET['message']) && $_GET['message'] === 'deleted' && $_SERVER['REQUEST_METHOD'] === 'GET'): ?>
+            <div class="alert alert-success">
+                Kursus berhasil dihapus.
             </div>
-            <div class="edit-section">
-                <div class="form">
-                    <form>
-                        <div class="form-row">
-                            <div class="form-group half-width">
-                                <label for="password">Kata Sandi Saat Ini</label>
-                                <input type="password" id="oldpassword" />
-                            </div>
-                        </div>
+            <?php endif; ?>
 
-                        <div class="form-row">
-                            <div class="form-group half-width">
-                                <label for="password">Kata Sandi Baru</label>
-                                <input type="password" id="newpassword" />
-                            </div>
-                        </div>
+            <div class="body-content">
+                <h2>Daftar Kursus</h2>
+                <?php if ($result->num_rows > 0): ?>
+                <div class="course-list">
 
-                        <div class="form-row">
-                            <div class="form-group half-width">
-                                <label for="password">Konfirmasi Kata Sandi Baru</label>
-                                <input type="password" id="confirmation" />
-                            </div>
+                    <?php while ($row = $result->fetch_assoc()): ?>
+                    <div class="content-card">
+                        <div class="content-header"><?= htmlspecialchars($row['name']) ?></div>
+                        <div class="img">
+                            <?php if (!empty($row['thumbnail']) && file_exists(__DIR__ . '/' . $row['thumbnail'])): ?>
+                            <img class="course-image" src="<?= htmlspecialchars($row['thumbnail']) ?>"
+                                alt="Thumbnail Kursus">
+                            <?php else: ?>
+                            <img class="course-image" src="https://via.placeholder.com/150" alt="Gambar Tidak Ada">
+                            <?php endif; ?>
                         </div>
-
-                        <!-- Submit Button -->
-                        <div class="end">
-                            <button type="submit" class="submit-btn">Ubah Kata Sandi</button>
+                        <div>
+                            <p>Status: <strong><?= htmlspecialchars($row['status']) ?></strong></p>
+                            <p>Harga: <strong>Rp <?= number_format($row['price'], 0, ',', '.') ?></strong></p>
                         </div>
-                    </form>
+                        <div class="content-end">
+                            <a href="./editcourse.php?id=<?= $row['id'] ?>" class="sunting"><i class="far fa-edit"></i>
+                                Sunting</a>
+                            <a href="./deletecourse.php?id=<?= $row['id'] ?>" class="hapus"
+                                onclick="return confirm('Apakah Anda yakin ingin menghapus kursus ini?');">
+                                <i class="fas fa-trash"></i> Hapus
+                            </a>
+                        </div>
+                    </div>
+                    <?php endwhile; ?>
                 </div>
+                <?php else: ?>
+                <p style="text-align: center; font-size: 18px; color: #888;">Tidak ada kursus ditemukan.</p>
+                <?php endif; ?>
             </div>
         </main>
     </div>
-
     <footer>
         <div class="footer-content">
             <div class="logo-section">
@@ -674,6 +615,18 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
 
         </div>
     </footer>
+    <script>
+    function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        sidebar.classList.toggle('open');
+    }
+
+    const url = new URL(window.location.href);
+    if (url.searchParams.get('message') === 'deleted') {
+        url.searchParams.delete('message');
+        window.history.replaceState(null, null, url.toString());
+    }
+    </script>
     <script src="../../navbar.js"></script>
 </body>
 

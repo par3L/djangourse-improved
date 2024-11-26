@@ -5,7 +5,10 @@ require '../../utils/database/helper.php';
 session_start();
 
 $instructorId = $_SESSION['user']['id'];
-$instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
+$instructor = fetch(
+    "SELECT instructors.name, credentials.email, instructors.phone_number FROM instructors
+    JOIN credentials ON instructors.credential_id = credentials.id
+    WHERE instructors.id = $instructorId")[0];
 
 ?>
 
@@ -42,6 +45,7 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
             "navbar navbar"
             "sidebar main";
         width: 100%;
+        min-height: 100vh;
     }
 
     @media (max-width: 768px) {
@@ -134,14 +138,12 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
 
     /* Sidebar */
     .sidebar {
-        margin-top: 20px;
         grid-area: sidebar;
         background-color: #ffffff;
         padding: 20px;
         border-right: 1px solid #ddd;
-        position: sticky;
-        top: 0;
-        overflow-y: auto;
+        transition: all 0.3s ease-in-out;
+        margin-top: 20px;
     }
 
     .sidebar .profile {
@@ -238,7 +240,6 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
         grid-area: main;
         padding: 20px;
         margin-top: 20px;
-        overflow-y: auto;
     }
 
     .main-content .judul {
@@ -261,133 +262,83 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
     }
 
 
-    .right-content {
-        margin: 0 0 0 20px;
-        width: 80%;
+    .wrapper {
+        background-color: transparent;
+        padding: 3rem;
+        border: 2px solid #C9C9C9;
+        border-radius: 10px;
     }
 
-    .header {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
+
+    .withdraw.withdrawal-options {
+        background-color: #C9C9C9;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        margin-bottom: 20px;
     }
 
-    .header h2 {
-        color: white;
+    .withdrawal-options h1 {
+        color: #216C68;
+        margin-bottom: 20px;
     }
 
-    .header h3 {
-        color: grey;
-    }
-
-    .icons {
-        padding-top: 3rem;
-    }
-
-    .icons .icon-btn {
-        background: none;
-        border: none;
-        cursor: pointer;
+    .method {
         display: flex;
         align-items: center;
-        justify-content: center;
         padding: 10px;
-        transition: transform 0.2s ease-in-out, color 0.2s ease-in-out;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        margin-bottom: 15px;
+        cursor: pointer;
+        transition: all 0.3s ease-in-out;
     }
 
-    .icons .upload-icon,
-    .icons .trash-icon {
-        font-size: 2.5rem;
-        color: #216C68;
-        transition: color 0.3s, transform 0.3s;
+    .method:hover {
+        background-color: #f8f9fa;
     }
 
-    .icons .icon-btn:hover .upload-icon,
-    .icons .icon-btn:hover .trash-icon {
-        color: #1A534E;
-        transform: scale(1.2);
+    .method input[type="radio"] {
+        margin-right: 10px;
+        accent-color: #216C68;
+        background-color: #C9C9C9;
     }
 
-    .icons .icon-btn:active .upload-icon,
-    .icons .icon-btn:active .trash-icon {
-        transform: scale(1);
-    }
-
-    .content {
-        background-color: white;
-        display: flex;
-        gap: 5rem;
-        padding: 2rem;
-        /* border-style: solid;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: grey;
-    border-width: 1px; */
-    }
-
-    .img img {
-        width: 200px;
-        padding: 1rem;
-    }
-
-    .right-hand {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .icons {
-        display: flex;
-        gap: 3rem;
-    }
-
-    .edit-section {
-        background-color: white;
-        padding: 0rem 2rem 2rem 2rem;
-        border-top: lightgray;
-        border-width: 1px;
-        border-style: solid;
-        border-bottom: none;
-        border-right: none;
-        border-left: none;
-    }
-
-    .edit-header {
-        padding: 3rem;
-    }
-
-    .form {
-        padding: 3rem;
-    }
-
-    .form-row {
-        display: flex;
-        justify-content: space-between;
-        gap: 20px;
-        margin-bottom: 2rem;
-    }
-
-    .half-width {
-        flex: 1;
-    }
-
-    .half-width input {
-        width: 95%;
-    }
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-    }
-
-    .form-group label {
+    .method span {
         font-size: 16px;
         color: #333;
+    }
+
+    .withdrawal-form {
+        background-color: #ffffff;
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .withdrawal-form p {
+        margin-top: 10px;
+        font-size: 14px;
+        color: #666;
         margin-bottom: 5px;
     }
 
-    .form-group input,
-    .form-group textarea {
+    .hidden {
+        display: none;
+    }
+
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    .form-group label {
+        display: block;
+        margin-bottom: 5px;
+        color: #333;
+    }
+
+    .form-group input {
+        width: 100%;
         padding: 10px;
         border: 1px solid #ccc;
         border-radius: 5px;
@@ -395,31 +346,19 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
         background-color: #C9C9C9;
     }
 
-    textarea {
-        resize: none;
-    }
-
-    .end {
-        margin-top: 2rem;
-    }
-
     .submit-btn {
-        background-color: #216C68;
-        color: white;
+        background-color: rgba(89, 162, 164, 1);
+        color: #fff;
         border: none;
         padding: 10px 20px;
         border-radius: 5px;
         font-size: 16px;
         cursor: pointer;
-        transition: all 0.3s;
+        transition: background-color 0.3s ease-in-out;
     }
 
     .submit-btn:hover {
         background-color: #1A534E;
-    }
-
-    .submit-btn:active {
-        background-color: #143E3B;
     }
 
     .navbar-info-dropdown {
@@ -568,60 +507,62 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
                 <ul>
                     <li class="section-title">Dasbor</li>
                     <li><a href="./dashboard.php"><i class="fas fa-tachometer-alt"></i> Dasbor</a></li>
-                    <li><a href="./profile.php"><i class="fas fa-user"></i> Profil Saya</a></li>
+                    <li><a href="./myprofile.php"><i class="fas fa-user"></i> Profil Saya</a></li>
                     <li class="section-title">Pengajar</li>
-                    <li><a href="./my-courses.php"><i class="fas fa-chalkboard-teacher"></i> Kursus Saya</a></li>
-                    <li><a href="withdrawal-record.php"><i class="fas fa-wallet"></i> Tarik Saldo</a></li>
+                    <li><a href="#"><i class="fas fa-chalkboard-teacher"></i> Kursus Saya</a></li>
+                    <li><a href="#"><i class="fas fa-wallet"></i> Tarik Saldo</a></li>
                     <li class="section-title">Pengaturan Akun</li>
-                    <li><a href="./edit-profile.php"><i class="fas fa-cogs"></i> Edit Profil</a></li>
-                    <li><a href="./change-password.php" class="active"><i class="fas fa-key" style="color: white;"></i> Ubah Kata Sandi</a></li>
-                    <li><a href="./withdrawal-setting.php"><i class="fas fa-money-bill-wave"></i> Penarikan</a></li>
-                    <li><a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+                    <li><a href="./editprofile.php"><i class="fas fa-cogs"></i> Edit Profil</a></li>
+                    <li><a href="./change-password.php"><i class="fas fa-key"></i> Ubah Kata Sandi</a></li>
+                    <li><a href="./withdrawal.php" class="active"><i class="fas fa-money-bill-wave" style="color: white;"></i> Penarikan</a></li>
+                    <li><a href="#"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
                 </ul>
             </div>
         </aside>
         <main class="main-content">
             <div class="judul">
-                <h1>Ubah Kata Sandi</h1>
-                <span class="breadcrumb">Beranda > Ubah Kata Sandi</span>
+                <h1>Penarikan</h1>
+                <span class="breadcrumb">Beranda > Penarikan</span>
             </div>
-            <div class="header">
-                <h3>Ubah Kata Sandi</h3>
-            </div>
-            <div class="edit-section">
-                <div class="form">
-                    <form>
-                        <div class="form-row">
-                            <div class="form-group half-width">
-                                <label for="password">Kata Sandi Saat Ini</label>
-                                <input type="password" id="oldpassword" />
-                            </div>
+            <div class="wrapper">
+                <div class="withdrawal-options">
+                    <h1>Pilih Metode Penarikan</h1>
+                    <div class="method">
+                        <label>
+                            <input type="radio" name="withdrawal-method" value="paypal" class="withdrawal-radio" />
+                            <span>Pembayaran PayPal</span>
+                        </label>
+                    </div>
+                    <div class="method">
+                        <label>
+                            <input type="radio" name="withdrawal-method" value="dana" class="withdrawal-radio" />
+                            <span>Dana</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="form-container">
+                    <form id="paypal-form" class="withdrawal-form hidden">
+                        <div class="form-group">
+                            <label for="paypal-email">Surel</label>
+                            <input type="email" id="paypal-email" name="paypal-email"
+                                placeholder="Masukkan email PayPal Anda" value="<?= $instructor['email'] ?>" required />
                         </div>
-
-                        <div class="form-row">
-                            <div class="form-group half-width">
-                                <label for="password">Kata Sandi Baru</label>
-                                <input type="password" id="newpassword" />
-                            </div>
+                        <p>Kami akan menggunakan alamat email ini untuk mengirimkan uang ke akun PayPal Anda.</p>
+                        <button type="submit" class="submit-btn">Simpan Akun Penarikan</button>
+                    </form>
+                    <form id="dana-form" class="withdrawal-form hidden">
+                        <div class="form-group">
+                            <label for="dana-number">Nomor DANA</label>
+                            <input type="text" id="dana-number" name="dana-number"
+                                placeholder="Masukkan nomor DANA Anda" value="<?= $instructor['phone_number'] ?>" required />
                         </div>
-
-                        <div class="form-row">
-                            <div class="form-group half-width">
-                                <label for="password">Konfirmasi Kata Sandi Baru</label>
-                                <input type="password" id="confirmation" />
-                            </div>
-                        </div>
-
-                        <!-- Submit Button -->
-                        <div class="end">
-                            <button type="submit" class="submit-btn">Ubah Kata Sandi</button>
-                        </div>
+                        <p>Kami akan menggunakan nomor ini untuk mengirimkan uang ke akun DANA Anda.</p>
+                        <button type="submit" class="submit-btn">Simpan Akun Penarikan</button>
                     </form>
                 </div>
             </div>
         </main>
     </div>
-
     <footer>
         <div class="footer-content">
             <div class="logo-section">
@@ -674,6 +615,23 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
 
         </div>
     </footer>
+    <script>
+    const withdrawalOptions = document.querySelectorAll('input[name="withdrawal-method"]');
+    const paypalForm = document.getElementById("paypal-form");
+    const danaForm = document.getElementById("dana-form");
+
+    withdrawalOptions.forEach((option) => {
+        option.addEventListener("change", (event) => {
+            if (event.target.value === "paypal") {
+                paypalForm.classList.remove("hidden");
+                danaForm.classList.add("hidden");
+            } else if (event.target.value === "dana") {
+                danaForm.classList.remove("hidden");
+                paypalForm.classList.add("hidden");
+            }
+        });
+    });
+    </script>
     <script src="../../navbar.js"></script>
 </body>
 

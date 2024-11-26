@@ -34,7 +34,6 @@ if (isset($_SESSION['login'])) {
         padding: 0;
     }
 
-
     body {
         margin: 0;
         font-family: "poppins", sans-serif;
@@ -44,6 +43,7 @@ if (isset($_SESSION['login'])) {
         padding: 0;
         overflow-x: hidden;
         /* padding-top: 100px; */
+        background: linear-gradient(to right, #e0f3f5, #c1dcd6);
 
     }
 
@@ -71,10 +71,11 @@ if (isset($_SESSION['login'])) {
 
     .box_setting {
         position: absolute;
-        width: 902px;
+        width: 920px;
         height: 440px;
         left: 292px;
         top: 150px;
+        padding:16px;
         flex: none;
         order: 3;
         flex-grow: 0;
@@ -200,6 +201,10 @@ if (isset($_SESSION['login'])) {
         margin: 4px;
         font-weight: bold;
         color: black;
+    }
+
+    .pengaturan_setting iconify-icon {
+        font-size: 20px;
     }
 
     .pengaturan_setting ul li.active {
@@ -441,7 +446,7 @@ if (isset($_SESSION['login'])) {
         color: #fff;
         border-radius: 8px;
         margin-top: 20px;
-        margin-left: 710px;
+        margin-left: 680px;
         background: #245044;
         padding: 12px 20px;
         gap: 10px;
@@ -826,8 +831,8 @@ if (isset($_SESSION['login'])) {
         <div class="pengaturan_setting">
             <h3>Pengaturan</h3>
             <ul>
-                <li><img src="asset/akun.png"><a href="pengaturan_profil.php">Profil</a></li>
-                <li class="active"><img src="asset/kuncihytam.png">Kata Sandi</li>
+                <li><iconify-icon icon="gg:profile"></iconify-icon><a href="setting.php">Profil</a></li>
+                <li class="active"><iconify-icon icon="icon-park-outline:keyhole"></iconify-icon>Kata Sandi</li>
             </ul>
         </div>
         <div class="content">
@@ -835,16 +840,16 @@ if (isset($_SESSION['login'])) {
                 <h2>Ubah Kata Sandi</h2>
                 <form>
                     <div class="form-group-nama">
-                        <label for="nama">Kata Sandi Lama</label>
-                        <input type="password" id="nama" placeholder="Masukkan sandi lama">
+                        <label for="nama">Kata Sandi Saat Ini</label>
+                        <input type="password" name="current-password" id="current-password" placeholder="Masukkan kata sandi saat ini">
                     </div>
                     <div class="form-group-nama">
                         <label for="kota">Kata Sandi Baru</label>
-                        <input type="password" id="kota" placeholder="Masukkan sandi baru">
+                        <input type="password" name="new-password" id="new-password" placeholder="Masukkan kata sandi baru">
                     </div>
                     <div class="form-group-nama">
                         <label for="tanggal">Konfirmasi Sandi Baru</label>
-                        <input type="password" id="tanggal">
+                        <input type="password" name="password-confirmation" id="password-confirmation" placeholder="Masukkan konfirmasi kata sandi baru">
                     </div>
                     <button type="submit" class="save-button">Simpan Perubahan</button>
                 </form>

@@ -45,7 +45,6 @@ if(isset($_POST["submit2"])){
 }
 
 session_start();
-var_dump($_SESSION);
 
 // temporary code
 if (isset($_SESSION['login'])) {
@@ -53,6 +52,9 @@ if (isset($_SESSION['login'])) {
         header('Location: pages/admin/views/dashboard.php');
     }
 }
+
+$studentId = $_SESSION['user']['id'];
+$student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
 
 ?>
 
@@ -107,9 +109,10 @@ if (isset($_SESSION['login'])) {
     .box_setting {
         position: absolute;
         width: 902px;
-        height: 500px;
+        height: 520px;
         left: 292px;
         top: 150px;
+        padding: 16px;
         flex: none;
         order: 3;
         flex-grow: 0;
@@ -230,6 +233,10 @@ if (isset($_SESSION['login'])) {
         margin: 4px;
         font-weight: bold;
         color: black;
+    }
+
+    .pengaturan_setting iconify-icon {
+        font-size: 20px;
     }
 
     .pengaturan_setting ul li.active {
@@ -473,7 +480,7 @@ if (isset($_SESSION['login'])) {
         color: #fff;
         border-radius: 8px;
         margin-top: 20px;
-        margin-left: 696px;
+        margin-left: 675px;
         background: #245044;
         padding: 12px 20px;
         gap: 10px;
@@ -868,7 +875,7 @@ if (isset($_SESSION['login'])) {
             <div class="navbar-info">
                 <p>Hai, <?= $_SESSION['user']['name'] ?></p>
                 <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
-                <p>0 Koin</p>
+                <p><?= $student['coin_balance'] ?> Koin</p>
                 <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
                     <a href="profile.php">
                         <div class="navbar-info-dropdown-content">
@@ -918,8 +925,8 @@ if (isset($_SESSION['login'])) {
         <div class="pengaturan_setting">
             <h3>Pengaturan</h3>
             <ul>
-                <li class="active"><img src="./asset/akun.png">Profil</li>
-                <li><img src="asset/keyhole.png"><a href="pengaturan_sandi.php">Kata Sandi</a></li>
+                <li class="active"><iconify-icon icon="gg:profile"></iconify-icon>Profil</li>
+                <li><iconify-icon icon="icon-park-outline:keyhole"></iconify-icon><a href="setting-password.php">Kata Sandi</a></li>
             </ul>
         </div>
         <div class="content">
@@ -935,7 +942,7 @@ if (isset($_SESSION['login'])) {
                         <div class="form-group">
                             <label for="city">Kota Domisili</label>
                             <input type="text" name="city" id="city" placeholder="Masukkan kota domisili"
-                                value="<?= htmlspecialchars($row['city']) ?>">
+                                value="<?= $row['city'] ?>">
                         </div>
                         <div class="form-group">
                             <label for="date_of_birth">Tanggal Lahir</label>

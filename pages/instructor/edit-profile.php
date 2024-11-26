@@ -5,7 +5,11 @@ require '../../utils/database/helper.php';
 session_start();
 
 $instructorId = $_SESSION['user']['id'];
-$instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
+$instructor = fetch(
+    "SELECT instructors.name, credentials.email, instructors.date_of_birth, instructors.phone_number, instructors.bio FROM instructors
+    JOIN credentials ON instructors.credential_id = credentials.id
+    WHERE instructors.id = $instructorId")[0];
+var_dump($instructor);
 
 ?>
 
@@ -42,6 +46,7 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
             "navbar navbar"
             "sidebar main";
         width: 100%;
+        min-height: 100vh;
     }
 
     @media (max-width: 768px) {
@@ -133,14 +138,23 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
     }
 
     /* Sidebar */
-    .sidebar {
+    /* .sidebar {
+        grid-area: sidebar;
+        background-color: #ffffff;
+        padding: 20px;
+        border-right: 1px solid #ddd;
+        transition: all 0.3s ease-in-out;
         margin-top: 20px;
+    } */
+
+    .sidebar {
         grid-area: sidebar;
         background-color: #ffffff;
         padding: 20px;
         border-right: 1px solid #ddd;
         position: sticky;
         top: 0;
+        height: 100vh;
         overflow-y: auto;
     }
 
@@ -237,8 +251,9 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
     .main-content {
         grid-area: main;
         padding: 20px;
-        margin-top: 20px;
         overflow-y: auto;
+        /* Membuat konten utama dapat di-scroll */
+        height: calc(100vh - 60px);
     }
 
     .main-content .judul {
@@ -260,28 +275,13 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
         color: #fff;
     }
 
-
-    .right-content {
-        margin: 0 0 0 20px;
-        width: 80%;
-    }
-
     .header {
-        display: flex;
-        flex-direction: column;
-        gap: 20px;
+        background-color: #143E3B;
+        padding: 1rem;
     }
 
-    .header h2 {
+    .header h5 {
         color: white;
-    }
-
-    .header h3 {
-        color: grey;
-    }
-
-    .icons {
-        padding-top: 3rem;
     }
 
     .icons .icon-btn {
@@ -297,7 +297,7 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
 
     .icons .upload-icon,
     .icons .trash-icon {
-        font-size: 2.5rem;
+        font-size: 2rem;
         color: #216C68;
         transition: color 0.3s, transform 0.3s;
     }
@@ -313,51 +313,62 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
         transform: scale(1);
     }
 
+    .interlude {
+        height: 40px;
+        background-color: #125E62;
+    }
+
     .content {
         background-color: white;
         display: flex;
-        gap: 5rem;
+        gap: 2rem;
         padding: 2rem;
-        /* border-style: solid;
-    border-top: none;
-    border-left: none;
-    border-right: none;
-    border-bottom: grey;
-    border-width: 1px; */
     }
 
     .img img {
-        width: 200px;
-        padding: 1rem;
+        width: 120px;
     }
 
     .right-hand {
         display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
         flex-direction: column;
     }
 
     .icons {
         display: flex;
-        gap: 3rem;
+        gap: 1rem;
+        padding-top: 20px;
     }
 
     .edit-section {
         background-color: white;
-        padding: 0rem 2rem 2rem 2rem;
         border-top: lightgray;
         border-width: 1px;
         border-style: solid;
         border-bottom: none;
         border-right: none;
         border-left: none;
+
     }
 
     .edit-header {
-        padding: 3rem;
+        padding: 2rem;
+    }
+
+    .edit-header h2 {
+        font-size: 25px;
+        color: #1A534E;
+    }
+
+    .edit-header h4 {
+        font-size: 12px;
+        color: gray;
     }
 
     .form {
-        padding: 3rem;
+        padding: 0rem 2rem 2rem 2rem;
     }
 
     .form-row {
@@ -570,11 +581,11 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
                     <li><a href="./dashboard.php"><i class="fas fa-tachometer-alt"></i> Dasbor</a></li>
                     <li><a href="./profile.php"><i class="fas fa-user"></i> Profil Saya</a></li>
                     <li class="section-title">Pengajar</li>
-                    <li><a href="./my-courses.php"><i class="fas fa-chalkboard-teacher"></i> Kursus Saya</a></li>
+                    <li><a href="my-courses.php"><i class="fas fa-chalkboard-teacher"></i> Kursus Saya</a></li>
                     <li><a href="withdrawal-record.php"><i class="fas fa-wallet"></i> Tarik Saldo</a></li>
                     <li class="section-title">Pengaturan Akun</li>
-                    <li><a href="./edit-profile.php"><i class="fas fa-cogs"></i> Edit Profil</a></li>
-                    <li><a href="./change-password.php" class="active"><i class="fas fa-key" style="color: white;"></i> Ubah Kata Sandi</a></li>
+                    <li><a href="./edit-profile.php" class="active"><i class="fas fa-cogs" style="color: white;"></i> Edit Profil</a></li>
+                    <li><a href="./change-password.php"><i class="fas fa-key"></i> Ubah Kata Sandi</a></li>
                     <li><a href="./withdrawal-setting.php"><i class="fas fa-money-bill-wave"></i> Penarikan</a></li>
                     <li><a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
                 </ul>
@@ -582,46 +593,81 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
         </aside>
         <main class="main-content">
             <div class="judul">
-                <h1>Ubah Kata Sandi</h1>
-                <span class="breadcrumb">Beranda > Ubah Kata Sandi</span>
+                <h1>Edit Profil</h1>
+                <span class="breadcrumb">Beranda > Edit profili</span>
             </div>
             <div class="header">
-                <h3>Ubah Kata Sandi</h3>
+                <h5>Anda memiliki kontrol penuh untuk mengelola akun Anda sendiri!</h5>
+            </div>
+            <div class="content">
+                <div class="img">
+                    <img src="https://artikel.rumah123.com/wp-content/uploads/sites/41/2023/09/12160753/gambar-foto-profil-whatsapp-kosong.jpg"
+                        alt="your photo">
+                </div>
+                <div class="right-hand">
+                    <div class="headers">
+                        <h2>Unggah Foto Profil Terbaru</h2>
+                    </div>
+                    <div class="icons">
+                        <!-- Cloud upload icon -->
+                        <label for="image-upload" class="icon-btn">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <input type="file" id="image-upload" accept="image/*" style="display: none;" />
+                        </label>
+
+                        <!-- Trash icon -->
+                        <button type="button" class="icon-btn reset-btn">
+                            <i class="fas fa-trash-alt trash-icon"></i>
+                        </button>
+                    </div>
+                </div>
             </div>
             <div class="edit-section">
+                <div class="edit-header">
+                    <h2>Detail Pribadi</h2>
+                    <h4>Edit informasi pribadi anda</h4>
+                </div>
                 <div class="form">
                     <form>
+                        <!-- Row for Nama Lengkap and Tanggal Lahir -->
                         <div class="form-row">
                             <div class="form-group half-width">
-                                <label for="password">Kata Sandi Saat Ini</label>
-                                <input type="password" id="oldpassword" />
+                                <label for="nama">Nama Lengkap</label>
+                                <input type="text" id="nama" placeholder="Nama Lengkap" value="<?= $instructor['name'] ?>" />
+                            </div>
+                            <div class="form-group half-width">
+                                <label for="tanggal-lahir">Tanggal Lahir</label>
+                                <input type="date" id="tanggal-lahir" value="<?= $instructor['date_of_birth'] ?>" />
                             </div>
                         </div>
 
+                        <!-- Row for Email and Nomor Telepon -->
                         <div class="form-row">
                             <div class="form-group half-width">
-                                <label for="password">Kata Sandi Baru</label>
-                                <input type="password" id="newpassword" />
+                                <label for="email">Email</label>
+                                <input type="email" id="email" placeholder="Email Anda" value="<?= $instructor['email'] ?>" />
+                            </div>
+                            <div class="form-group half-width">
+                                <label for="nomor-telepon">Nomor Telepon</label>
+                                <input type="tel" id="nomor-telepon" placeholder="+62 81234567890" value="<?= $instructor['phone_number'] ?>" />
                             </div>
                         </div>
 
-                        <div class="form-row">
-                            <div class="form-group half-width">
-                                <label for="password">Konfirmasi Kata Sandi Baru</label>
-                                <input type="password" id="confirmation" />
-                            </div>
+                        <!-- Row for Bio -->
+                        <div class="form-group">
+                            <label for="bio">Bio</label>
+                            <textarea id="bio" rows="5" placeholder="Tuliskan sesuatu tentang Anda..."><?= $instructor['bio'] ?></textarea>
                         </div>
 
                         <!-- Submit Button -->
                         <div class="end">
-                            <button type="submit" class="submit-btn">Ubah Kata Sandi</button>
+                            <button type="submit" class="submit-btn">Perbarui Profil</button>
                         </div>
                     </form>
                 </div>
             </div>
         </main>
     </div>
-
     <footer>
         <div class="footer-content">
             <div class="logo-section">
@@ -674,7 +720,7 @@ $instructor = fetch("SELECT * FROM instructors WHERE id = $instructorId")[0];
 
         </div>
     </footer>
-    <script src="../../navbar.js"></script>
+    <script src="./scripts/editprofile.js"></script>
 </body>
 
 </html>

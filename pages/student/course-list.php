@@ -1,5 +1,7 @@
 <?php
 
+require '../../utils/database/helper.php';
+
 session_start();
 
 // temporary code
@@ -8,6 +10,9 @@ if (isset($_SESSION['login'])) {
         header('Location: pages/admin/views/dashboard.php');
     }
 }
+
+$studentId = $_SESSION['user']['id'];
+$student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
 
 ?>
 
@@ -485,7 +490,8 @@ if (isset($_SESSION['login'])) {
             <div class="navbar-info">
                 <p>Hai, <?= $_SESSION['user']['name'] ?></p>
                 <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
-                <p>0 Koin</p>
+                <?php if ($_SESSION['user']['role_id'] == 1): ?>
+                <p><?= $student['coin_balance'] ?> Koin</p>
                 <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
                     <a href="profile.php">
                         <div class="navbar-info-dropdown-content">
@@ -498,7 +504,6 @@ if (isset($_SESSION['login'])) {
                             <iconify-icon icon="weui:like-filled"></iconify-icon>
                             <span>Wishlist</span>
                         </div>
-
                     </a>
                     <a href="setting.php">
                         <div class=" navbar-info-dropdown-content">
@@ -513,6 +518,22 @@ if (isset($_SESSION['login'])) {
                         </div>
                     </a>
                 </div>
+                <?php elseif ($_SESSION['user']['role_id'] == 2): ?>
+                    <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
+                        <a href="../../pages/instructor/dashboard.php">
+                            <div class="navbar-info-dropdown-content">
+                                <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
+                                <span>Dasbor</span>
+                            </div>
+                        </a>
+                        <a href="../../pages/logout.php">
+                            <div class="navbar-info-dropdown-content">
+                                <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
+                                <span>Keluar</span>
+                            </div>
+                        </a>
+                    </div>
+                <?php endif; ?>
             </div>
 
             <?php else: ?>

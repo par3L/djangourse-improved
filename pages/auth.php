@@ -13,7 +13,7 @@ $email = null;
 $buttonSignupPressed = false;
 
 if (isset($_POST['signup'])) {
-    $name = $_POST['nama'];
+    $name = htmlspecialchars(ucwords($_POST['nama']));
     $email = $_POST['email'];
     $password = $_POST['password'];
     $roleId = $_POST['role'];
