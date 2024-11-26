@@ -5,7 +5,6 @@ require 'utils/database/helper.php';
 session_start();
 
 if (isset($_SESSION["login"])) {
-
     $userId = $_SESSION['user']['id'];
 
     if ($_SESSION['user']['role_id'] == 1) {
@@ -16,9 +15,7 @@ if (isset($_SESSION["login"])) {
         header('Location: pages/admin/views/dashboard.php');
         die;
     }
-    
 }
-
 
 ?>
 
