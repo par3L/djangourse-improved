@@ -4,21 +4,26 @@ require 'utils/database/helper.php';
 
 session_start();
 
-// temporary code
-if (isset($_SESSION['login'])) {
+if (isset($_SESSION["login"])) {
+
+    $userId = $_SESSION['user']['id'];
+
+    if ($_SESSION['user']['role_id'] == 1) {
+        $student = fetch("SELECT coin_balance FROM students WHERE id=$userId")[0];
+    }
+
     if ($_SESSION['user']['role_id'] == 3) {
         header('Location: pages/admin/views/dashboard.php');
+        die;
     }
-    $studentId = $_SESSION['user']['id'];
-    if ($studentId) {
-        $student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
-    }
+    
 }
+
 
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">

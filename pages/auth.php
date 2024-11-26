@@ -28,9 +28,9 @@ if (isset($_POST['signup'])) {
             $credentialRecentlyCreated = fetch("SELECT * FROM credentials WHERE email='$email'")[0]['id'];
 
             if ($roleId == 1) {
-                execDML("INSERT INTO students VALUES (null, $credentialRecentlyCreated, '$name', null, null, null)");
+                execDML("INSERT INTO students (credential_id, name) VALUES ($credentialRecentlyCreated, '$name')");
             } else if ($roleId == 2) {
-                execDML("INSERT INTO instructors VALUES (null, $credentialRecentlyCreated, '$name')");
+                execDML("INSERT INTO instructors (credential_id, name) VALUES ($credentialRecentlyCreated, '$name')");
             }
 
             $errorState = [
@@ -61,7 +61,6 @@ if (isset($_POST['login'])) {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // temporary
     if ($email === 'admin@gmail.com' && $password === 'admin') {
         header('Location: admin/views/dashboard.php');
         $user = [
@@ -116,7 +115,7 @@ if (isset($_POST['login'])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="id">
 
 <head>
     <meta charset="UTF-8">
