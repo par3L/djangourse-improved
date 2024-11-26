@@ -1,6 +1,7 @@
 <?php
 
 require '../../utils/database/helper.php';
+
 session_start();
 
 // Pastikan pengguna sudah login
@@ -418,19 +419,19 @@ $student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
             <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
             <p><?= $student['coin_balance'] ?> Koin</p>
             <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
-                <a href="../student/kursus-course.php">
+                <a href="profile.php">
                     <div class="navbar-info-dropdown-content">
                         <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
                         <span>Profil</span>
                     </div>
                 </a>
-                <a href="../student/favourite-course.php">
+                <a href="favourite-course.php">
                     <div class="navbar-info-dropdown-content">
                         <iconify-icon icon="weui:like-filled"></iconify-icon>
                         <span>Wishlist</span>
                     </div>
                 </a>
-                <a href="../student/setting.php">
+                <a href="setting.php">
                     <div class="navbar-info-dropdown-content">
                         <iconify-icon icon="uil:setting"></iconify-icon>
                         <span>Pengaturan</span>
