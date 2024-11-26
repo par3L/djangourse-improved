@@ -1,6 +1,6 @@
 <?php
 session_start();
-require_once '../../utils/database/helper.php';
+require '../../utils/database/helper.php';
 
 // Pastikan pengguna login sebagai siswa
 if (!isset($_SESSION['user']['id'])) {
@@ -45,6 +45,7 @@ $topup_history = fetch("
     <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
     <style>
     @import '../style.css';
+
     body {
         color: #333;
         background-color: #F4F4F9;
@@ -255,7 +256,7 @@ $topup_history = fetch("
         display: block;
         padding: 3rem 4rem;
         font-family: 'DM Sans', sans-serif;
-        background-image: url('img/bg.png');
+        background-image: url('../../assets/img/bg.png');
         background-size: cover;
         background-position: center;
         margin-top: 70px;
@@ -318,6 +319,7 @@ $topup_history = fetch("
         cursor: pointer;
         transition: background-color 0.3s;
         display: flex;
+        text-decoration: none;
         align-items: center;
         gap: 8px;
     }
@@ -428,6 +430,71 @@ $topup_history = fetch("
         color: #ff5e5e;
         /* Warna merah untuk koin yang dikurangi */
     }
+
+    footer {
+        background-image: url('../../assets/img/footer.png');
+        background-size: cover;
+        background-position: center;
+        color: #fff;
+        padding: 2rem 4rem;
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
+
+    .footer-content .logo-section p {
+        padding-left: 10px;
+        margin-top: 10px;
+    }
+
+    .footer-logo {
+        width: 100px;
+    }
+
+    .links-section a {
+        text-decoration: none;
+        color: #fff;
+        transition: color 0.3s ease, border-bottom 0.3s ease;
+    }
+
+    .links-section a:hover {
+        color: #A1D1B6;
+        border-bottom: 2px solid #A1D1B6;
+    }
+
+    .links-section ul {
+        list-style: none;
+        margin-top: 20px;
+        padding-left: 0;
+    }
+
+    .links-section ul li {
+        margin: 20px 0;
+    }
+
+    .contact-section p {
+        margin: 20px 0;
+    }
+
+    .contact-section i {
+        margin-right: 5px;
+    }
+
+    .contact-section a {
+        text-decoration: none;
+        color: #fff;
+        transition: color 0.3s ease;
+    }
+
+    .contact-section a:hover {
+        color: #A1D1B6;
+        text-decoration: underline;
+    }
     </style>
 </head>
 
@@ -441,7 +508,7 @@ $topup_history = fetch("
                 <ul>
                     <li><a href="../../index.php">Beranda</a></li>
                     <li><a href="course-list.php">Kursus</a></li>
-                    <li><a href="../student/cara.php">Cara Penggunaan</a></li>
+                    <li><a href="../how-to-use.php">Cara Penggunaan</a></li>
                 </ul>
             </nav>
             <?php if (isset($_SESSION['login'])): ?>
@@ -455,26 +522,26 @@ $topup_history = fetch("
                 <p><?php echo $balance; ?> Koin</p>
 
                 <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
-                    <a href="../student/kursus-course.php">
+                    <a href="profile.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
                             <span>Profil</span>
                         </div>
                     </a>
-                    <a href="../student/favourite-course.php">
+                    <a href="favourite-course.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="weui:like-filled"></iconify-icon>
                             <span>Wishlist</span>
                         </div>
 
                     </a>
-                    <a href="../siswa/pengaturan_profil.php">
+                    <a href="setting.php">
                         <div class=" navbar-info-dropdown-content">
                             <iconify-icon icon="uil:setting"></iconify-icon>
                             <span>Pengaturan</span>
 
                         </div>
-                        <a href="../auth.php">
+                        <a href="../logout.php">
                             <div class="navbar-info-dropdown-content">
                                 <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
                                 <span>Keluar</span>
@@ -544,6 +611,58 @@ $topup_history = fetch("
             </div>
         </div>
     </section>
+    <footer>
+        <div class="footer-content">
+            <div class="logo-section">
+                <img src="../../assets/img/logo-django.png" alt="Logo" class="footer-logo">
+                <p>Bergabunglah bersama kami untuk menguasai<br> berbagai keahlian
+                    dibidang teknologi dan membuka<br>peluang karier di dunia teknologi
+                    yang terus berkembang.<br><br> Kami menyediakan kursus
+                    berkualitas yang membantu <br> kamu berkembang dari pemula
+                    hingga ahli.</p>
+                <div class="hak-cipta">
+                    <p>© 2024 Django Course. Semua hak cipta dilindungi.</p>
+                </div>
+            </div>
+            <div class="links-section">
+                <h3>Instruktur</h3>
+                <ul>
+                    <li><a href="#">Profil</a></li>
+                    <li><a href="#">Login</a></li>
+                    <li><a href="#">Register</a></li>
+                    <li><a href="#">Instructor</a></li>
+                    <li><a href="#">Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="links-section">
+                <h3>Siswa</h3>
+                <ul>
+                    <li><a href="#">Profil</a></li>
+                    <li><a href="#">Jelajahi Kursus</a></li>
+                    <li><a href="#">Wishlist Kursus</a></li>
+                    <li><a href="#">Student</a></li>
+                    <li><a href="#">Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="contact-section">
+                <h3>Alamat</h3>
+                <p>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <a href="https://www.google.com/maps?q=Jalan+Gubeng+Surabaya" target="_blank">Jalan Gubeng,
+                        Surabaya</a>
+                </p>
+                <p>
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:info@dingcourse.com">info@dingcourse.com</a>
+                </p>
+                <p>
+                    <i class="fas fa-phone-alt"></i>
+                    <a href="tel:+62123456789">+62 123 456 789</a>
+                </p>
+            </div>
+
+        </div>
+    </footer>
 </body>
 <script>
 document.getElementById('btn-dropdown').addEventListener('click', () => {

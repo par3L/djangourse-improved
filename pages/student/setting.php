@@ -1,6 +1,8 @@
 <?php
 require "../../utils/database/helper.php";
 
+session_start();
+
 $sql = fetch("SELECT * FROM students JOIN credentials ON (students.credential_id = credentials.id)");
 
 $django = [];
@@ -44,7 +46,7 @@ if(isset($_POST["submit2"])){
 
 }
 
-session_start();
+
 
 // temporary code
 if (isset($_SESSION['login'])) {
@@ -875,7 +877,7 @@ $student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
             <div class="navbar-info">
                 <p>Hai, <?= $_SESSION['user']['name'] ?></p>
                 <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
-                <p><?= $student['coin_balance'] ?> Koin</p>
+                <a href="coin-dashboard.php"><?= $student['coin_balance'] ?> Koin</a>
                 <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
                     <a href="profile.php">
                         <div class="navbar-info-dropdown-content">
@@ -1023,45 +1025,7 @@ $student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
             
         </div>
     </footer>
+    <script src="../../navbar.js"></script>
 </body>
-<!-- <script>
-function deleteAccount() {
-    if (confirm("Apakah Anda yakin ingin menghapus akun? Semua data akan hilang.")) {
-        fetch('delete_account.php', { method: 'POST' })
-            .then(response => response.text())
-            .then(data => alert(data))
-            .catch(error => console.error('Error:', error));
-    }
-}
-
-function toggleDropdown() {
-    const dropdown = document.getElementById('dropdown');
-    const arrow = document.getElementById('arrow');
-    if (dropdown.style.display === 'none' || dropdown.style.display === '') {
-        dropdown.style.display = 'flex';
-        arrow.textContent = '▲'; 
-    } else {
-        dropdown.style.display = 'none';
-        arrow.textContent = '▼'; 
-    }
-}
-
-document.addEventListener('click', function(event) {
-    const userInfo = document.querySelector('.user-info');
-    const dropdown = document.getElementById('dropdown');
-    const arrow = document.getElementById('arrow');
-    if (!userInfo.contains(event.target)) {
-        dropdown.style.display = 'none';
-        arrow.textContent = '▼'; 
-    }
-});
-</script> -->
-
-<script>
-document.getElementById('btn-dropdown').addEventListener('click', () => {
-    console.log('click')
-    document.getElementById('navbar-info-dropdown').classList.toggle('hide')
-})
-</script>
 
 </html>

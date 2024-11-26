@@ -1,4 +1,7 @@
 <?php
+
+require '../../utils/database/helper.php';
+
 session_start();
 
 // Pastikan pengguna sudah login
@@ -10,6 +13,9 @@ if (isset($_SESSION['login'])) {
 
 
 $userName = htmlspecialchars($_SESSION['user']['name'], ENT_QUOTES, 'UTF-8');
+
+$studentId = $_SESSION['user']['id'];
+$student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -376,7 +382,7 @@ footer {
         <div class="navbar-info">
             <p>Hai, <?= $_SESSION['user']['name'] ?></p>
             <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
-            <p>0 Koin</p>
+            <a href="coin-dashboard.php"><?= $student['coin_balance'] ?> Koin</a>
             <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
                 <a href="../student/kursus-course.php">
                     <div class="navbar-info-dropdown-content">
