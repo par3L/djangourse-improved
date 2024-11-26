@@ -6,10 +6,66 @@ session_start();
 
 $instructorId = $_SESSION['user']['id'];
 $instructor = fetch(
-    "SELECT instructors.name, credentials.email, instructors.date_of_birth, instructors.phone_number, instructors.bio FROM instructors
+    "SELECT instructors.name, credentials.email, instructors.date_of_birth, instructors.phone_number, instructors.bio, instructors.profile_img FROM instructors
     JOIN credentials ON instructors.credential_id = credentials.id
     WHERE instructors.id = $instructorId")[0];
-var_dump($instructor);
+
+if (isset($_POST['submit-btn'])) {
+    $name = mysqli_real_escape_string($conn, $_POST['nama-lengkap']);
+    $email = mysqli_real_escape_string($conn, $_POST['email']);
+    $dateOfBirth = mysqli_real_escape_string($conn, $_POST['tanggal-lahir']);
+    $phoneNumber = mysqli_real_escape_string($conn, $_POST['nomor-telp']);
+    $bio = mysqli_real_escape_string($conn, $_POST['bio']);
+    $profileImg = $instructor['profile_img'];
+
+    if (isset($_FILES['img-upload']) && $_FILES['img-upload']['error'] === UPLOAD_ERR_OK) {
+        $file = $_FILES['img-upload'];
+        $fileName = $file['name'];
+        $fileTmpName = $file['tmp_name'];
+        $fileSize = $file['size'];
+        $fileError = $file['error'];
+        $fileType = $file['type'];
+
+        $fileExt = explode('.', $fileName);
+        $fileActualExt = strtolower(end($fileExt));
+
+        $allowed = array('jpg', 'jpeg', 'png');
+
+        if (in_array($fileActualExt, $allowed)) {
+            if ($fileError === 0) {
+                if ($fileSize < 1000000) {
+                    $fileNameNew = "profile" . $instructorId . "." . $fileActualExt;
+                    $fileDestination = '../../assets/' . $fileNameNew;
+
+                    if (move_uploaded_file($fileTmpName, $fileDestination)) {
+                        $profileImg = $fileNameNew; 
+                    } else {
+                        echo "Failed to move uploaded file!";
+                        exit();
+                    }
+                } else {
+                    echo "File too large!";
+                    exit();
+                }
+            } else {
+                echo "Error uploading file!";
+                exit();
+            }
+        } else {
+            echo "File type not allowed!";
+            exit();
+        }
+    }
+
+    $updateInstructor = execDML("UPDATE instructors SET 
+                                    name = '$name', date_of_birth = '$dateOfBirth', phone_number = '$phoneNumber', 
+                                    bio = '$bio', profile_img = '$profileImg' WHERE id = $instructorId");
+    if ($updateInstructor > 0) {
+        echo "Profile updated successfully!";
+    } else {
+        echo "Failed to update profile!";
+    }
+}   
 
 ?>
 
@@ -569,7 +625,7 @@ var_dump($instructor);
         <aside class="sidebar">
             <div class="profile">
                 <img id="profile-pic"
-                    src="https://artikel.rumah123.com/wp-content/uploads/sites/41/2023/09/12160753/gambar-foto-profil-whatsapp-kosong.jpg"
+                    src="<?= $instructor['profile_img'] ? '../../assets/' . $instructor['profile_img'] : 'https://artikel.rumah123.com/wp-content/uploads/sites/41/2023/09/12160753/gambar-foto-profil-whatsapp-kosong.jpg' ?>"
                     alt="Profile Picture">
                 <h3><?= $instructor['name'] ?></h3>
                 <p>Pengajar</p>
@@ -601,7 +657,7 @@ var_dump($instructor);
             </div>
             <div class="content">
                 <div class="img">
-                    <img src="https://artikel.rumah123.com/wp-content/uploads/sites/41/2023/09/12160753/gambar-foto-profil-whatsapp-kosong.jpg"
+                    <img src="<?= $instructor['profile_img'] ? '../../assets/' . $instructor['profile_img'] : 'https://artikel.rumah123.com/wp-content/uploads/sites/41/2023/09/12160753/gambar-foto-profil-whatsapp-kosong.jpg' ?>"
                         alt="your photo">
                 </div>
                 <div class="right-hand">
@@ -612,7 +668,7 @@ var_dump($instructor);
                         <!-- Cloud upload icon -->
                         <label for="image-upload" class="icon-btn">
                             <i class="fas fa-cloud-upload-alt upload-icon"></i>
-                            <input type="file" id="image-upload" accept="image/*" style="display: none;" />
+                            <input type="file" id="image-upload" accept="image/*" style="display: none;" name="img-upload" />
                         </label>
 
                         <!-- Trash icon -->
@@ -628,16 +684,16 @@ var_dump($instructor);
                     <h4>Edit informasi pribadi anda</h4>
                 </div>
                 <div class="form">
-                    <form>
+                    <form method="POST" enctype="multipart/form-data">
                         <!-- Row for Nama Lengkap and Tanggal Lahir -->
                         <div class="form-row">
                             <div class="form-group half-width">
                                 <label for="nama">Nama Lengkap</label>
-                                <input type="text" id="nama" placeholder="Nama Lengkap" value="<?= $instructor['name'] ?>" />
+                                <input type="text" id="nama" placeholder="Nama Lengkap" value="<?= $instructor['name'] ?>" name="nama-lengkap"/>
                             </div>
                             <div class="form-group half-width">
                                 <label for="tanggal-lahir">Tanggal Lahir</label>
-                                <input type="date" id="tanggal-lahir" value="<?= $instructor['date_of_birth'] ?>" />
+                                <input type="date" id="tanggal-lahir" value="<?= $instructor['date_of_birth'] ?>" name="tanggal-lahir"/>
                             </div>
                         </div>
 
@@ -645,23 +701,23 @@ var_dump($instructor);
                         <div class="form-row">
                             <div class="form-group half-width">
                                 <label for="email">Email</label>
-                                <input type="email" id="email" placeholder="Email Anda" value="<?= $instructor['email'] ?>" />
+                                <input type="email" id="email" placeholder="Email Anda" value="<?= $instructor['email'] ?>" name="email"/>
                             </div>
                             <div class="form-group half-width">
                                 <label for="nomor-telepon">Nomor Telepon</label>
-                                <input type="tel" id="nomor-telepon" placeholder="+62 81234567890" value="<?= $instructor['phone_number'] ?>" />
+                                <input type="tel" id="nomor-telepon" placeholder="+62 81234567890" value="<?= $instructor['phone_number'] ?>" name="nomor-telp"/>
                             </div>
                         </div>
 
                         <!-- Row for Bio -->
                         <div class="form-group">
                             <label for="bio">Bio</label>
-                            <textarea id="bio" rows="5" placeholder="Tuliskan sesuatu tentang Anda..."><?= $instructor['bio'] ?></textarea>
+                            <textarea id="bio" rows="5" placeholder="Tuliskan sesuatu tentang Anda..." name="bio"><?= $instructor['bio'] ?></textarea>
                         </div>
 
                         <!-- Submit Button -->
                         <div class="end">
-                            <button type="submit" class="submit-btn">Perbarui Profil</button>
+                            <button type="submit" class="submit-btn" name="submit-btn">Perbarui Profil</button>
                         </div>
                     </form>
                 </div>

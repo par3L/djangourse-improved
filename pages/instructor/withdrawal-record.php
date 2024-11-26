@@ -756,7 +756,7 @@ $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
         <aside class="sidebar">
             <div class="profile">
                 <img id="profile-pic"
-                    src="https://artikel.rumah123.com/wp-content/uploads/sites/41/2023/09/12160753/gambar-foto-profil-whatsapp-kosong.jpg"
+                    src="<?= $instructor['profile_img'] ? '../../assets/' . $instructor['profile_img'] : 'https://artikel.rumah123.com/wp-content/uploads/sites/41/2023/09/12160753/gambar-foto-profil-whatsapp-kosong.jpg' ?>"
                     alt="Profile Picture">
                 <h3><?= $_SESSION['user']['name'] ?></h3>
                 <p>Pengajar</p>
