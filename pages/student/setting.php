@@ -13,8 +13,7 @@ $student = fetch(
 if (isset($_POST["save-changed"])) {
     $city = htmlspecialchars(ucwords($_POST['city']));
     $phone_number = $_POST['phone_number'];
-    $date_of_birth = $_POST['date_of_birth'];
-    var_dump($date_of_birth);
+    $date_of_birth = !empty($_POST['date_of_birth']) ? "'" . $_POST['date_of_birth'] . "'" : "NULL"; // wrap $date_of_birth correctly
     $name = $_POST['name'];
     
     $sql2 = execDML(
@@ -25,7 +24,7 @@ if (isset($_POST["save-changed"])) {
             phone_number = '$phone_number'
         WHERE id = $studentId"
     );
-
+    
     if ($sql2 > 0) {
         echo "Update berhasil!";
     } else {
