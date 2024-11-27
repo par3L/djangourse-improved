@@ -3,46 +3,38 @@ require "../../utils/database/helper.php";
 
 session_start();
 
-$sql = fetch("SELECT * FROM students JOIN credentials ON (students.credential_id = credentials.id)");
+$studentId = $_SESSION['user']['id'];
 
-$django = [];
-foreach ($sql as $row) {
-    $django[] = [
-        'id' => $row['id'], 
-        'credential_id' => $row['credential_id'], 
-        'name' => $row['name'],  
-        'email' => $row['email'], 
-        'date_of_birth' => $row['date_of_birth'],
-        'city' => $row['city'],
-        'phone_number' => $row['phone_number']
-    ];
-}
-if (isset($_POST["submit"])) {
-    $city = $_POST['city'] ?? '';
-    $phone_number = $_POST['phone_number'] ?? '';
-    $date_of_birth = $_POST['date_of_birth'] ?? '';
-    $name = $_POST['name'] ?? '';
-    if ($city && $phone_number && $date_of_birth && $name) {
-        $sql2 = execDML(
-            "UPDATE students
-            SET name = '$name', 
-                date_of_birth = '$date_of_birth',
-                city = '$city', 
-                phone_number = '$phone_number'
-            WHERE id = 1"
-        );
+$student = fetch(
+    "SELECT * FROM students
+    JOIN credentials ON (students.credential_id = credentials.id)
+    WHERE students.id = $studentId")[0];
 
-        if ($sql2 > 0) {
-            echo "Update berhasil!";
-        } else {
-            echo "Gagal mengupdate data.";
-        }
+if (isset($_POST["save-changed"])) {
+    $city = htmlspecialchars(ucwords($_POST['city']));
+    $phone_number = $_POST['phone_number'];
+    $date_of_birth = $_POST['date_of_birth'];
+    var_dump($date_of_birth);
+    $name = $_POST['name'];
+    
+    $sql2 = execDML(
+        "UPDATE students
+        SET name = '$name', 
+            date_of_birth = $date_of_birth,
+            city = '$city', 
+            phone_number = '$phone_number'
+        WHERE id = $studentId"
+    );
+
+    if ($sql2 > 0) {
+        echo "Update berhasil!";
     } else {
-        echo "Error: Semua field harus diisi.";
+        echo "Gagal mengupdate data.";
     }
+    
 }
 
-if(isset($_POST["submit2"])){
+if(isset($_POST["delete-account"])){
 
 }
 
@@ -54,9 +46,6 @@ if (isset($_SESSION['login'])) {
         header('Location: pages/admin/views/dashboard.php');
     }
 }
-
-$studentId = $_SESSION['user']['id'];
-$student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
 
 ?>
 
@@ -938,38 +927,38 @@ $student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
                     <div class="form-group-nama">
                         <label for="name">Nama Lengkap</label>
                         <input type="text" name="name" id="name" placeholder="Masukkan nama lengkap"
-                            value="<?= htmlspecialchars($row['name']) ?>">
+                            value="<?= $student['name'] ?>">
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="city">Kota Domisili</label>
                             <input type="text" name="city" id="city" placeholder="Masukkan kota domisili"
-                                value="<?= $row['city'] ?>">
+                                value="<?= $student['city'] ?>">
                         </div>
                         <div class="form-group">
                             <label for="date_of_birth">Tanggal Lahir</label>
                             <input type="date" name="date_of_birth" id="date_of_birth"
-                                value="<?= $row['date_of_birth'] ?>">
+                                value="<?= $student['date_of_birth'] ?>">
                         </div>
                     </div>
                     <div class="form-row">
                         <div class="form-group">
                             <label for="email">Alamat Surel</label>
                             <input type="email" name="email" id="email" placeholder="Masukkan alamat surel"
-                                value="<?= htmlspecialchars($row['email']) ?>" disabled>
+                                value="<?= $student['email'] ?>" disabled>
                         </div>
                         <div class="form-group">
                             <label for="phone_number">No. HP</label>
-                            <input type="number" name="phone_number" id="phone_number" placeholder="Masukkan nomor HP"
-                                value="<?= htmlspecialchars($row['phone_number']) ?>">
+                            <input type="text" name="phone_number" id="phone_number" placeholder="Masukkan nomor HP"
+                                value="<?= $student['phone_number'] ?>">
                         </div>
                     </div>
-                    <button type="submit" name="submit2" class="delete-button" onclick="deleteAccount()">Hapus
+                    <button type="submit" name="delete-account" class="delete-button" onclick="deleteAccount()">Hapus
                         Akun</button>
                     <p class="note">
                         *Semua informasi akun dan kelas yang telah dibeli akan dihapus dari database kami.
                     </p>
-                    <button type="submit" name="submit" class="save-button">Simpan Perubahan</button>
+                    <button type="submit" name="save-changed" class="save-button">Simpan Perubahan</button>
                 </form>
             </div>
         </div>
