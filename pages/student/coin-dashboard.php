@@ -431,6 +431,14 @@ $topup_history = fetch("
         /* Warna merah untuk koin yang dikurangi */
     }
 
+    .amount.purchase {
+        color: #ff5e5e;
+    }
+
+    .amount.topup {
+        color: #2C6A5E;
+    }
+
     footer {
         background-image: url('../../assets/img/footer.png');
         background-size: cover;
@@ -601,7 +609,7 @@ $topup_history = fetch("
                             <span class="date"><?= date("d M Y H:i", strtotime($transaction['purchase_date'])) ?></span>
                         </div>
                     </div>
-                    <div class="amount"><?= $transaction['coins_spent'] /1000 ?> Koin</div>
+                    <div class="amount <?= $transaction['type'] == 'topup'? 'topup' : 'amount' ?>"><?= $transaction['type'] == 'topup'? '+' : '-' ?><?= $transaction['coins_spent'] /1000 ?> Koin</div>
                 </div>
                 <?php endforeach; ?>
                 <?php else: ?>
