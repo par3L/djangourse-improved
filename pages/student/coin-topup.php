@@ -24,11 +24,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         WHERE id = '$student_id'";
     execDML($updateQuery);
 
-    $historyQuery = "
-        INSERT INTO coin_topup_history (student_id, coins_added, price)
-        VALUES ('$student_id', '$coins', '$price')";
-    execDML($historyQuery);
-
     $insertToTransactions = "
         INSERT INTO transactions (student_id, transaction_type, price)
         VALUES ('$student_id', 'topup', '$price')";

@@ -26,9 +26,9 @@ if (isset($_POST["save-changed"])) {
     );
     
     if ($sql2 > 0) {
-        echo "Update berhasil!";
+        echo "<script>alert('Berhasil memperbarui data!'); location.href='setting.php'</script>";
     } else {
-        echo "Gagal mengupdate data.";
+        echo "<script>alert('Gagal memperbarui data!'); location.href='setting.php'</script>";
     }
     
 }
