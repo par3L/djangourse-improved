@@ -402,6 +402,12 @@ ALTER TABLE `withdrawal_requests`
   ADD CONSTRAINT `fk_withdrawal_requests_to_instructors` FOREIGN KEY (`instructor_id`) REFERENCES `instructors` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 COMMIT;
 
+-- 
+-- New column to store instructor profile image name
+-- 
+ALTER TABLE instructors 
+  ADD COLUMN profile_img VARCHAR(255) DEFAULT NULL 
+
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
