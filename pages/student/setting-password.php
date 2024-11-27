@@ -12,8 +12,31 @@ if (isset($_SESSION['login'])) {
 }
 
 $studentId = $_SESSION['user']['id'];
-$student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
-var_dump($student);
+$student = fetch(
+    "SELECT * FROM students
+    JOIN credentials ON students.credential_id = credentials.id
+    WHERE students.id=$studentId")[0];
+
+if (isset($_POST['change-password'])) {
+    $email = $student['email'];
+    $currentPassword = $_POST['current-password'];
+    $newPassword = $_POST['new-password'];
+    $newPasswordHashed = password_hash($newPassword, PASSWORD_DEFAULT);
+
+    if (password_verify($currentPassword, $student['password'])) {
+        $updatePasswordSql = execDML("UPDATE credentials SET password='$newPasswordHashed' WHERE email='$email'");
+        if ($updatePasswordSql) {
+            echo "<script>alert('Kata sandi berhasil diubah.')</script>";
+        } else {
+            echo "<script>alert('Kata sandi gagal diubah.')</script>";
+        }
+    } else {
+        echo "<script>alert('Kata sandi saat ini salah.')</script>";
+    }
+    
+}
+
+
 ?>
 
 <!DOCTYPE html>
@@ -902,7 +925,7 @@ var_dump($student);
         <div class="content">
             <div class="box_setting">
                 <h2>Ubah Kata Sandi</h2>
-                <form>
+                <form method="post">
                     <div class="form-group-nama">
                         <label for="nama">Kata Sandi Saat Ini</label>
                         <input type="password" name="current-password" id="current-password"
@@ -918,7 +941,7 @@ var_dump($student);
                         <input type="password" name="password-confirmation" id="password-confirmation"
                             placeholder="Masukkan konfirmasi kata sandi baru">
                     </div>
-                    <button type="submit" class="save-button">Simpan Perubahan</button>
+                    <button type="submit" name="change-password" class="save-button">Simpan Perubahan</button>
                 </form>
             </div>
         </div>
@@ -976,6 +999,7 @@ var_dump($student);
         </div>
     </footer>
     <script src="../../navbar.js"></script>
+    <script src="js/setting-password.js"></script>
 </body>
 
 </html>
