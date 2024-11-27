@@ -94,6 +94,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
     $success_message = "Anda berhasil membeli kursus: $course_name.";
 }
 
+
+// handle dml to favourite_courses
+if (isset($_POST['heart'])) {
+    $course_id = $_POST['course-fav'];
+    $student_id = $_SESSION['user']['id'];
+
+    $query = "SELECT * FROM favourite_courses WHERE student_id = $student_id AND course_id = $course_id";
+    $result = fetch($query);
+
+    if (empty($result)) {
+        execDML("INSERT INTO favourite_courses (student_id, course_id) VALUES ($student_id, $course_id)");
+        die('success');
+    } else {
+        execDML("DELETE FROM favourite_courses WHERE student_id = $student_id AND course_id = $course_id");
+        die('no');
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -632,7 +650,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
         <p style="color: green; text-align: center;"><?= $success_message ?></p>
         <?php endif; ?>
         <div class="search-bar">
-            <input placeholder="Cari..." type="text" id="searchInput" />
+            <input placeholder="   Cari..." type="text" id="searchInput"/>
         </div>
 
         <div class="tabs">
@@ -657,7 +675,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
                     <a href="../student/course-detail.php?id=<?= $course['id'] ?>" class="catalog-link">
                         <div class="catalog-title"><?= $course['name'] ?></div>
                     </a>
-                    <button class="heart"><i class="far fa-heart"></i></button>
+                    <form method="POST">
+                        <input type="hidden" name='course-fav' value="<?= $course['id'] ?>">
+                        <button class="heart" name="heart">
+                            <i class="far fa-heart"></i>
+                        </button>
+                    </form>
                 </div>
                 <img class="course-image" src="<?= $course['thumbnail'] ? "../instructor/".$course['thumbnail'] : "https://placehold.co/600x400?text=Tidak+Ada+Gambar" ?>" alt="Thumbnail Kursus">
                 <div class="catalog-footer">
@@ -666,7 +689,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
                         <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
                         <button type="submit" class="button-rental">Beli</button>
                     </form>
-                </div>
+                    </div>
             </div>
             <?php endforeach; ?>
         </div>
@@ -740,6 +763,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
         </div>
     </footer>
     <script src="./js/course-list.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const hearts = document.querySelectorAll('.heart');
+        hearts.forEach(heart => {
+            heart.addEventListener('click', function() {
+                const courseId = this.getAttribute('data-course-id');
+                const isActive = this.classList.contains('active');
+                const formData = new FormData();
+                formData.append('course_id', courseId);
+                formData.append('fav', !isActive);
+
+                fetch('course-list.php', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(data => {
+                    if (data === 'success') {
+                        this.classList.toggle('active');
+                    } else {
+                        console.error('Failed to update favorite status');
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+            });
+        });
+    });
+    </script>
 </body>
 
 </html>
