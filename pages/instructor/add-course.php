@@ -1,3 +1,11 @@
+<?php
+
+require '../../utils/database/helper.php';
+
+$categories = fetch("SELECT * FROM course_categories");
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -159,7 +167,7 @@
 <body>
     <div class="container">
         <h1>Tambahkan Kursus Baru</h1>
-        <form action="./tambahkursus_action.php" method="POST" enctype="multipart/form-data">
+        <form action="add-course-action.php" method="POST" enctype="multipart/form-data">
             <!-- Progress Bar -->
             <div class="progress-bar">
                 <div class="step active" data-step="informasi-dasar">Informasi Dasar</div>
@@ -174,16 +182,16 @@
 
                 <label for="kategori_kelas">Kategori Kelas</label>
                 <select name="kategori_kelas" id="kategori_kelas">
-                    <option value="1">Web Development</option>
-                    <option value="2">Mobile Development</option>
-                    <option value="3">iOS Development</option>
-                    <option value="4">Soft Skill</option>
+                    <option disabled selected>Pilih Kategori</option>
+                    <?php foreach ($categories as $category): ?>
+                        <option value="<?= $category['id'] ?>"><?= $category['name'] ?></option>
+                    <?php endforeach; ?>
                 </select>
                 <label for="tingkat_kursus">Tingkat Kursus</label>
                 <select name="tingkat_kursus" id="tingkat_kursus" required>
-                    <option value="Mudah">Mudah</option>
-                    <option value="Menengah">Menengah</option>
-                    <option value="Sulit">Sulit</option>
+                    <option value="beginner">Mudah</option>
+                    <option value="intermediate">Menengah</option>
+                    <option value="advanced">Sulit</option>
                 </select>
 
                 <label for="deskripsi_kursus">Deskripsi Kursus</label>

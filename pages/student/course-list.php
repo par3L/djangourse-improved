@@ -655,11 +655,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
             <div class="catalog" data-category="<?= htmlspecialchars($course['category_name']) ?>">
                 <div class="catalog-header">
                     <a href="../student/course-detail.php?id=<?= $course['id'] ?>" class="catalog-link">
-                        <div class="catalog-title"><?= htmlspecialchars($course['name']) ?></div>
+                        <div class="catalog-title"><?= $course['name'] ?></div>
                     </a>
                     <button class="heart"><i class="far fa-heart"></i></button>
                 </div>
-                <img class="course-image" src="<?= htmlspecialchars($course['thumbnail']) ?>" alt="Thumbnail Kursus">
+                <img class="course-image" src="<?= $course['thumbnail'] ? "../instructor/".$course['thumbnail'] : "https://placehold.co/600x400?text=Tidak+Ada+Gambar" ?>" alt="Thumbnail Kursus">
                 <div class="catalog-footer">
                     <div class="koin"><?= number_format($course['price'] / 1000, 0, ',', '.') ?> Koin</div>
                     <form method="POST" action="course-list.php" style="display: inline;">
@@ -671,7 +671,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
             <?php endforeach; ?>
         </div>
         <?php else: ?>
-            <p style="height: 300px;">Belum ada kursus yang tersedia.</p>
+            <p style="height: 300px; padding-top: 24px;">Belum ada kursus yang tersedia.</p>
         <?php endif; ?>
     </main>
 

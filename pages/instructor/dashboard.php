@@ -547,7 +547,7 @@ $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
                     <tbody>
                         <?php foreach ($courses as $course): ?>
                         <tr>
-                            <td><?= $course['title'] ?></td>
+                            <td><?= $course['name'] ?></td>
                             <td>0</td>
                             <td><?= $course['status'] ?></td>
                         </tr>
