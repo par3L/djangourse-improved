@@ -23,7 +23,6 @@ $transactions = fetch("
     WHERE t.student_id = '$student_id'
     ORDER BY t.purchase_date DESC
 ");
-var_dump($transactions);
 
 // Ambil riwayat isi ulang koin
 $topup_history = fetch("
@@ -254,7 +253,7 @@ $topup_history = fetch("
     /* CONTAINER RIWAYAT */
     .saldo-wrapper {
         display: block;
-        padding: 3rem 4rem;
+        padding: 3.5rem 4rem;
         font-family: 'DM Sans', sans-serif;
         background-image: url('../../assets/img/bg.png');
         background-size: cover;
