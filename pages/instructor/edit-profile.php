@@ -212,6 +212,7 @@ if (isset($_POST['submit-btn'])) {
         top: 0;
         height: 100vh;
         overflow-y: auto;
+        margin-top: 20px;
     }
 
     .sidebar .profile {
@@ -310,6 +311,7 @@ if (isset($_POST['submit-btn'])) {
         overflow-y: auto;
         /* Membuat konten utama dapat di-scroll */
         height: calc(100vh - 60px);
+        margin-top: 24px;
     }
 
     .main-content .judul {

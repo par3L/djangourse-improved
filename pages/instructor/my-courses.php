@@ -15,7 +15,10 @@ $stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$instructor = fetch("SELECT * FROM instructors WHERE id = $user_id")[0];
+$instructor = fetch(
+    "SELECT instructors.name, credentials.email, instructors.date_of_birth, instructors.phone_number, instructors.bio, instructors.profile_img FROM instructors
+    JOIN credentials ON instructors.credential_id = credentials.id
+    WHERE instructors.id = $user_id")[0];
 ?>
 
 <!DOCTYPE html>

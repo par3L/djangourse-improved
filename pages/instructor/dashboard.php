@@ -6,6 +6,11 @@ session_start();
 
 $instructorId = $_SESSION['user']['id'];
 
+$instructor = fetch(
+    "SELECT instructors.name, credentials.email, instructors.date_of_birth, instructors.phone_number, instructors.bio, instructors.profile_img FROM instructors
+    JOIN credentials ON instructors.credential_id = credentials.id
+    WHERE instructors.id = $instructorId")[0];
+
 $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
 
 
