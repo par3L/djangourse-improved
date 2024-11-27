@@ -29,6 +29,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         VALUES ('$student_id', '$coins', '$price')";
     execDML($historyQuery);
 
+    $insertToTransactions = "
+        INSERT INTO transactions (student_id, transaction_type, price)
+        VALUES ('$student_id', 'topup', '$price')";
+    execDML($insertToTransactions);
+
     $success_message = "Anda berhasil membeli $coins koin!";
   
     $coin_balance = fetch("SELECT coin_balance FROM students WHERE id = '$student_id'");
@@ -421,8 +426,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $coin_balance = fetch("SELECT coin_balance FROM students WHERE id = '$student_id'");
                 $balance = $coin_balance ? $coin_balance[0]['coin_balance'] : 0;
                 ?>
-                <p><?php echo $balance; ?> Koin</p>
-
+                <a href="coin-dashboard.php"><?= $balance ?> Koin</a>
                 <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
                     <a href="profile.php">
                         <div class="navbar-info-dropdown-content">

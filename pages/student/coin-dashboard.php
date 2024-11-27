@@ -17,12 +17,13 @@ $balance = $coin_balance ? $coin_balance[0]['coin_balance'] : 0;
 
 // Ambil riwayat pembelian kursus
 $transactions = fetch("
-    SELECT c.name AS course_name, t.price AS coins_spent, t.purchase_date 
+    SELECT c.name AS course_name, t.price AS coins_spent, t.purchase_date, t.transaction_type as type
     FROM transactions t
-    JOIN courses c ON t.course_id = c.id
+    LEFT JOIN courses c ON t.course_id = c.id
     WHERE t.student_id = '$student_id'
     ORDER BY t.purchase_date DESC
 ");
+var_dump($transactions);
 
 // Ambil riwayat isi ulang koin
 $topup_history = fetch("
@@ -250,7 +251,6 @@ $topup_history = fetch("
         transform: scale(1.05);
     }
 
-
     /* CONTAINER RIWAYAT */
     .saldo-wrapper {
         display: block;
@@ -259,7 +259,7 @@ $topup_history = fetch("
         background-image: url('../../assets/img/bg.png');
         background-size: cover;
         background-position: center;
-        margin-top: 70px;
+        margin-top: 55px;
     }
 
     .saldo-wrapper h7 {
@@ -539,7 +539,6 @@ $topup_history = fetch("
                         <div class=" navbar-info-dropdown-content">
                             <iconify-icon icon="uil:setting"></iconify-icon>
                             <span>Pengaturan</span>
-
                         </div>
                         <a href="../logout.php">
                             <div class="navbar-info-dropdown-content">
@@ -585,10 +584,10 @@ $topup_history = fetch("
             <div class="history-title">Riwayat Saldo</div>
 
             <!-- Dropdown filter -->
-            <div class="filter-dropdown">
+            <!-- <div class="filter-dropdown">
                 <span>Semua Tanggal</span>
                 <i class="fas fa-chevron-down"></i>
-            </div>
+            </div> -->
 
             <!-- Daftar riwayat transaksi -->
             <div class="transaction-list">
@@ -598,11 +597,11 @@ $topup_history = fetch("
                     <div class="transaction-info">
                         <i class="fas fa-shopping-cart"></i> <!-- Ikon keranjang -->
                         <div class="details">
-                            <span class="title">Beli Kursus: <?= htmlspecialchars($transaction['course_name']) ?></span>
+                            <span class="title"><?= ($transaction['type'] == 'topup')? 'Pembelian Koin': 'Pembelian Kursus' ?><?= $transaction['course_name'] ?></span>
                             <span class="date"><?= date("d M Y H:i", strtotime($transaction['purchase_date'])) ?></span>
                         </div>
                     </div>
-                    <div class="amount">-<?= $transaction['coins_spent'] ?> Koin</div>
+                    <div class="amount"><?= $transaction['coins_spent'] /1000 ?> Koin</div>
                 </div>
                 <?php endforeach; ?>
                 <?php else: ?>

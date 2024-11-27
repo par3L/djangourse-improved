@@ -275,7 +275,7 @@ body {
                     <p>Hai,
                         <?=$_SESSION['user']['name'] ?></p>
                     <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
-                    <p><?= $student['coin_balance'] ?> Koin</p>
+                    <a href="coin-dashboard.php"><?= $student['coin_balance'] ?> Koin</a>
                     <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
                         <a href="profile.php">
                             <div class="navbar-info-dropdown-content">
