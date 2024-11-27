@@ -6,9 +6,28 @@ session_start();
 
 $instructorId = $_SESSION['user']['id'];
 $instructor = fetch(
-    "SELECT instructors.name, credentials.email, instructors.date_of_birth, instructors.phone_number, instructors.bio, instructors.profile_img FROM instructors
+    "SELECT instructors.name, credentials.email, credentials.password, instructors.date_of_birth, instructors.phone_number, instructors.bio, instructors.profile_img FROM instructors
     JOIN credentials ON instructors.credential_id = credentials.id
     WHERE instructors.id = $instructorId")[0];
+
+if (isset($_POST['change-password'])) {
+    $email = $instructor['email'];
+    $currentPassword = $_POST['current-password'];
+    $newPassword = $_POST['new-password'];
+    $newPasswordHashed = password_hash($newPassword, PASSWORD_DEFAULT);
+
+    if (password_verify($currentPassword, $instructor['password'])) {
+        $updatePasswordSql = execDML("UPDATE credentials SET password='$newPasswordHashed' WHERE email='$email'");
+        if ($updatePasswordSql) {
+            echo "<script>alert('Kata sandi berhasil diubah.')</script>";
+        } else {
+            echo "<script>alert('Kata sandi gagal diubah.')</script>";
+        }
+    } else {
+        echo "<script>alert('Kata sandi saat ini salah.')</script>";
+    }
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -592,31 +611,31 @@ $instructor = fetch(
             </div>
             <div class="edit-section">
                 <div class="form">
-                    <form>
+                    <form method="post">
                         <div class="form-row">
                             <div class="form-group half-width">
                                 <label for="password">Kata Sandi Saat Ini</label>
-                                <input type="password" id="oldpassword" />
+                                <input type="password" name="current-password" id="current-password" />
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group half-width">
                                 <label for="password">Kata Sandi Baru</label>
-                                <input type="password" id="newpassword" />
+                                <input type="password" name="new-password" id="new-password" />
                             </div>
                         </div>
 
                         <div class="form-row">
                             <div class="form-group half-width">
                                 <label for="password">Konfirmasi Kata Sandi Baru</label>
-                                <input type="password" id="confirmation" />
+                                <input type="password" name="confirmation-password" id="confirmation-password" />
                             </div>
                         </div>
 
                         <!-- Submit Button -->
                         <div class="end">
-                            <button type="submit" class="submit-btn">Ubah Kata Sandi</button>
+                            <button type="submit" name="change-password" class="submit-btn">Ubah Kata Sandi</button>
                         </div>
                     </form>
                 </div>
@@ -673,10 +692,22 @@ $instructor = fetch(
                     <a href="tel:+62123456789">+62 123 456 789</a>
                 </p>
             </div>
-
         </div>
     </footer>
     <script src="../../navbar.js"></script>
+    <script>
+        const passwordInput = document.getElementById('new-password');
+        const passwordConfirmInput = document.getElementById('confirmation-password');
+
+        passwordConfirmInput.addEventListener('input', () => {
+            if (passwordConfirmInput.value != passwordInput.value) {
+                passwordConfirmInput.setCustomValidity("Konfirmasi kata sandi tidak sesuai")
+                passwordConfirmInput.reportValidity()
+            } else {
+                passwordConfirmInput.setCustomValidity("")
+            }
+        })
+    </script>
 </body>
 
 </html>
