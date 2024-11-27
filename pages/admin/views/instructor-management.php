@@ -1,3 +1,58 @@
+<?php
+
+include '../../../utils/database/helper.php';
+
+$instructorCount = fetch('SELECT COUNT(*) AS count FROM instructors')[0];
+$instructors = fetch('SELECT 
+                        i.name, 
+                        cr.email, 
+                        COUNT(*) AS course
+                    FROM 
+                        instructors i
+                    JOIN 
+                        credentials cr ON i.credential_id = cr.id
+                    JOIN 
+                        courses co ON i.id = co.instructor_id
+                    GROUP BY 
+                        i.name, cr.email;
+');
+$waitingApproval = fetch('SELECT 
+                            c.id as id,
+                            c.name as course, 
+                            cc.name as category, 
+                            c.level as level, 
+                            i.name AS instructor, 
+                            c.price as price
+                        FROM 
+                            courses c
+                        JOIN 
+                            instructors i ON c.instructor_id = i.id
+                        JOIN 
+                            course_categories cc ON c.category_id = cc.id
+                        WHERE 
+                            c.status = "Menunggu";
+');
+$Approved = fetch('SELECT 
+                        c.id as id,
+                        c.name as course, 
+                        cc.name as category, 
+                        c.level as level, 
+                        i.name as instructor, 
+                        c.price as price
+                    FROM 
+                        courses c
+                    JOIN 
+                        instructors i ON c.instructor_id = i.id
+                    JOIN 
+                        course_categories cc ON c.category_id = cc.id
+                    WHERE 
+                        c.status = "Disetujui";'
+);
+
+
+?>
+
+
 <!DOCTYPE html>
 <html lang="id">
 
@@ -43,7 +98,7 @@
                 <div class="instructor-count-content">
                     <iconify-icon icon="mdi:teacher" class="instructor-count-icon"></iconify-icon>
                     <p class="text-wrapper">Jumlah Pengajar</p>
-                    <p class="text-counter">1</p>
+                    <p class="text-counter"><?php echo $instructorCount['count']; ?></p>
                 </div>
             </section>
 
@@ -57,12 +112,20 @@
                             <th>Kursus Dibuat</th>
                         </tr>
                     </thead>
-                    <tbody>
+                    <tbody
+                        <?php if (!empty($instructors)): ?>
+                        <?php foreach ($instructors as $instructor): ?>
                         <tr>
-                            <td>Muhammad Abdal Rizky</td>
-                            <td>aabdal.rizky@gmail.com</td>
-                            <td>3</td>
+                        <td><?php echo $instructor['name']; ?></td>
+                        <td><?php echo $instructor['email']; ?></td>
+                        <td><?php echo $instructor['course']; ?></td>
                         </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <td> - </td>
+                    <td> - </td>
+                    <td> - </td>
+                <?php endif; ?>
                     </tbody>
                 </table>
             </section>
@@ -110,23 +173,79 @@
                             <td>Harga</td>
                             <td>Aksi</td>
                         </tr>
+                        <?php if (!empty($waitingApproval)): ?>
+                            <?php foreach ($waitingApproval as $course): ?>
+                                <tr>
+                                    <td><?php echo $course['course'] ?></td>
+                                    <td><?php echo $course['category'] ?></td>
+                                    <td><?php echo $course['level'] ?></td>
+                                    <td><?php echo $course['instructor'] ?></td>
+                                    <td><?php echo $course['price'] ?></td>
+                                    <td>
+                                        <a href="#" class="btn-approve" data-id="<?php echo $course['id']; ?>">
+                                            <iconify-icon icon="si:check-fill"></iconify-icon>
+                                            <span>Setujui</span>
+                                        </a>
+                                        <a href="#" class="btn-reject" data-id="<?php echo $course['id']; ?>">
+                                            <iconify-icon icon="streamline:delete-1-solid"></iconify-icon>
+                                            <span>Tolak</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td> - </td>
+                                <td> - </td>
+                                <td> - </td>
+                                <td> - </td>
+                                <td> - </td>
+                                <td> - </td>
+                            </tr>
+                        <?php endif; ?>
+                    </table>
+                </div>
+            </section>
+
+            <section class="withdraw-approval-section">
+                <h2>Record</h2>
+                <div class="table-box">
+                    <p style="display: none;">Belum ada permintaan</p>
+                    <table class="common-table">
                         <tr>
-                            <td>Kursus HTML</td>
-                            <td>Web Programming</td>
-                            <td>Mudah</td>
-                            <td>Muhammad Abdal Rizky</td>
-                            <td>10.000</td>
-                            <td>
-                                <a href="#" class="btn-approve">
-                                    <iconify-icon icon="si:check-fill"></iconify-icon>
-                                    <span>Setujui</span>
-                                </a>
-                                <a href="#" class="btn-reject">
-                                    <iconify-icon icon="streamline:delete-1-solid"></iconify-icon>
-                                    <span>Tolak</span>
-                                </a>
-                            </td>
+                            <td>Nama Kursus</td>
+                            <td>Kategori</td>
+                            <td>Tingkat Kesulitan</td>
+                            <td>Pengajar</td>
+                            <td>Harga</td>
+                            <td>Aksi</td>
                         </tr>
+                        <?php if (!empty($Approved)): ?>
+                            <?php foreach ($Approved as $app): ?>
+                                <tr>
+                                    <td><?php echo $app['course'] ?></td>
+                                    <td><?php echo $app['category'] ?></td>
+                                    <td><?php echo $app['level'] ?></td>
+                                    <td><?php echo $app['instructor'] ?></td>
+                                    <td><?php echo $app['price'] ?></td>
+                                    <td>
+                                        <a href="#" class="btn-approve">
+                                            <iconify-icon icon="si:check-fill"></iconify-icon>
+                                            <span>Disetujui</span>
+                                        </a>
+                                    </td>
+                                </tr>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <tr>
+                                <td> - </td>
+                                <td> - </td>
+                                <td> - </td>
+                                <td> - </td>
+                                <td> - </td>
+                                <td> - </td>
+                            </tr>
+                        <?php endif; ?>
                     </table>
                 </div>
             </section>
@@ -136,7 +255,42 @@
     <script src="https://code.jquery.com/jquery-3.7.1.slim.min.js"></script>
     <script src="https://cdn.datatables.net/2.1.8/js/dataTables.min.js"></script>
     <script>
-    let instructorTable = new DataTable('#instructor-data-table');
+
+        let instructorTable = new DataTable('#instructor-data-table');
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.btn-approve, .btn-reject').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const courseId = this.dataset.id;
+                    const status = this.classList.contains('btn-approve') ? 'Disetujui' : 'Ditolak';
+
+                    fetch('update-course-status.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                id: courseId,
+                                status
+                            }),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('Status updated successfully.');
+                                location.reload(); // Reload the page to update the table
+                            } else {
+                                alert('Failed to update status.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred while updating the status.');
+                        });
+                });
+            });
+        });
     </script>
 </body>
 
