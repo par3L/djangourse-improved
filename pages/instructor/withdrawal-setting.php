@@ -506,16 +506,16 @@ $instructor = fetch(
             <div class="menu">
                 <ul>
                     <li class="section-title">Dasbor</li>
-                    <li><a href="./dashboard.php"><i class="fas fa-tachometer-alt"></i> Dasbor</a></li>
-                    <li><a href="./myprofile.php"><i class="fas fa-user"></i> Profil Saya</a></li>
+                    <li><a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dasbor</a></li>
+                    <li><a href="profile.php"><i class="fas fa-user"></i> Profil Saya</a></li>
                     <li class="section-title">Pengajar</li>
-                    <li><a href="#"><i class="fas fa-chalkboard-teacher"></i> Kursus Saya</a></li>
-                    <li><a href="#"><i class="fas fa-wallet"></i> Tarik Saldo</a></li>
+                    <li><a href="my-courses.php"><i class="fas fa-chalkboard-teacher"></i> Kursus Saya</a></li>
+                    <li><a href="withdrawal-record.php"><i class="fas fa-wallet"></i> Tarik Saldo</a></li>
                     <li class="section-title">Pengaturan Akun</li>
-                    <li><a href="./editprofile.php"><i class="fas fa-cogs"></i> Edit Profil</a></li>
-                    <li><a href="./change-password.php"><i class="fas fa-key"></i> Ubah Kata Sandi</a></li>
-                    <li><a href="./withdrawal.php" class="active"><i class="fas fa-money-bill-wave" style="color: white;"></i> Penarikan</a></li>
-                    <li><a href="#"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
+                    <li><a href="edit-profile.php"><i class="fas fa-cogs"></i> Edit Profil</a></li>
+                    <li><a href="change-password.php"><i class="fas fa-key"></i> Ubah Kata Sandi</a></li>
+                    <li><a href="withdrawal-setting.php" class="active"><i class="fas fa-money-bill-wave" style="color: white;"></i> Penarikan</a></li>
+                    <li><a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
                 </ul>
             </div>
         </aside>
