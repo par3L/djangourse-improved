@@ -106,7 +106,6 @@ if ($student_id) {
         $isFav[$course_id] = fetch("SELECT * FROM favourite_courses WHERE student_id = $student_id AND course_id = $course_id");
     }
 }
-
 ?>
 
 <!DOCTYPE html>

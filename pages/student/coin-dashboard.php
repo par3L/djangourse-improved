@@ -24,13 +24,6 @@ $transactions = fetch("
     ORDER BY t.purchase_date DESC
 ");
 
-// Ambil riwayat isi ulang koin
-$topup_history = fetch("
-    SELECT coins_added, price, topup_date 
-    FROM coin_topup_history 
-    WHERE student_id = '$student_id'
-    ORDER BY topup_date DESC
-");
 ?>
 
 

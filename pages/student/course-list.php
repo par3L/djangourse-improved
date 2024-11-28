@@ -128,8 +128,6 @@ if ($temp != null) // check if user is logged in
         }
     }
 }
-
-
 ?>
 
 <!DOCTYPE html>

@@ -371,8 +371,9 @@ $instructor = fetch(
     }
 
     .navbar-info-dropdown iconify-icon {
-    font-size: 24px;
-}
+        font-size: 24px;
+    }
+
     .navbar-cred {
         display: flex;
         align-items: center;
@@ -505,7 +506,8 @@ $instructor = fetch(
                     <li><a href="dashboard.php"><i class="fas fa-tachometer-alt"></i> Dasbor</a></li>
                     <li><a href="profile.php"><i class="fas fa-user"></i> Profil Saya</a></li>
                     <li class="section-title">Pengajar</li>
-                    <li><a href="my-courses.php" class="active"><i class="fas fa-chalkboard-teacher" style="color: white;"></i> Kursus Saya</a></li>
+                    <li><a href="my-courses.php" class="active"><i class="fas fa-chalkboard-teacher"
+                                style="color: white;"></i> Kursus Saya</a></li>
                     <li><a href="withdrawal-record.php"><i class="fas fa-wallet"></i> Tarik Saldo</a></li>
                     <li class="section-title">Pengaturan Akun</li>
                     <li><a href="./edit-profile.php"><i class="fas fa-cogs"></i> Edit Profil</a></li>
@@ -526,6 +528,10 @@ $instructor = fetch(
             <?php if (isset($_GET['message']) && $_GET['message'] === 'deleted' && $_SERVER['REQUEST_METHOD'] === 'GET'): ?>
             <div class="alert alert-success">
                 Kursus berhasil dihapus.
+            </div>
+            <?php elseif (isset($_GET['message']) && $_GET['message'] === 'updated' && $_SERVER['REQUEST_METHOD'] === 'GET'): ?>
+            <div class="alert alert-success">
+                Kursus berhasil diedit.
             </div>
             <?php endif; ?>
 
@@ -550,9 +556,9 @@ $instructor = fetch(
                             <p>Harga: <strong>Rp <?= number_format($row['price'], 0, ',', '.') ?></strong></p>
                         </div>
                         <div class="content-end">
-                            <a href="./editcourse.php?id=<?= $row['id'] ?>" class="sunting"><i class="far fa-edit"></i>
+                            <a href="./edit-course.php?id=<?= $row['id'] ?>" class="sunting"><i class="far fa-edit"></i>
                                 Sunting</a>
-                            <a href="./deletecourse.php?id=<?= $row['id'] ?>" class="hapus"
+                            <a href="./delete-course.php?id=<?= $row['id'] ?>" class="hapus"
                                 onclick="return confirm('Apakah Anda yakin ingin menghapus kursus ini?');">
                                 <i class="fas fa-trash"></i> Hapus
                             </a>
