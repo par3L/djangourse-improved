@@ -73,6 +73,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
     $success_message = "Anda berhasil membeli kursus: $course_name.";
 }
 
+// handle dml to favourite_courses
+$temp = $_SESSION['user']['id'] ?? null; // temorary variable to store user id
+
+if ($temp != null) // check if user is logged in
+{
+    if (isset($_POST['heart'])) 
+    {
+        $course_id = $_POST['course-fav'];
+        $student_id = $_SESSION['user']['id'];
+    
+        $query = "SELECT * FROM favourite_courses WHERE student_id = $student_id AND course_id = $course_id";
+        $result = fetch($query);
+    
+        if (empty($result)) 
+        {
+            execDML("INSERT INTO favourite_courses (student_id, course_id) VALUES ($student_id, $course_id)");
+            header("Location: favourite-course.php");
+        } else 
+        {
+            execDML("DELETE FROM favourite_courses WHERE student_id = $student_id AND course_id = $course_id");
+            header("Location: favourite-course.php");
+        }
+    }
+}
+
+$student_id = $_SESSION['user']['id'] ?? null;
+$isFav = [];
+if ($student_id) {
+    foreach ($courses as $course) {
+        $course_id = $course['id'];
+        $isFav[$course_id] = fetch("SELECT * FROM favourite_courses WHERE student_id = $student_id AND course_id = $course_id");
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -267,6 +300,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
         border: none;
         cursor: pointer;
         transition: color 0.3s ease, transform 0.3s ease;
+        z-index: 1000;
     }
 
     .heart.active {

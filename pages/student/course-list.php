@@ -42,6 +42,15 @@ if ($kategori) {
 $query .= " LIMIT $limit OFFSET $offset";
 $courses = fetch($query);
 
+$student_id = $_SESSION['user']['id'] ?? null;
+$isFav = [];
+if ($student_id) {
+    foreach ($courses as $course) {
+        $course_id = $course['id'];
+        $isFav[$course_id] = fetch("SELECT * FROM favourite_courses WHERE student_id = $student_id AND course_id = $course_id");
+    }
+}
+
 // Tangani pembelian kursus
 $success_message = null;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
@@ -96,22 +105,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
 
 
 // handle dml to favourite_courses
-if (isset($_POST['heart'])) {
-    $course_id = $_POST['course-fav'];
-    $student_id = $_SESSION['user']['id'];
+$temp = $_SESSION['user']['id'] ?? null; // temorary variable to store user id
 
-    $query = "SELECT * FROM favourite_courses WHERE student_id = $student_id AND course_id = $course_id";
-    $result = fetch($query);
-
-    if (empty($result)) {
-        execDML("INSERT INTO favourite_courses (student_id, course_id) VALUES ($student_id, $course_id)");
-        die('success');
-    } else {
-        execDML("DELETE FROM favourite_courses WHERE student_id = $student_id AND course_id = $course_id");
-        die('no');
+if ($temp != null) // check if user is logged in
+{
+    if (isset($_POST['heart'])) 
+    {
+        $course_id = $_POST['course-fav'];
+        $student_id = $_SESSION['user']['id'];
+    
+        $query = "SELECT * FROM favourite_courses WHERE student_id = $student_id AND course_id = $course_id";
+        $result = fetch($query);
+    
+        if (empty($result)) 
+        {
+            execDML("INSERT INTO favourite_courses (student_id, course_id) VALUES ($student_id, $course_id)");
+            header("Location: course-list.php");
+        } else 
+        {
+            execDML("DELETE FROM favourite_courses WHERE student_id = $student_id AND course_id = $course_id");
+            header("Location: course-list.php");
+        }
     }
 }
-
 ?>
 
 <!DOCTYPE html>
@@ -376,8 +392,8 @@ if (isset($_POST['heart'])) {
     }
 
     .course-image {
-        width: 100%;
-        height: auto;
+        width: 220px; 
+        height: 150px;
         object-fit: cover;
         border-radius: 10px;
         margin: 20px 0;
@@ -677,9 +693,15 @@ if (isset($_POST['heart'])) {
                     </a>
                     <form method="POST">
                         <input type="hidden" name='course-fav' value="<?= $course['id'] ?>">
+                        <?php if (isset($isFav[$course['id']]) && !empty($isFav[$course['id']])): ?>
+                        <button class="heart active" name="heart">
+                            <i class="fas fa-heart"></i>
+                        </button>
+                        <?php else: ?>
                         <button class="heart" name="heart">
                             <i class="far fa-heart"></i>
                         </button>
+                        <?php endif; ?>
                     </form>
                 </div>
                 <img class="course-image" src="<?= $course['thumbnail'] ? "../instructor/".$course['thumbnail'] : "https://placehold.co/600x400?text=Tidak+Ada+Gambar" ?>" alt="Thumbnail Kursus">
