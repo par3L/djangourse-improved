@@ -63,6 +63,7 @@ if (isset($_POST['change-password'])) {
             "navbar navbar"
             "sidebar main";
         width: 100%;
+        min-height: 100vh;
     }
 
     @media (max-width: 768px) {

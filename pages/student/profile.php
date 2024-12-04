@@ -213,7 +213,7 @@ $student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
 
     .tabs-section {
         display: flex;
-        margin-top: 50px;
+        margin-top: 32px;
         gap: 20px;
         margin-left: 7.5rem;
     }

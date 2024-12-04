@@ -6,9 +6,19 @@ session_start();
 
 $instructorId = $_SESSION['user']['id'];
 $instructor = fetch(
-    "SELECT instructors.name, credentials.email, instructors.phone_number, instructors.profile_img FROM instructors
+    "SELECT instructors.name, credentials.email, instructors.phone_number, instructors.profile_img, instructors.preferred_withdrawal_method FROM instructors
     JOIN credentials ON instructors.credential_id = credentials.id
     WHERE instructors.id = $instructorId")[0];
+
+if (isset($_POST['btn-form'])) {
+    $withdrawalMethod = $_POST['withdrawal-method'];
+    $sql = execDML("UPDATE instructors SET preferred_withdrawal_method = '$withdrawalMethod' WHERE id = $instructorId");
+    if ($sql > 0) {
+        echo "<script>alert('Metode penarikan berhasil diubah!'); location.href='withdrawal-setting.php'</script>";
+    } else {
+        echo "<script>alert('Gagal mengubah metode penarikan!'); location.href='withdrawal-setting.php'</script>";
+    }
+}
 
 ?>
 
@@ -378,8 +388,9 @@ $instructor = fetch(
     }
 
     .navbar-info-dropdown iconify-icon {
-    font-size: 24px;
-}
+        font-size: 24px;
+    }
+
     .navbar-cred {
         display: flex;
         align-items: center;
@@ -455,12 +466,21 @@ $instructor = fetch(
         color: #A1D1B6;
         text-decoration: underline;
     }
+
+    .disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+
+    .disabled:hover {
+        background-color: #ccc;
+    }
     </style>
 </head>
 
 <body>
     <div class="container">
-    <header class="navbar">
+        <header class="navbar">
             <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="width: 110px;">
             <nav>
                 <ul id="navbar-menu">
@@ -514,7 +534,8 @@ $instructor = fetch(
                     <li class="section-title">Pengaturan Akun</li>
                     <li><a href="edit-profile.php"><i class="fas fa-cogs"></i> Edit Profil</a></li>
                     <li><a href="change-password.php"><i class="fas fa-key"></i> Ubah Kata Sandi</a></li>
-                    <li><a href="withdrawal-setting.php" class="active"><i class="fas fa-money-bill-wave" style="color: white;"></i> Penarikan</a></li>
+                    <li><a href="withdrawal-setting.php" class="active"><i class="fas fa-money-bill-wave"
+                                style="color: white;"></i> Penarikan</a></li>
                     <li><a href="../logout.php"><i class="fas fa-sign-out-alt"></i> Keluar</a></li>
                 </ul>
             </div>
@@ -525,41 +546,52 @@ $instructor = fetch(
                 <span class="breadcrumb">Beranda > Penarikan</span>
             </div>
             <div class="wrapper">
+            <form id="withdrawal-setting-form" class="withdrawal-form" method="POST">
                 <div class="withdrawal-options">
                     <h1>Pilih Metode Penarikan</h1>
                     <div class="method">
-                        <label>
-                            <input type="radio" name="withdrawal-method" value="paypal" class="withdrawal-radio" />
+                        <label for="paypal-radio">
+                            <input type="radio" id="paypal-radio" name="withdrawal-method" value="paypal" class="withdrawal-radio" <?= ($instructor['preferred_withdrawal_method'] == 'paypal') ? 'checked' : '' ?> />
                             <span>Pembayaran PayPal</span>
                         </label>
                     </div>
                     <div class="method">
-                        <label>
-                            <input type="radio" name="withdrawal-method" value="dana" class="withdrawal-radio" />
-                            <span>Dana</span>
+                        <label for="dana-radio">
+                            <input type="radio" id="dana-radio" name="withdrawal-method" value="dana" class="withdrawal-radio" <?= ($instructor['preferred_withdrawal_method'] == 'dana') ? 'checked' : '' ?>/>
+                            <span>DANA</span>
                         </label>
                     </div>
                 </div>
                 <div class="form-container">
-                    <form id="paypal-form" class="withdrawal-form hidden">
-                        <div class="form-group">
-                            <label for="paypal-email">Surel</label>
-                            <input type="email" id="paypal-email" name="paypal-email"
-                                placeholder="Masukkan email PayPal Anda" value="<?= $instructor['email'] ?>" required />
+                    
+                        <div id="paypal-form" class="hidden">
+                            <div class="form-group">
+                                <label for="paypal-email">Surel</label>
+                                <input type="email" id="paypal-email" name="paypal-email"
+                                    placeholder="Masukkan email PayPal Anda" value="<?= $instructor['email'] ?>" required disabled/>
+                            </div>
+                            <p>Kami akan menggunakan alamat email ini untuk mengirimkan uang ke akun PayPal Anda.</p>
+                            
+                            <button type="submit" id="paypal-btn-form" name="btn-form" class="submit-btn">Gunakan sebagai Akun Penarikan</button>
                         </div>
-                        <p>Kami akan menggunakan alamat email ini untuk mengirimkan uang ke akun PayPal Anda.</p>
-                        <button type="submit" class="submit-btn">Simpan Akun Penarikan</button>
-                    </form>
-                    <form id="dana-form" class="withdrawal-form hidden">
-                        <div class="form-group">
-                            <label for="dana-number">Nomor DANA</label>
-                            <input type="text" id="dana-number" name="dana-number"
-                                placeholder="Masukkan nomor DANA Anda" value="<?= $instructor['phone_number'] ?>" required />
+                        <div id="dana-form" class="hidden">
+                            <div class="form-group">
+                                <label for="dana-number">Nomor DANA</label>
+                                <input type="text" id="dana-number" name="dana-number"
+                                    placeholder="0812xxxxxxxx" value="<?= $instructor['phone_number'] ?>"
+                                    required disabled/>
+                            </div>
+                            <p>Kami akan menggunakan nomor ini untuk mengirimkan uang ke akun DANA Anda.</p>
+                            <?php
+                            if (!$instructor['phone_number']) {
+                                echo '<p>Anda belum menambahkan nomor DANA. Silakan tambahkan nomor DANA Anda di <a href="edit-profile.php">Edit Profil</a>.</p>';
+                            }
+                            ?>
+                            <button type="submit" id="dana-btn-form" name="btn-form" class="submit-btn <?= (!$instructor['phone_number']) ? 'disabled': '' ?>" <?= (!$instructor['phone_number']) ? 'disabled': '' ?>>Gunakan sebagai Akun Penarikan</button>
                         </div>
-                        <p>Kami akan menggunakan nomor ini untuk mengirimkan uang ke akun DANA Anda.</p>
-                        <button type="submit" class="submit-btn">Simpan Akun Penarikan</button>
-                    </form>
+                    
                 </div>
+                </form>
             </div>
         </main>
     </div>
@@ -616,20 +648,34 @@ $instructor = fetch(
         </div>
     </footer>
     <script>
-    const withdrawalOptions = document.querySelectorAll('input[name="withdrawal-method"]');
-    const paypalForm = document.getElementById("paypal-form");
-    const danaForm = document.getElementById("dana-form");
+    document.addEventListener("DOMContentLoaded", () => {
+        const withdrawalOptions = document.querySelectorAll('input[name="withdrawal-method"]');
+        const withdrawalSettingForm = document.getElementById('withdrawal-setting-form');
+        const paypalForm = document.getElementById("paypal-form");
+        const danaForm = document.getElementById("dana-form");
 
-    withdrawalOptions.forEach((option) => {
-        option.addEventListener("change", (event) => {
-            if (event.target.value === "paypal") {
+        console.log(withdrawalOptions);
+
+        const toggleForm = (method) => {
+            if (method === "paypal") {
                 paypalForm.classList.remove("hidden");
                 danaForm.classList.add("hidden");
-            } else if (event.target.value === "dana") {
+            } else if (method === "dana") {
                 danaForm.classList.remove("hidden");
                 paypalForm.classList.add("hidden");
             }
+        };
+
+        withdrawalOptions.forEach((option) => {
+            option.addEventListener("change", (event) => {
+                toggleForm(event.target.value);
+            });
         });
+
+        const selectedMethod = document.querySelector('input[name="withdrawal-method"]:checked');
+        if (selectedMethod) {
+            toggleForm(selectedMethod.value);
+        }
     });
     </script>
     <script src="../../navbar.js"></script>

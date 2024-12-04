@@ -1,3 +1,41 @@
+<?php
+
+require '../../utils/database/helper.php';
+require '../../utils/date.php';
+
+session_start();
+
+if (isset($_SESSION["login"])) {
+    $student_id = $_SESSION['user']['id'];
+
+    if ($_SESSION['user']['role_id'] == 1) {
+        $student = fetch("SELECT coin_balance FROM students WHERE id=$student_id")[0];
+    }
+
+    if ($_SESSION['user']['role_id'] == 3) {
+        header('Location: pages/admin/views/dashboard.php');
+        die;
+    }
+}
+
+if (isset($_GET['id'])) {
+    $courseId = $_GET['id'];
+    $course = fetch("SELECT * FROM courses WHERE id = $courseId");
+    $courseSections = fetch("SELECT * FROM course_sections WHERE course_id = $courseId");
+    if ($course) {
+        $course = $course[0];
+    } else {
+        echo "Kursus tidak ditemukan.";
+        die;
+    }
+    // var_dump($course);
+} else {
+    echo "ID kursus harus dilampirkan.";
+    die;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,6 +45,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
     <title>Tentang Kelas dan Tools Kelas</title>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
     <style>
     /* Global Styles */
     * {
@@ -48,6 +87,124 @@
     .logo {
         max-width: 120px;
         height: auto;
+    }
+
+    .navbar {
+        position: fixed;
+        z-index: 9999;
+        top: 0;
+        left: 0;
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem 4rem;
+        background-color: #245044;
+    }
+
+    .navbar ul {
+        display: flex;
+        list-style: none;
+        gap: 30px;
+    }
+
+    .navbar ul li {
+        margin-left: 20px;
+    }
+
+    .navbar a {
+        text-decoration: none;
+        color: #fff;
+        transition: color 0.3s ease, border-bottom 0.3s ease;
+    }
+
+    .navbar a:hover {
+        color: #A1D1B6;
+        border-bottom: 2px solid #A1D1B6;
+    }
+
+    .navbar-info {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: white;
+    }
+
+    .navbar-info-dropdown {
+        position: absolute;
+        top: 80px;
+        right: 48px;
+        width: 220px;
+        display: block;
+        padding: 16px;
+        background-color: #005955;
+    }
+
+    .hide {
+        display: none;
+    }
+
+    .navbar-info-dropdown a {
+        display: block;
+        padding: 16px;
+    }
+
+    .navbar-info-dropdown iconify-icon {
+        font-size: 24px;
+    }
+
+    .navbar-info-dropdown .navbar-info-dropdown-content {
+        display: flex;
+        gap: 16px;
+    }
+
+
+    .style-daftar,
+    .style-masuk {
+        border: none;
+        border-radius: 50px;
+        padding: 10px 24px;
+        font-size: 16px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+    }
+
+    .auth-buttons button {
+        margin-left: 10px;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .auth-buttons .style-daftar {
+        background-color: #128e8c;
+        color: #FFFFFF;
+        padding: 0.5rem 1rem;
+    }
+
+    .auth-buttons .style-daftar:hover {
+        background-color: #fff;
+        transform: scale(1.05);
+        color: #15A3A1;
+    }
+
+    .auth-buttons .style-masuk {
+        background-color: #245044;
+        padding: 0.5rem 1rem;
+        border: none;
+        border-radius: 20px;
+        color: #fff;
+        cursor: pointer;
+        transition: background-color 0.3s ease, transform 0.3s ease;
+    }
+
+    .auth-buttons .style-masuk:hover {
+        background-color: #fff;
+        color: #15A3A1;
+        transform: scale(1.05);
     }
 
     /* Hamburger Menu Icon */
@@ -153,16 +310,16 @@
 
     /* Content Section */
     .isi-content {
-        background-image: url("asset/bg.png");
+        background-image: url("../../assets/img/bg.png");
         background-size: cover;
         background-position: center;
-        background-repeat: no-repeat;
+        background-repeat: repeat;
         min-height: 100vh;
     }
 
 
     .description {
-        margin-top: 100px;
+        margin-top: 80px;
         text-align: center;
         padding: 20px;
         border-radius: 10px;
@@ -174,7 +331,7 @@
         line-height: 150%;
         letter-spacing: -0.02em;
         font-weight: 600;
-        margin-top: 20px;
+        margin-top: 40px;
     }
 
     .description p {
@@ -331,6 +488,11 @@
         cursor: pointer;
     }
 
+    .button-lanjut button.active {
+        background-color: #ef991f;
+        color: #ffffff;
+    }
+
     .button-lanjut button:hover {
         background-color: #ef991f;
         color: #ffffff;
@@ -347,9 +509,12 @@
     .penggunaan,
     .alat {
         margin-top: 20px;
-        display: none;
         text-align: center;
         margin-bottom: 20px;
+    }
+
+    .alat {
+        display: none;
     }
 
     .alat .item {
@@ -397,6 +562,78 @@
         color: #79747e;
     }
 
+    footer {
+    background-image: url('../../assets/img/bg-footer.png');
+    background-size: cover;        
+    background-position: center;
+    color: #fff;
+    padding: 2rem 4rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+.footer-content .logo-section p {
+    padding-left: 10px;
+    margin-top: 10px;
+}
+
+.footer-logo {
+    width: 100px;
+}
+
+.links-section a {
+    text-decoration: none;
+    color: #fff;
+    transition: color 0.3s ease, border-bottom 0.3s ease;
+}
+
+.links-section a:hover {
+    color: #A1D1B6;
+    border-bottom: 2px solid #A1D1B6;
+}
+
+.links-section ul {
+    list-style: none;
+    margin-top: 20px;
+    padding-left: 0;
+}
+
+.links-section ul li {
+    margin: 20px 0;
+}
+
+.contact-section p {
+    margin: 20px 0;
+}
+
+.contact-section i {
+    margin-right: 5px;
+}
+
+.contact-section a {
+    text-decoration: none;        
+    color: #fff;
+    transition: color 0.3s ease; 
+}
+
+.contact-section a:hover {
+    color: #A1D1B6;
+    text-decoration: underline;
+}
+/* footer end */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    position: relative;
+}
+
     /* Responsive Design */
     @media screen and (max-width: 768px) {
         .isi-content {
@@ -416,42 +653,84 @@
 </head>
 
 <body>
-    <!-- HEADER -->
-    <header class="header">
-        <img class="logo" src="assets/django-20.png" alt="Logo Django">
-        <div class="hamburger" id="hamburger" onclick="toggleMenu()">
-            <div></div>
-            <div></div>
-            <div></div>
-        </div>
-        <nav class="menu">
-            <a href="#" class="menu-item">Beranda</a>
-            <a href="#" class="menu-item">Kursus</a>
-            <a href="#" class="menu-item">Cara Penggunaan</a>
-        </nav>
-        <div class="auth-buttons">
-            <button class="style-daftar">Daftar</button>
-            <button class="style-masuk">Masuk</button>
-        </div>
-        <nav class="menu-collapsed" id="menu-collapsed">
-            <a href="#" class="menu-item">Beranda</a>
-            <a href="#" class="menu-item">Kursus</a>
-            <a href="#" class="menu-item">Cara Penggunaan</a>
-            <div class="auth-buttons">
-                <button class="style-daftar">Daftar</button>
-                <button class="style-masuk">Masuk</button>
+<header>
+        <div class="navbar">
+            <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
+            <nav>
+                <ul>
+                    <li><a href="../../index.php">Beranda</a></li>
+                    <li><a href="course-list.php">Kursus</a></li>
+                    <li><a href="../how-to-use.php">Cara Penggunaan</a></li>
+                </ul>
+            </nav>
+            <?php if (isset($_SESSION['login'])): ?>
+            <div class="navbar-info">
+                <p>Hai, <?= $_SESSION['user']['name'] ?></p>
+                <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
+                <?php if ($_SESSION['user']['role_id'] == 1): ?>
+                <a href="coin-dashboard.php"><?= $student['coin_balance'] ?> Koin</a>
+                <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
+                    <a href="profile.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
+                            <span>Profil</span>
+                        </div>
+                    </a>
+                    <a href="favourite-course.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="weui:like-filled"></iconify-icon>
+                            <span>Wishlist</span>
+                        </div>
+
+                    </a>
+                    <a href="setting.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="uil:setting"></iconify-icon>
+                            <span>Pengaturan</span>
+                        </div>
+                    </a>
+                    <a href="../logout.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
+                            <span>Keluar</span>
+                        </div>
+                    </a>
+                </div>
+                <?php elseif ($_SESSION['user']['role_id'] == 2): ?>
+                <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
+                    <a href="../instructor/dashboard.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
+                            <span>Dasbor</span>
+                        </div>
+                    </a>
+                    <a href="../logout.php">
+                        <div class="navbar-info-dropdown-content">
+                            <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
+                            <span>Keluar</span>
+                        </div>
+                    </a>
+                </div>
+                <?php endif; ?>
             </div>
-        </nav>
+
+            <?php else: ?>
+            <div class="auth-buttons">
+                <button class="style-daftar" onclick="location.href='pages/auth.php'">Daftar</button>
+                <button class="style-masuk" onclick="location.href='pages/auth.php'">Masuk</button>
+            </div>
+            <?php endif; ?>
+        </div>
     </header>
 
     <!-- DESCRIPTION SECTION -->
     <div class="isi-content">
         <div class="description">
-            <h1>HTML</h1>
+            <h1><?= $course['name'] ?></h1>
             <p>Belajar Struktur Dasar dari Sebuah Website</p>
             <div class="info">
-                <div><i class="fas fa-signal"></i> Tingkat Kesulitan: Mudah</div>
-                <div><i class="fas fa-calendar-alt"></i> Diperbarui: September 2022</div>
+                <div><i class="fas fa-signal"></i> Tingkat Kesulitan: <?= $course['level'] ?></div>
+                <div><i class="fas fa-calendar-alt"></i> Dipublikasi: <?= convertToWita($course['created_at']) ?></div>
             </div>
         </div>
 
@@ -529,19 +808,11 @@
             </div>
 
             <div class="button-lanjut">
-                <button onclick="showContent('penggunaan')">Tentang Kelas</button>
+                <button class="active" onclick="showContent('penggunaan')">Tentang Kelas</button>
                 <button onclick="showContent('alat')">Alat</button>
             </div>
             <div class="penggunaan" id="penggunaan">
-                <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam perferendis harum amet minima
-                    recusandae excepturi saepe ipsa voluptate quae iste, delectus sapiente, dolore explicabo qui
-                    commodi
-                    a, necessitatibus animi hic.Lorem ipsum dolor sit amet, consectetur adipisicing elit. Numquam
-                    perferendis harum amet minima
-                    recusandae excepturi saepe ipsa voluptate quae iste, delectus sapiente, dolore explicabo qui
-                    commodi
-                    a, necessitatibus animi hic.
-                </p>
+                <p><?= $course['description'] ?></p>
             </div>
             <div class="alat" id="alat">
                 <div class="item">
@@ -578,7 +849,58 @@
         </div>
     </div>
 
-    <?php include '../../components/footer.php'; ?>
+    <footer>
+        <div class="footer-content">
+            <div class="logo-section">
+                <img src="../../assets/img/logo-django.png" alt="Logo" class="footer-logo">
+                <p>Bergabunglah bersama kami untuk menguasai<br> berbagai keahlian
+                    dibidang teknologi dan membuka<br>peluang karier di dunia teknologi
+                    yang terus berkembang.<br><br> Kami menyediakan kursus
+                    berkualitas yang membantu <br> kamu berkembang dari pemula
+                    hingga ahli.</p>
+                <div class="hak-cipta">
+                    <p>© 2024 Django Course. Semua hak cipta dilindungi.</p>
+                </div>
+            </div>
+            <div class="links-section">
+                <h3>Instruktur</h3>
+                <ul>
+                    <li><a href="#">Profil</a></li>
+                    <li><a href="#">Login</a></li>
+                    <li><a href="#">Register</a></li>
+                    <li><a href="#">Instructor</a></li>
+                    <li><a href="#">Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="links-section">
+                <h3>Siswa</h3>
+                <ul>
+                    <li><a href="#">Profil</a></li>
+                    <li><a href="#">Jelajahi Kursus</a></li>
+                    <li><a href="#">Wishlist Kursus</a></li>
+                    <li><a href="#">Student</a></li>
+                    <li><a href="#">Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="contact-section">
+                <h3>Alamat</h3>
+                <p>
+                    <i class="fas fa-map-marker-alt"></i>
+                    <a href="https://www.google.com/maps?q=Jalan+Gubeng+Surabaya" target="_blank">Jalan Gubeng,
+                        Surabaya</a>
+                </p>
+                <p>
+                    <i class="fas fa-envelope"></i>
+                    <a href="mailto:info@djangourse.com">info@dingcourse.com</a>
+                </p>
+                <p>
+                    <i class="fas fa-phone-alt"></i>
+                    <a href="tel:+62123456789">+62 123 456 789</a>
+                </p>
+            </div>
+
+        </div>
+    </footer>
 
     <script>
     function toggleContent(element) {
@@ -599,9 +921,16 @@
         document.getElementById('alat').style.display = 'none';
 
         document.getElementById(section).style.display = 'block';
+        if (section == 'penggunaan') {
+            document.querySelector('.button-lanjut button:nth-child(2)').classList.remove('active');
+            document.querySelector('.button-lanjut button:nth-child(1)').classList.add('active');
+        } else {
+            document.querySelector('.button-lanjut button:nth-child(1)').classList.remove('active');
+            document.querySelector('.button-lanjut button:nth-child(2)').classList.add('active');
+        }
     }
     </script>
-    
+    <script src="../../navbar.js"></script>
 </body>
 
 </html>

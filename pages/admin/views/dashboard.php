@@ -1,15 +1,36 @@
 <?php
 
 include '../../../utils/database/helper.php';
+include '../../../utils/date.php';
+include '../../../utils/number.php';
 
 $students = fetch(
     "SELECT students.name, credentials.email FROM students
     JOIN credentials ON students.credential_id = credentials.id"
 );
+$studentsRecentlyRegister = fetch(
+    "SELECT students.name, credentials.email FROM students
+    JOIN credentials ON students.credential_id = credentials.id
+    WHERE credentials.created_at = CURDATE()"
+);
 $instructors = fetch("SELECT * FROM instructors");
-$courses = fetch(
-    "SELECT * FROM courses
-    JOIN course_categories ON courses.category_id = course_categories.id"
+$courses = fetch("SELECT * FROM courses");
+$coursesPending = fetch(
+    "SELECT courses.name, course_categories.name as category, courses.level, instructors.name as instructor_name FROM courses
+    JOIN course_categories ON courses.category_id = course_categories.id
+    JOIN instructors ON courses.instructor_id = instructors.id
+    WHERE courses.status = 'Menunggu'"
+);
+$coursesApproved = fetch(
+    "SELECT courses.name, course_categories.name as category, courses.level, instructors.name as instructor_name FROM courses
+    JOIN course_categories ON courses.category_id = course_categories.id
+    JOIN instructors ON courses.instructor_id = instructors.id
+    WHERE courses.status = 'Disetujui'
+    LIMIT 5"
+);
+$withdrawal_requests = fetch(
+    "SELECT instructors.name AS instructor_name, withdrawal_requests.amount, withdrawal_requests.created_at, withdrawal_requests.status FROM withdrawal_requests
+    JOIN instructors ON withdrawal_requests.instructor_id = instructors.id"
 );
 
 ?>
@@ -85,22 +106,22 @@ $courses = fetch(
                 </div>
                 <div class="counter-box">
                     <div class="counter-box-left">
-                        <div class="title">Pendaftaran Hari ini</div>
-                        <div class="text-wrapper">1</div>
+                        <div class="title">Siswa Mendaftar Hari ini</div>
+                        <div class="text-wrapper"><?= count($studentsRecentlyRegister) ?></div>
                     </div>
                     <iconify-icon icon="fluent-mdl2:group" class="counter-box-icon"></iconify-icon>
                 </div>
                 <div class="counter-box">
                     <div class="counter-box-left">
                         <div class="title">Kursus Menunggu Persetujuan</div>
-                        <div class="text-wrapper">1</div>
+                        <div class="text-wrapper"><?= count($coursesPending) ?></div>
                     </div>
                     <iconify-icon icon="streamline:one-finger-hold" class="counter-box-icon"></iconify-icon>
                 </div>
                 <div class="counter-box">
                     <div class="counter-box-left">
                         <div class="title">Permintaan Penarikan</div>
-                        <div class="text-wrapper">1</div>
+                        <div class="text-wrapper"><?= count($withdrawal_requests) ?></div>
                     </div>
                     <iconify-icon icon="iconoir:wallet" class="counter-box-icon"></iconify-icon>
                 </div>
@@ -108,9 +129,9 @@ $courses = fetch(
 
             <section>
                 <h2 class="main-title">Ringkasan Aktivitas Terbaru</h2>
-                <h3 class="table-title">Kursus Baru</h3>
+                <h3 class="table-title">Kursus Disetujui Baru</h3>
                 <div class="table-box">
-                    <?php if (count($courses) !== 0): ?>
+                    <?php if (count($coursesApproved) !== 0): ?>
                         <table class="common-table">
                             <tr>
                                 <td>Judul Kursus</td>
@@ -118,12 +139,12 @@ $courses = fetch(
                                 <td>Tingkatan</td>
                                 <td>Pemublikasi</td>
                             </tr>
-                            <?php foreach ($courses as $course): ?>
+                            <?php foreach ($coursesApproved as $courseApproved): ?>
                                 <tr>
-                                    <td>Kursus Menabung</td>
-                                    <td>Soft Skills</td>
-                                    <td>Sulit</td>
-                                    <td>Muhammad Abdal Rizky</td>
+                                    <td><?= $courseApproved['name'] ?></td>
+                                    <td><?= $courseApproved['category'] ?></td>
+                                    <td><?= $courseApproved['level'] ?></td>
+                                    <td><?= $courseApproved['instructor_name'] ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </table>
@@ -152,16 +173,20 @@ $courses = fetch(
                 </div>
                 <h3 class="table-title">Permintaan Penarikan Dana</h3>
                 <div class="table-box">
-                    <?php if (count($students) !== 0): ?>
+                    <?php if (count($withdrawal_requests) !== 0): ?>
                         <table class="common-table">
                             <tr>
-                                <td>Nama Siswa</td>
+                                <td>Diminta pada</td>
+                                <td>Nama Pengajar</td>
                                 <td>Jumlah</td>
+                                <td>Status</td>
                             </tr>
-                            <?php foreach ($students as $student): ?>
+                            <?php foreach ($withdrawal_requests as $withdrawal_request): ?>
                                 <tr>
-                                    <td><?= $student['name'] ?></td>
-                                    <td>20000</td>
+                                    <td><?= convertToWita($withdrawal_request['created_at']) ?></td>
+                                    <td><?= $withdrawal_request['instructor_name'] ?></td>
+                                    <td><?= 'Rp'. formatAsCurrency($withdrawal_request['amount']) ?></td>
+                                    <td><?= $withdrawal_request['status'] ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         </table>

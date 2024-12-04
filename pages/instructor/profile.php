@@ -544,7 +544,7 @@ body {
                     </div>
                     <div class="detail-item">
                         <h4>Terdaftar pada</h4>
-                        <p><?= convert($instructor['created_at']) ?></p>
+                        <p><?= convertToWita($instructor['created_at']) ?></p>
                     </div>
                     <div class="detail-item">
                         <h4>Surel</h4>

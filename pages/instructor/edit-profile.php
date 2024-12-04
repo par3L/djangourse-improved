@@ -61,9 +61,9 @@ if (isset($_POST['submit-btn'])) {
                                     name = '$name', date_of_birth = '$dateOfBirth', phone_number = '$phoneNumber', 
                                     bio = '$bio', profile_img = '$profileImg' WHERE id = $instructorId");
     if ($updateInstructor > 0) {
-        echo "Profile updated successfully!";
+        echo "<script>alert('Detail profil berhasil diperbarui!'); location.href='edit-profile.php'</script>";
     } else {
-        echo "Failed to update profile!";
+        echo "<script>alert('Detail profil gagal diperbarui!'); location.href='edit-profile.php'</script>";
     }
 }   
 
@@ -707,7 +707,7 @@ if (isset($_POST['submit-btn'])) {
                             </div>
                             <div class="form-group half-width">
                                 <label for="nomor-telepon">Nomor Telepon</label>
-                                <input type="tel" id="nomor-telepon" placeholder="+62 81234567890" value="<?= $instructor['phone_number'] ?>" name="nomor-telp"/>
+                                <input type="tel" id="nomor-telepon" placeholder="0812xxxxxxxx" value="<?= $instructor['phone_number'] ?>" name="nomor-telp"/>
                             </div>
                         </div>
 

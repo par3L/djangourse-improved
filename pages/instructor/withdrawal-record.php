@@ -1,19 +1,35 @@
 <?php
 
 require '../../utils/database/helper.php';
+require '../../utils/date.php';
+require '../../utils/number.php';
 
 session_start();
-
 $instructorId = $_SESSION['user']['id'];
 
 $instructor = fetch(
-    "SELECT instructors.name, credentials.email, instructors.date_of_birth, instructors.phone_number, instructors.bio, instructors.profile_img FROM instructors
+    "SELECT instructors.name, credentials.email, instructors.date_of_birth, instructors.phone_number, instructors.bio, instructors.profile_img, instructors.balance, instructors.preferred_withdrawal_method FROM instructors
     JOIN credentials ON instructors.credential_id = credentials.id
     WHERE instructors.id = $instructorId")[0];
 
 $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
 
-
+$withdrawal_requests = fetch(
+    "SELECT * FROM withdrawal_requests WHERE instructor_id = $instructorId ORDER BY created_at DESC");
+if (isset($_POST["submit"])){
+    $amount = $_POST["amount"];
+    $payment_method = $instructor['preferred_withdrawal_method'];
+    $status = 'pending';
+    $datetime = time();
+    $sql = execDML(
+        "INSERT INTO withdrawal_requests (instructor_id, created_at, amount, payment_method, status) VALUES ($instructorId, '$datetime',$amount, '$payment_method', '$status');"
+    );
+    $update = execDML("UPDATE instructors
+    SET balance = balance - $amount
+    WHERE id = $instructorId");
+    header("Location: withdrawal-record.php");
+    
+}   
 ?>
 
 <!DOCTYPE html>
@@ -367,8 +383,9 @@ $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
     }
 
     .navbar-info-dropdown iconify-icon {
-    font-size: 24px;
-}
+        font-size: 24px;
+    }
+
     .navbar-cred {
         display: flex;
         align-items: center;
@@ -457,6 +474,7 @@ $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
     .sub-right .btn-primary:hover {
         background-color: #218838;
         transform: scale(1.05);
+
     }
 
     /* Table Section */
@@ -558,14 +576,16 @@ $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
     /* Modal Content - Tetap di tengah */
     .modal-content {
         background-color: #fff;
+        margin: 10% auto;
         padding: 20px 30px;
         border-radius: 12px;
-        width: 90%;
-        max-width: 400px;
+        width: 40%;
         box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-        text-align: center;
         position: relative;
+        text-align: center;
+        font-family: 'Arial', sans-serif;
     }
+
 
     .close-btn {
         position: absolute;
@@ -635,6 +655,7 @@ $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
         cursor: pointer;
         font-weight: bold;
         transition: all 0.3s;
+        border: 1px solid black;
     }
 
     .modal-actions .btn-submit {
@@ -716,6 +737,15 @@ $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
     .contact-section a:hover {
         color: #A1D1B6;
         text-decoration: underline;
+    }
+
+    .btn-primary.disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+
+    .btn-primary.disabled:hover {
+        background-color: #ccc;
     }
     </style>
 </head>
@@ -800,17 +830,16 @@ $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
                         </div>
                         <div class="text">
                             <h5>Saldo Saat ini</h5>
-                            <h3>Rp500.000</h3>
+                            <h3>Rp<?= formatAsCurrency($instructor['balance']) ?></h3>
                         </div>
                     </div>
                     <div class="sub-right">
-                        <button id="withdrawalBtn" class="btn btn-primary">
+                        <button id="withdrawalBtn" class="btn btn-primary <?= ($instructor['balance'] < 50000) ? 'disabled':'' ?>">
                             Permintaan Penarikan
                         </button>
                     </div>
                 </div>
 
-                <!-- Table Section -->
                 <div class="table-record">
                     <div class="header-table">
                         <h2>Riwayat Penarikan</h2>
@@ -825,24 +854,30 @@ $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
                             </tr>
                         </thead>
                         <tbody>
+                            <?php if (!empty($withdrawal_requests)): ?>
+                            <?php foreach ($withdrawal_requests as $w): ?>
                             <tr>
+                                <?php if ($w['payment_method'] == 'paypal'): ?>
                                 <td>
                                     <i class="fab fa-paypal"></i> PayPal<br />
-                                    adwin@gmail.com
+                                    <?= $instructor['email'] ?>
                                 </td>
-                                <td>25 Oktober 2024<br />10:30 WIB</td>
-                                <td>Rp. 100.000</td>
-                                <td><button class="status selesai">Selesai</button></td>
-                            </tr>
-                            <tr>
+                                <?php elseif ($w['payment_method'] == 'dana'): ?>
                                 <td>
-                                    <i class="fab fa-paypal"></i> PayPal<br />
-                                    adwin@gmail.com
+                                    <i class="fas fa-wallet"></i> DANA<br />
+                                    <?= $instructor['phone_number'] ?>
                                 </td>
-                                <td>25 Oktober 2024<br />10:30 WIB</td>
-                                <td>Rp. 100.000</td>
-                                <td><button class="status pending">Pending</button></td>
+                                <?php endif; ?>
+                                <td> <?= htmlspecialchars(convertToWita($w['created_at'])) ?></td>
+                                <td>Rp<?= formatAsCurrency($w["amount"]) ?></td>
+                                <td><button class="status selesai"><?= $w["status"] ?></button></td>
                             </tr>
+                            <?php endforeach; ?>
+                            <?php else: ?>
+                            <tr>
+                                <td colspan="4" style="text-align:center">Belum ada data.</td>
+                            </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
@@ -859,22 +894,21 @@ $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
             <div class="modal-details">
                 <div class="detail">
                     <span>Saldo Anda</span>
-                    <p>Rp500.000</p>
+                    <p>Rp<?= formatAsCurrency($instructor['balance']) ?></p>
                 </div>
                 <div class="detail">
                     <span>Terpilih Pembayaran</span>
-                    <p>PayPal</p>
+                    <p><?= ($instructor['preferred_withdrawal_method'] == 'paypal') ? 'PayPal': 'DANA' ?></p>
                 </div>
             </div>
-            <form id="withdrawalForm">
+            <form action="withdrawal-record.php" method="post" enctype="multipart/form-data" id="withdrawalForm">
                 <label for="amount">Jumlah</label>
-                <input type="number" id="amount" name="amount" placeholder="Rp" required />
+                <input type="number" id="amount" name="amount" placeholder="Rp" min="50000" required />
                 <div class="note">
                     <p><span>&#9432;</span> Minimum tarik Rp50.000</p>
-                    <p><span>&#9432;</span> Batas penarikan max 3 kali dalam sehari</p>
                 </div>
                 <div class="modal-actions">
-                    <button type="submit" class="btn btn-submit">Kirim Permintaan</button>
+                    <button type="submit" name='submit' class="btn btn-submit">Kirim Permintaan</button>
                 </div>
             </form>
         </div>
@@ -950,7 +984,19 @@ $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
         }
     }
     </script>
+    <?php
+    if ($instructor['balance'] >= 50000) {
+        echo "<script>
+    const withdrawalBtn = document.getElementById('withdrawalBtn');
+
+    withdrawalBtn.addEventListener('click', () => {
+        withdrawalModal.style.display = 'block';
+    });
+    </script>";
+    }
+    ?>
     <script src="../../navbar.js"></script>
+    <script src="./scripts/withdrawal-record.js"></script>
 </body>
 
 </html>

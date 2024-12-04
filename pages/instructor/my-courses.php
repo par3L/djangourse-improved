@@ -204,8 +204,11 @@ $instructor = fetch(
 
     .sidebar .menu ul .section-title {
         font-weight: bold;
+        color: #333;
         font-size: 14px;
         margin: 15px 0 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
     }
 
     .sidebar .menu ul li a {
@@ -227,6 +230,17 @@ $instructor = fetch(
 
     .sidebar .menu ul li a:hover {
         background-color: #2C8577;
+        color: white;
+    }
+
+    /* Icon styling */
+    .sidebar .menu ul li a i {
+        font-size: 16px;
+        color: #888;
+        transition: color 0.3s ease;
+    }
+
+    .sidebar .menu ul li a:hover i {
         color: white;
     }
 

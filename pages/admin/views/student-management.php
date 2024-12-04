@@ -8,6 +8,23 @@ $students = fetch(
     JOIN credentials ON students.credential_id = credentials.id"
 );
 
+$coinTransactions = fetch(
+    "SELECT students.name AS student_name, credentials.email as student_email, transactions.purchase_date, transactions.price FROM transactions
+    JOIN students ON transactions.student_id = students.id
+    JOIN credentials ON students.credential_id = credentials.id
+    WHERE transactions.transaction_type = 'topup'
+    ORDER BY transactions.purchase_date DESC"
+);
+
+$courseTransactions = fetch(
+    "SELECT students.name AS student_name, courses.name AS course_name, instructors.name AS instructor_name, transactions.purchase_date FROM transactions
+    JOIN students ON transactions.student_id = students.id
+    JOIN courses ON transactions.course_id = courses.id
+    JOIN instructors ON courses.instructor_id = instructors.id
+    WHERE transactions.transaction_type = 'purchase'
+    ORDER BY transactions.purchase_date DESC"
+);
+
 ?>
 
 <!DOCTYPE html>
@@ -52,7 +69,8 @@ $students = fetch(
                 <h1>Manajemen Siswa</h1>
             </header>
 
-            <section>
+            <div class="divide">
+            <section class="student-data-section">
                 <h2>Data Siswa</h2>
                 <table id="student-table">
                     <thead>
@@ -68,16 +86,21 @@ $students = fetch(
                                 <tr>
                                     <td><?= $student['name'] ?></td>
                                     <td><?= $student['email'] ?></td>
-                                    <td><?= convert($student['created_at']) ?></td>
+                                    <td><?= convertToWita($student['created_at']) ?></td>
                                 </tr>
                             <?php endforeach; ?>
                         <?php endif; ?>
                     </tbody>
                 </table>
             </section>
+            <section class="student-count-section">
+                    <iconify-icon icon="ph:student"></iconify-icon>
+                    <p class="student-counter-title">Jumlah Siswa</p>
+                    <p class="student-counter">1</p>
+                </section>
+            </div>
 
-            <div class="divide">
-                <section class="koin-purchase-section">
+                <section>
                     <h2>Status Pembelian Koin</h2>
                     <table id="koin-purchase-table">
                         <thead>
@@ -86,21 +109,22 @@ $students = fetch(
                                 <th>Email</th>
                                 <th>Waktu Transaksi</th>
                                 <th>Jumlah Koin</th>
-                                <th>Status</th>
                             </tr>
                         </thead>
                         <tbody>
-
+                        <?php if (count($coinTransactions) > 0) : ?>
+                            <?php foreach ($coinTransactions as $coinTransaction) : ?>
+                            <tr>
+                                <td><?= $coinTransaction['student_name'] ?></td>
+                                <td><?= $coinTransaction['student_email'] ?></td>
+                                <td><?= $coinTransaction['purchase_date'] ?></td>
+                                <td><?= $coinTransaction['price'] / 1000 ?></td>
+                            </tr>
+                            <?php endforeach; ?>
+                        <?php endif; ?>
                         </tbody>
                     </table>
                 </section>
-
-                <section class="student-count-section">
-                    <iconify-icon icon="ph:student"></iconify-icon>
-                    <p class="student-counter-title">Jumlah Siswa</p>
-                    <p class="student-counter">1</p>
-                </section>
-            </div>
 
             <section>
                 <h2>Pembelian Kursus</h2>
@@ -114,12 +138,16 @@ $students = fetch(
                         </tr>
                     </thead>
                     <tbody>
+                    <?php if (count($courseTransactions) > 0) : ?>
+                        <?php foreach ($courseTransactions as $courseTransaction) : ?>
                         <tr>
-                            <td>Muhammad Abdal Rizky</td>
-                            <td>Kursus HTML<br><span class="purchase-time">5 Oktober 2024 13.25 WITA</span></td>
-                            <td>Alsah Manggarai</td>
+                            <td><?= $courseTransactions['student_name'] ?></td>
+                            <td><?= $courseTransactions['course_name'] ?><br><span class="purchase-time"><?= $courseTransactions['purchase_date'] ?></span></td>
+                            <td><?= $courseTransactions['instructor_name'] ?></td>
                             <td>-5 Koin</td>
                         </tr>
+                        <?php endforeach; ?>
+                    <?php endif; ?>
                     </tbody>
                 </table>
             </section>

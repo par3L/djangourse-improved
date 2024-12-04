@@ -179,7 +179,7 @@ header .user-info img {
 
 .tabs-section {
     display: flex;
-    margin-top: 50px;
+    margin-top: 32px;
     gap: 20px;
     margin-left: 7.5rem;
 }

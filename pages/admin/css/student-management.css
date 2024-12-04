@@ -242,7 +242,7 @@
     margin-bottom: 8px;
 }
 
-.koin-purchase-section {
+.student-data-section {
     width: 65%;
 }
 
@@ -267,7 +267,7 @@
 
 .divide {
     display: flex;
-    gap: 16px;
+    gap: 24px;
     margin-top: 20px;
     margin-bottom: 16px;
 }

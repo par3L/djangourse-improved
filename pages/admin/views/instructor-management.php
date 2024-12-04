@@ -1,6 +1,7 @@
 <?php
 
 include '../../../utils/database/helper.php';
+include '../../../utils/number.php';
 
 $instructorCount = fetch('SELECT COUNT(*) AS count FROM instructors')[0];
 $instructors = fetch('SELECT 
@@ -14,7 +15,7 @@ $instructors = fetch('SELECT
                     JOIN 
                         courses co ON i.id = co.instructor_id
                     GROUP BY 
-                        i.name, cr.email;
+                        i.name, cr.email
 ');
 $waitingApproval = fetch('SELECT 
                             c.id as id,
@@ -49,6 +50,17 @@ $Approved = fetch('SELECT
                         c.status = "Disetujui";'
 );
 
+$withdrawalRequests = fetch('SELECT 
+                                w.id, 
+                                i.name AS instructor_name, 
+                                w.amount, 
+                                w.payment_method
+                            FROM 
+                                withdrawal_requests w
+                            JOIN 
+                                instructors i ON w.instructor_id = i.id
+                            WHERE 
+                                w.status = "pending"');
 
 ?>
 
@@ -112,13 +124,13 @@ $Approved = fetch('SELECT
                             <th>Kursus Dibuat</th>
                         </tr>
                     </thead>
-                    <tbody
+                    <tbody>
                         <?php if (!empty($instructors)): ?>
                         <?php foreach ($instructors as $instructor): ?>
                         <tr>
-                        <td><?php echo $instructor['name']; ?></td>
-                        <td><?php echo $instructor['email']; ?></td>
-                        <td><?php echo $instructor['course']; ?></td>
+                        <td><?= $instructor['name']; ?></td>
+                        <td><?= $instructor['email']; ?></td>
+                        <td><?= $instructor['course']; ?></td>
                         </tr>
                     <?php endforeach; ?>
                 <?php else: ?>
@@ -141,21 +153,32 @@ $Approved = fetch('SELECT
                             <td>Tujuan Pembayaran</td>
                             <td>Aksi</td>
                         </tr>
+                        <?php if (!empty($withdrawalRequests)): ?>
+                        <?php foreach ($withdrawalRequests as $withdrawalRequest): ?>
                         <tr>
-                            <td>ff</td>
-                            <td>ff</td>
-                            <td>Paypal</td>
+                            <td><?= $withdrawalRequest['instructor_name'] ?></td>
+                            <td><?= 'Rp' . formatAsCurrency($withdrawalRequest['amount']) ?></td>
+                            <td><?= $withdrawalRequest['payment_method'] ?></td>
                             <td>
-                                <a href="#" class="btn-approve">
+                                <a href="#" class="btn-approve withdrawal-approvement" data-id="<?php echo $withdrawalRequest['id']; ?>">
                                     <iconify-icon icon="si:check-fill"></iconify-icon>
                                     <span>Setujui</span>
                                 </a>
-                                <a href="#" class="btn-reject">
+                                <a href="#" class="btn-reject withdrawal-approvement" data-id="<?php echo $withdrawalRequest['id']; ?>">
                                     <iconify-icon icon="streamline:delete-1-solid"></iconify-icon>
                                     <span>Tolak</span>
                                 </a>
                             </td>
                         </tr>
+                    <?php endforeach; ?>
+                <?php else: ?>
+                    <tr>
+                        <td> - </td>
+                        <td> - </td>
+                        <td> - </td>
+                        <td> - </td>
+                    </tr>
+                <?php endif; ?>
                     </table>
                 </div>
             </section>
@@ -182,11 +205,11 @@ $Approved = fetch('SELECT
                                     <td><?php echo $course['instructor'] ?></td>
                                     <td><?php echo $course['price'] ?></td>
                                     <td>
-                                        <a href="#" class="btn-approve" data-id="<?php echo $course['id']; ?>">
+                                        <a href="#" class="btn-approve course-approvement" data-id="<?php echo $course['id']; ?>">
                                             <iconify-icon icon="si:check-fill"></iconify-icon>
                                             <span>Setujui</span>
                                         </a>
-                                        <a href="#" class="btn-reject" data-id="<?php echo $course['id']; ?>">
+                                        <a href="#" class="btn-reject course-approvement" data-id="<?php echo $course['id']; ?>">
                                             <iconify-icon icon="streamline:delete-1-solid"></iconify-icon>
                                             <span>Tolak</span>
                                         </a>
@@ -259,10 +282,11 @@ $Approved = fetch('SELECT
         let instructorTable = new DataTable('#instructor-data-table');
 
         document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.btn-approve, .btn-reject').forEach(button => {
+            document.querySelectorAll('.btn-approve.course-approvement, .btn-reject.course-approvement').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
                     const courseId = this.dataset.id;
+                    console.log(courseId);
                     const status = this.classList.contains('btn-approve') ? 'Disetujui' : 'Ditolak';
 
                     fetch('update-course-status.php', {
@@ -272,6 +296,41 @@ $Approved = fetch('SELECT
                             },
                             body: JSON.stringify({
                                 id: courseId,
+                                status
+                            }),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.success) {
+                                alert('Status updated successfully.');
+                                location.reload(); // Reload the page to update the table
+                            } else {
+                                alert('Failed to update status.');
+                            }
+                        })
+                        .catch(error => {
+                            console.error('Error:', error);
+                            alert('An error occurred while updating the status.');
+                        });
+                });
+            });
+        });
+
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.btn-approve.withdrawal-approvement, .btn-reject.withdrawal-approvement').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const $withdrawalRequestId = this.dataset.id;
+                    console.log($withdrawalRequestId);
+                    const status = this.classList.contains('btn-approve') ? 'approved' : 'rejected';
+
+                    fetch('update-withdrawal-status.php', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({
+                                id: $withdrawalRequestId,
                                 status
                             }),
                         })

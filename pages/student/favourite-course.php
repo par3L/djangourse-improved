@@ -314,7 +314,7 @@ if ($student_id) {
 
     .course-image {
         width: 100%;
-        height: auto;
+        height: 150px;
         object-fit: cover;
         border-radius: 10px;
         margin: 20px 0;
@@ -419,7 +419,7 @@ if ($student_id) {
                                         <form method="POST">
                                             <input type="hidden" name='course-fav' value="<?= $course['id'] ?>">
                                             <button class="heart active" name="heart">
-                                                <i class="far fa-heart"></i>
+                                                <i class="fas fa-heart"></i>
                                             </button>
                                         </form>
                                     </div>
