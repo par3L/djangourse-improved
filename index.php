@@ -17,6 +17,78 @@ if (isset($_SESSION["login"])) {
     }
 }
 
+// query top course berdasarkan jumlah transaksi course tsb...
+$query = "  SELECT 
+                c.id as course_id,
+                c.name AS course_name,
+                c.price AS course_price,
+                c.thumbnail AS course_thumbnail,
+                COUNT(t.id) AS enrolled_students
+            FROM 
+                COURSES c
+            LEFT JOIN 
+                TRANSACTIONs t ON c.id = t.course_id
+            WHERE 
+                t.transaction_type = 'purchase'
+            GROUP BY 
+                c.id, c.name, c.price, c.description, c.thumbnail
+            ORDER BY 
+                enrolled_students DESC
+            LIMIT 3;";
+
+$courses = fetch($query);
+
+// Tangani pembelian kursus
+$success_message = null;
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
+    $course_id = intval($_POST['course_id']);
+    $student_id = $_SESSION['user']['id']; // ID siswa dari session
+
+    // Ambil harga kursus
+    $course = fetch("SELECT price, name FROM courses WHERE id = '$course_id' AND status = 'Disetujui'");
+    if (empty($course)) {
+        die("Kursus tidak ditemukan atau belum disetujui.");
+    }
+    $price = floatval($course[0]['price'] / 1000); // Harga kursus dalam koin
+    $course_name = $course[0]['name'];
+
+    // Cek saldo koin siswa
+    $student = fetch("SELECT coin_balance FROM students WHERE id = '$student_id'");
+    if (empty($student)) {
+        die("Data siswa tidak ditemukan.");
+    }
+    $saldo_koin = intval($student[0]['coin_balance']);
+
+    // Debugging saldo dan harga
+    $log_message = "Saldo koin siswa: $saldo_koin, Harga kursus: $price";
+    error_log($log_message);
+
+    if ($saldo_koin < $price) {
+        die("Saldo koin Anda tidak mencukupi untuk membeli kursus ini.");
+    }
+
+    // Cek apakah kursus sudah dibeli
+    $existing_purchase = fetch("SELECT * FROM transactions WHERE student_id = '$student_id' AND course_id = '$course_id'");
+    if (!empty($existing_purchase)) {
+        die("Anda sudah membeli kursus ini.");
+    }
+
+    // Kurangi saldo koin siswa
+    $query_update_balance = "
+        UPDATE students
+        SET coin_balance = coin_balance - $price
+        WHERE id = '$student_id'";
+    execDML($query_update_balance);
+
+    // Catat pembelian di tabel transactions
+    $query_transaction = "
+        INSERT INTO transactions (student_id, course_id, price)
+        VALUES ('$student_id', '$course_id', '$price')";
+    execDML($query_transaction);
+
+    // Pesan sukses
+    $success_message = "Anda berhasil membeli kursus: $course_name.";
+}
 ?>
 
 <!DOCTYPE html>
@@ -32,8 +104,6 @@ if (isset($_SESSION["login"])) {
     <link
         href="https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&family=Just+Another+Hand&display=swap"
         rel="stylesheet">
-    <style>
-    </style>
 </head>
 
 <body>
@@ -48,61 +118,61 @@ if (isset($_SESSION["login"])) {
                 </ul>
             </nav>
             <?php if (isset($_SESSION['login'])): ?>
-            <div class="navbar-info">
-                <p>Hai, <?= $_SESSION['user']['name'] ?></p>
-                <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
-                <?php if ($_SESSION['user']['role_id'] == 1): ?>
-                <a href="pages/student/coin-dashboard.php"><?= $student['coin_balance'] ?> Koin</a>
-                <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
-                    <a href="pages/student/profile.php">
-                        <div class="navbar-info-dropdown-content">
-                            <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
-                            <span>Profil</span>
-                        </div>
-                    </a>
-                    <a href="pages/student/favourite-course.php">
-                        <div class="navbar-info-dropdown-content">
-                            <iconify-icon icon="weui:like-filled"></iconify-icon>
-                            <span>Wishlist</span>
-                        </div>
+                <div class="navbar-info">
+                    <p>Hai, <?= $_SESSION['user']['name'] ?></p>
+                    <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
+                    <?php if ($_SESSION['user']['role_id'] == 1): ?>
+                        <a href="pages/student/coin-dashboard.php"><?= $student['coin_balance'] ?> Koin</a>
+                        <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
+                            <a href="pages/student/profile.php">
+                                <div class="navbar-info-dropdown-content">
+                                    <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
+                                    <span>Profil</span>
+                                </div>
+                            </a>
+                            <a href="pages/student/favourite-course.php">
+                                <div class="navbar-info-dropdown-content">
+                                    <iconify-icon icon="weui:like-filled"></iconify-icon>
+                                    <span>Wishlist</span>
+                                </div>
 
-                    </a>
-                    <a href="pages/student/setting.php">
-                        <div class="navbar-info-dropdown-content">
-                            <iconify-icon icon="uil:setting"></iconify-icon>
-                            <span>Pengaturan</span>
+                            </a>
+                            <a href="pages/student/setting.php">
+                                <div class="navbar-info-dropdown-content">
+                                    <iconify-icon icon="uil:setting"></iconify-icon>
+                                    <span>Pengaturan</span>
+                                </div>
+                            </a>
+                            <a href="pages/logout.php">
+                                <div class="navbar-info-dropdown-content">
+                                    <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
+                                    <span>Keluar</span>
+                                </div>
+                            </a>
                         </div>
-                    </a>
-                    <a href="pages/logout.php">
-                        <div class="navbar-info-dropdown-content">
-                            <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
-                            <span>Keluar</span>
+                    <?php elseif ($_SESSION['user']['role_id'] == 2): ?>
+                        <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
+                            <a href="pages/instructor/dashboard.php">
+                                <div class="navbar-info-dropdown-content">
+                                    <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
+                                    <span>Dasbor</span>
+                                </div>
+                            </a>
+                            <a href="pages/logout.php">
+                                <div class="navbar-info-dropdown-content">
+                                    <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
+                                    <span>Keluar</span>
+                                </div>
+                            </a>
                         </div>
-                    </a>
+                    <?php endif; ?>
                 </div>
-                <?php elseif ($_SESSION['user']['role_id'] == 2): ?>
-                <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
-                    <a href="pages/instructor/dashboard.php">
-                        <div class="navbar-info-dropdown-content">
-                            <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
-                            <span>Dasbor</span>
-                        </div>
-                    </a>
-                    <a href="pages/logout.php">
-                        <div class="navbar-info-dropdown-content">
-                            <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
-                            <span>Keluar</span>
-                        </div>
-                    </a>
-                </div>
-                <?php endif; ?>
-            </div>
 
             <?php else: ?>
-            <div class="auth-buttons">
-                <button class="style-daftar" onclick="location.href='pages/auth.php'">Daftar</button>
-                <button class="style-masuk" onclick="location.href='pages/auth.php'">Masuk</button>
-            </div>
+                <div class="auth-buttons">
+                    <button class="style-daftar" onclick="location.href='pages/auth.php'">Daftar</button>
+                    <button class="style-masuk" onclick="location.href='pages/auth.php'">Masuk</button>
+                </div>
             <?php endif; ?>
         </div>
     </header>
@@ -153,45 +223,26 @@ if (isset($_SESSION["login"])) {
         <h2>Kursus Terpopuler</h2>
         <p>Pelajari kursus dengan tingkat peminat tinggi belakangan ini</p>
         <div class="courses">
-            <div class="catalog">
-                <div class="catalog-header">
-                    <div class="catalog-title">HTML</div>
-                    <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="far fa-heart"></i>
-                    </button>
+            <?php foreach ($courses as $course): ?>
+                <div class="catalog">
+                    <div class="catalog-header">
+                        <a href="../student/course-detail.php?id=<?= $course['course_id'] ?>" class="catalog-link">
+                            <div class="catalog-title"><?= $course['course_name'] ?></div>
+                        </a>
+                        <button class="flame" name="flame">
+                            <i class="fas fa-fire"></i>
+                        </button>
+                    </div>
+                    <img class="course-image" src="<?= $course['course_thumbnail'] ? "pages/instructor/" . $course['course_thumbnail'] : "https://placehold.co/600x400?text=Tidak+Ada+Gambar" ?>" alt="Thumbnail Kursus">
+                    <div class="catalog-footer">
+                        <div class="koin"><?= number_format($course['course_price'] / 1000, 0, ',', '.') ?> Koin</div>
+                        <form method="POST" action="course-list.php" style="display: inline;">
+                            <input type="hidden" name="course_id" value="<?= $course['course_id'] ?>">
+                            <button type="submit" class="button-rental">Beli</button>
+                        </form>
+                    </div>
                 </div>
-                <img class="course-image" src="assets/img/html.png" alt="Course Image">
-                <div class="catalog-footer">
-                    <div class="koin">5 Koin</div>
-                    <button class="button-rental">Beli</button>
-                </div>
-            </div>
-            <div class="catalog">
-                <div class="catalog-header">
-                    <div class="catalog-title">HTML</div>
-                    <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="far fa-heart"></i>
-                    </button>
-                </div>
-                <img class="course-image" src="assets/img/html.png" alt="Course Image">
-                <div class="catalog-footer">
-                    <div class="koin">5 Koin</div>
-                    <button class="button-rental">Beli</button>
-                </div>
-            </div>
-            <div class="catalog">
-                <div class="catalog-header">
-                    <div class="catalog-title">HTML</div>
-                    <button class="heart" onclick="toggleFavorite(this)">
-                        <i class="far fa-heart"></i>
-                    </button>
-                </div>
-                <img class="course-image" src="assets/img/html.png" alt="Course Image">
-                <div class="catalog-footer">
-                    <div class="koin">5 Koin</div>
-                    <button class="button-rental">Beli</button>
-                </div>
-            </div>
+            <?php endforeach; ?>
         </div>
     </section>
 
@@ -250,11 +301,11 @@ if (isset($_SESSION["login"])) {
 </body>
 <script src="index.js"></script>
 <script>
-function toggleHeart(element) {
-    element.classList.toggle('text-red-500');
-    element.classList.toggle('far');
-    element.classList.toggle('fas');
-}
+    function toggleHeart(element) {
+        element.classList.toggle('text-red-500');
+        element.classList.toggle('far');
+        element.classList.toggle('fas');
+    }
 </script>
 
 </html>
