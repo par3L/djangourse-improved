@@ -1,6 +1,6 @@
 <?php
 
-require "connection.php";
+require_once "connection.php";
 
 // Menangani query SELECT
 function fetch($query) {
@@ -20,4 +20,19 @@ function execDML($query) {
     global $conn;
     mysqli_query($conn, $query);
     return mysqli_affected_rows($conn);
+}
+
+function beginTransaction() {
+    global $conn;
+    mysqli_begin_transaction($conn);
+}
+
+function commitTransaction() {
+    global $conn;
+    mysqli_commit($conn);
+}
+
+function rollbackTransaction() {
+    global $conn;
+    mysqli_rollback($conn);
 }
