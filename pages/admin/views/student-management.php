@@ -96,7 +96,7 @@ $courseTransactions = fetch(
             <section class="student-count-section">
                     <iconify-icon icon="ph:student"></iconify-icon>
                     <p class="student-counter-title">Jumlah Siswa</p>
-                    <p class="student-counter">1</p>
+                    <p class="student-counter"><?= count($students) ?></p>
                 </section>
             </div>
 
