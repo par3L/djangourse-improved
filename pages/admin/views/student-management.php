@@ -141,9 +141,9 @@ $courseTransactions = fetch(
                     <?php if (count($courseTransactions) > 0) : ?>
                         <?php foreach ($courseTransactions as $courseTransaction) : ?>
                         <tr>
-                            <td><?= $courseTransactions['student_name'] ?></td>
-                            <td><?= $courseTransactions['course_name'] ?><br><span class="purchase-time"><?= $courseTransactions['purchase_date'] ?></span></td>
-                            <td><?= $courseTransactions['instructor_name'] ?></td>
+                            <td><?= $courseTransaction['student_name'] ?></td>
+                            <td><?= $courseTransaction['course_name'] ?><br><span class="purchase-time"><?= $courseTransaction['purchase_date'] ?></span></td>
+                            <td><?= $courseTransaction['instructor_name'] ?></td>
                             <td>-5 Koin</td>
                         </tr>
                         <?php endforeach; ?>
