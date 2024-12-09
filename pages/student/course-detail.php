@@ -18,20 +18,35 @@ if (isset($_SESSION["login"])) {
     }
 }
 
-if (isset($_GET['id'])) {
-    $courseId = $_GET['id'];
-    $course = fetch("SELECT * FROM courses WHERE id = $courseId");
-    $courseSections = fetch("SELECT * FROM course_sections WHERE course_id = $courseId");
-    if ($course) {
-        $course = $course[0];
-    } else {
-        echo "Kursus tidak ditemukan.";
-        die;
-    }
-    // var_dump($course);
-} else {
+if (!isset($_GET['id'])) {
     echo "ID kursus harus dilampirkan.";
     die;
+}
+
+$courseId = $_GET['id'];
+$course = fetch("SELECT * FROM courses WHERE id = $courseId");
+$enrolledCourse = fetch("SELECT * FROM enrolled_courses WHERE student_id = $student_id AND course_id = $courseId");
+$courseSections = fetch("SELECT * FROM course_sections WHERE course_id = $courseId");
+
+if ($course) {
+    $course = $course[0];
+    $instructorId = $course['instructor_id'];
+} else {
+    echo "Kursus tidak ditemukan.";
+    die;
+}
+
+if (isset($_POST['buy-course'])) {
+    if ($student['coin_balance'] >= ($course['price'] / 1000)) {
+        $coursePrice = $course['price'];
+        beginTransaction();
+            execDML("INSERT INTO transactions (student_id, course_id, price) VALUES ($student_id, $courseId, $coursePrice)");
+            execDML("UPDATE students SET coin_balance = coin_balance - ($coursePrice / 1000) WHERE id = $student_id");
+            execDML("UPDATE instructors SET balance = balance + ($coursePrice*1000) WHERE id = $instructorId");
+            execDML("INSERT INTO enrolled_courses (student_id, course_id) VALUES ($student_id, $courseId)");
+        commitTransaction();
+        header("Location: course-detail.php?id=$courseId");
+    }
 }
 
 ?>
@@ -563,76 +578,146 @@ if (isset($_GET['id'])) {
     }
 
     footer {
-    background-image: url('../../assets/img/bg-footer.png');
-    background-size: cover;        
-    background-position: center;
-    color: #fff;
-    padding: 2rem 4rem;
-    display: flex;
-    justify-content: space-between;
-}
+        background-image: url('../../assets/img/bg-footer.png');
+        background-size: cover;
+        background-position: center;
+        color: #fff;
+        padding: 2rem 4rem;
+        display: flex;
+        justify-content: space-between;
+    }
 
-.footer-content {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-}
-.footer-content .logo-section p {
-    padding-left: 10px;
-    margin-top: 10px;
-}
+    .footer-content {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+    }
 
-.footer-logo {
-    width: 100px;
-}
+    .footer-content .logo-section p {
+        padding-left: 10px;
+        margin-top: 10px;
+    }
 
-.links-section a {
-    text-decoration: none;
-    color: #fff;
-    transition: color 0.3s ease, border-bottom 0.3s ease;
-}
+    .footer-logo {
+        width: 100px;
+    }
 
-.links-section a:hover {
-    color: #A1D1B6;
-    border-bottom: 2px solid #A1D1B6;
-}
+    .links-section a {
+        text-decoration: none;
+        color: #fff;
+        transition: color 0.3s ease, border-bottom 0.3s ease;
+    }
 
-.links-section ul {
-    list-style: none;
-    margin-top: 20px;
-    padding-left: 0;
-}
+    .links-section a:hover {
+        color: #A1D1B6;
+        border-bottom: 2px solid #A1D1B6;
+    }
 
-.links-section ul li {
-    margin: 20px 0;
-}
+    .links-section ul {
+        list-style: none;
+        margin-top: 20px;
+        padding-left: 0;
+    }
 
-.contact-section p {
-    margin: 20px 0;
-}
+    .links-section ul li {
+        margin: 20px 0;
+    }
 
-.contact-section i {
-    margin-right: 5px;
-}
+    .contact-section p {
+        margin: 20px 0;
+    }
 
-.contact-section a {
-    text-decoration: none;        
-    color: #fff;
-    transition: color 0.3s ease; 
-}
+    .contact-section i {
+        margin-right: 5px;
+    }
 
-.contact-section a:hover {
-    color: #A1D1B6;
-    text-decoration: underline;
-}
-/* footer end */
-.header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    width: 100%;
-    position: relative;
-}
+    .contact-section a {
+        text-decoration: none;
+        color: #fff;
+        transition: color 0.3s ease;
+    }
+
+    .contact-section a:hover {
+        color: #A1D1B6;
+        text-decoration: underline;
+    }
+
+    /* footer end */
+    .header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+        position: relative;
+    }
+
+    /* Styling untuk modal */
+    .modal-container {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 9999;
+    }
+
+    /* Konten modal */
+    .modal-content {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        width: 400px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        font-family: 'Poppins', sans-serif;
+        font-weight: 500;
+    }
+
+    /* Pesan konfirmasi */
+    #confirmationMessage {
+        font-size: 18px;
+        margin-bottom: 20px;
+        color: #333;
+    }
+
+    /* Tombol */
+    .modal-content button {
+        padding: 7px 10px;
+        font-size: 16px;
+        border: none;
+        border-radius: 20px;
+        cursor: pointer;
+        transition: background-color 0.3s ease;
+        margin: 10px;
+    }
+
+    /* Tombol 'Ya' */
+    #yesButton {
+        background-color: #245044;
+        color: #fff;
+        border: 1px solid #3E5A5A;
+    }
+
+    #yesButton:hover {
+        background-color: #005955;
+    }
+
+    /* Tombol 'Tidak' */
+    #noButton {
+        background-color: transparent;
+        color: #245044;
+        border: 1px solid #245044;
+    }
+
+    #noButton:hover {
+        background-color: #245044;
+        color: #fff;
+    }
 
     /* Responsive Design */
     @media screen and (max-width: 768px) {
@@ -653,7 +738,7 @@ if (isset($_GET['id'])) {
 </head>
 
 <body>
-<header>
+    <header>
         <div class="navbar">
             <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
             <nav>
@@ -738,7 +823,10 @@ if (isset($_GET['id'])) {
         <div class="container">
             <div class="content">
                 <div class="left">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/NBZ9Ro6UKV8?si=Qjuuv5c-2EtEcQxs" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/NBZ9Ro6UKV8?si=Qjuuv5c-2EtEcQxs"
+                        title="YouTube video player" frameborder="0"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                        referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
                     <p>
                         Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sem magna, gravida eu eros in,
                         fermentum vulputate sem. Quisque at ipsum pretium, ullamcorper tellus non, feugiat eros. Nunc
@@ -802,7 +890,11 @@ if (isset($_GET['id'])) {
                         </li>
                     </ul>
                     <div class="button">
-                        <button>Gabung Kelas</button>
+                        <?php if (empty($enrolledCourse)): ?>
+                        <button onclick="<?= ($student['coin_balance'] >= ($course['price'] / 1000)) ? 'showConfirmation()' : 'showErrorModal()' ?>">Gabung Kursus</button>
+                        <?php else: ?>
+                        <a href="course-player.php?id=<?= $courseId ?>&lesson=<?= 'kiw' ?>"><button>Masuk ke Dasbor Kursus</button></a>
+                        <?php endif; ?>
                     </div>
                 </div>
             </div>
@@ -846,6 +938,24 @@ if (isset($_GET['id'])) {
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+    <div class="modal-container" id="confirmationModal" style="display: none;">
+        <div class="modal-content">
+            <p id="confirmationMessage"></p>
+            <form method="POST" id="confirmationForm">
+                <input type="hidden" name="buy-course" id="buy-course">
+                <button type="submit" id="yesButton">Gabung</button>
+                <button type="button" id="noButton" onclick="closeModal('confirmationModal')">Tidak Jadi</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal-container" id="errorModal" style="display: none;">
+        <div class="modal-content">
+            <p id="errorMessage"></p>
+                <button type="button" id="noButton" onclick="closeModal('errorModal')">Oke</button>
         </div>
     </div>
 
@@ -929,6 +1039,35 @@ if (isset($_GET['id'])) {
             document.querySelector('.button-lanjut button:nth-child(2)').classList.add('active');
         }
     }
+
+    // modal confirmation
+    function showConfirmation() {
+        const confirmationMessage = `Yakin bergabung dalam kelas ini?`;
+        document.getElementById("confirmationMessage").textContent = confirmationMessage;
+
+        // Tampilkan modal
+        document.getElementById("confirmationModal").style.display = "flex";
+    }
+
+    function closeModal(id) {
+        document.getElementById(id).style.display = "none";
+    }
+
+    function showErrorModal() {
+        const errorMessage = `Koin yang Anda miliki tidak cukup untuk membeli kelas ini.`;
+        document.getElementById("errorMessage").textContent = errorMessage;
+
+        // Tampilkan modal
+        document.getElementById("errorModal").style.display = "flex";
+    }
+
+    function closeSuccessMessage() {
+        const message = document.getElementById("successMessage");
+        if (message) {
+            message.style.display = "none";
+        }
+    }
+    // modal confirmation end
     </script>
     <script src="../../navbar.js"></script>
 </body>
