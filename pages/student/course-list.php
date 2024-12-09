@@ -691,6 +691,7 @@ if ($temp != null) // check if user is logged in
                     <a href="../student/course-detail.php?id=<?= $course['id'] ?>" class="catalog-link">
                         <div class="catalog-title"><?= $course['name'] ?></div>
                     </a>
+                    <?php if ($_SESSION['user']['role_id'] == 1): ?>
                     <form method="POST">
                         <input type="hidden" name='course-fav' value="<?= $course['id'] ?>">
                         <?php if (isset($isFav[$course['id']]) && !empty($isFav[$course['id']])): ?>
@@ -703,6 +704,7 @@ if ($temp != null) // check if user is logged in
                         </button>
                         <?php endif; ?>
                     </form>
+                    <?php endif; ?>
                 </div>
                 <img class="course-image" src="<?= $course['thumbnail'] ? "../instructor/".$course['thumbnail'] : "https://placehold.co/600x400?text=Tidak+Ada+Gambar" ?>" alt="Thumbnail Kursus">
                 <div class="catalog-footer">
