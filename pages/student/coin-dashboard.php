@@ -597,7 +597,7 @@ $transactions = fetch("
                     <div class="transaction-info">
                         <i class="fas fa-shopping-cart"></i> <!-- Ikon keranjang -->
                         <div class="details">
-                            <span class="title"><?= ($transaction['type'] == 'topup')? 'Pembelian Koin': 'Pembelian Kursus' ?><?= $transaction['course_name'] ?></span>
+                            <span class="title"><?= ($transaction['type'] == 'topup')? 'Pembelian Koin': 'Pembelian Kursus: ' ?><?= $transaction['course_name'] ?></span>
                             <span class="date"><?= date("d M Y H:i", strtotime($transaction['purchase_date'])) ?></span>
                         </div>
                     </div>
