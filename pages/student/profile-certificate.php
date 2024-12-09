@@ -384,19 +384,19 @@ footer {
             <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
             <a href="coin-dashboard.php"><?= $student['coin_balance'] ?> Koin</a>
             <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
-                <a href="../student/kursus-course.php">
+                <a href="profile.php">
                     <div class="navbar-info-dropdown-content">
                         <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
                         <span>Profil</span>
                     </div>
                 </a>
-                <a href="../student/favourite-course.php">
+                <a href="favourite-course.php">
                     <div class="navbar-info-dropdown-content">
                         <iconify-icon icon="weui:like-filled"></iconify-icon>
                         <span>Wishlist</span>
                     </div>
                 </a>
-                <a href="../siswa/pengaturan_profil.php">
+                <a href="setting.php">
                     <div class=" navbar-info-dropdown-content">
                         <iconify-icon icon="uil:setting"></iconify-icon>
                         <span>Pengaturan</span>
