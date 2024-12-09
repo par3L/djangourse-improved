@@ -25,9 +25,9 @@ $query = "  SELECT
                 c.thumbnail AS course_thumbnail,
                 COUNT(t.id) AS enrolled_students
             FROM 
-                COURSES c
+                courses c
             LEFT JOIN 
-                TRANSACTIONs t ON c.id = t.course_id
+                transactions t ON c.id = t.course_id
             WHERE 
                 t.transaction_type = 'purchase'
             GROUP BY 
@@ -226,7 +226,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
             <?php foreach ($courses as $course): ?>
                 <div class="catalog">
                     <div class="catalog-header">
-                        <a href="../student/course-detail.php?id=<?= $course['course_id'] ?>" class="catalog-link">
+                        <a href="pages/student/course-detail.php?id=<?= $course['course_id'] ?>" class="catalog-link">
                             <div class="catalog-title"><?= $course['course_name'] ?></div>
                         </a>
                         <button class="flame" name="flame">
