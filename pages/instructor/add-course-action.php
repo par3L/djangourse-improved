@@ -58,16 +58,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die("Gagal mengunggah file.");
         }
 
-        $query = "INSERT INTO courses (name, category_id, level, description, price, instructor_id, thumbnail, status)
-          VALUES (?, ?, ?, ?, ?, ?, ?, 'Menunggu')";
+        $now = time();
+        $query = "INSERT INTO courses (name, category_id, level, description, price, instructor_id, thumbnail, created_at, status)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Menunggu')";
     $stmt = $conn->prepare($query);
 
 if (!$stmt) {
     die("Query preparation failed: " . $conn->error);
 }
 
-$stmt->bind_param("sssssss", $judul_kursus, $kategori_kelas, $tingkat_kursus, 
-    $deskripsi_kursus, $harga, $instructor_id, $file_path);
+$stmt->bind_param("ssssssss", $judul_kursus, $kategori_kelas, $tingkat_kursus, 
+    $deskripsi_kursus, $harga, $instructor_id, $file_path, $now);
 
 if ($stmt->execute()) {
     // Redirect ke halaman setelah sukses
