@@ -1,5 +1,7 @@
 <?php
 
+require '../../utils/database/helper.php';
+
 session_start();
 
 if (!isset($_GET['id']) && !isset($_GET['lesson'])) {
@@ -7,8 +9,11 @@ if (!isset($_GET['id']) && !isset($_GET['lesson'])) {
     die;
 }
 
+$studentId = $_SESSION['user']['id'];
 $courseId = $_GET['id'];
 $lessonId = $_GET['lesson'];
+
+$student = fetch("SELECT coin_balance FROM students WHERE id = $studentId")[0];
 
 ?>
 
@@ -298,10 +303,9 @@ $lessonId = $_GET['lesson'];
 </head>
 
 <body>
-
     <div class="navbar">
         <a href="course-detail.php?id=<?= $courseId ?>" class="back-to-course-detail-button">
-        <iconify-icon icon="ep:back" id="btn-dropdown"></iconify-icon>
+        <iconify-icon icon="ep:back"></iconify-icon>
         <p>Kembali ke Detail Kursus</p>
         </a>
         <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
@@ -310,6 +314,7 @@ $lessonId = $_GET['lesson'];
             <p>Hai, <?= $_SESSION['user']['name'] ?></p>
             <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
             <?php if ($_SESSION['user']['role_id'] == 1): ?>
+            <a href="coin-dashboard.php"><?= $student['coin_balance'] ?> Koin</a>
             <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
                 <a href="profile.php">
                     <div class="navbar-info-dropdown-content">
@@ -388,14 +393,14 @@ $lessonId = $_GET['lesson'];
                 <a href="">
                 <button>
                     <span>Selanjutnya</span>
-                    <iconify-icon style="border: 1px solid #fff; border-radius: 50%" icon="ic:round-navigate-next" id="btn-dropdown"></iconify-icon>
+                    <iconify-icon style="border: 1px solid #fff; border-radius: 50%" icon="ic:round-navigate-next" id="btn-next-lesson"></iconify-icon>
                 </button>
                 </a>
                 
             </div>
         </div>
     </div>
-
+    <script src="../../navbar.js"></script>
     <script>
     // Select video element and buttons
     const video = document.getElementById("courseVideo");
