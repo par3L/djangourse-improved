@@ -15,11 +15,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $course_id = intval($_POST['id']);
     $judul_kursus = $conn->real_escape_string(ucwords($_POST['judul_kursus']));
+    $subtitle = $conn->real_escape_string($_POST['subtitle_kursus']);
+    $courseMaterials = $_POST['materi'];
+    $existingMaterials = fetch("SELECT * FROM course_materials WHERE course_id = $course_id");
+    $existingMaterialOrdinals = array_map(function($material) {
+        return $material['ordinal'];
+    }, $existingMaterials);
+    $courseTools = $_POST['alat_kursus'];
     $kategori_kelas = intval($_POST['kategori_kelas']);
     $tingkat_kursus = $conn->real_escape_string($_POST['tingkat_kursus']);
     $deskripsi_kursus = $conn->real_escape_string($_POST['deskripsi_kursus']);
     $harga = intval($_POST['harga']);
-    $instructor_id = $_SESSION['user']['id'];
+    $instructor_id = intval($_SESSION['user']['id']);
 
     // Validasi kursus milik instruktur
     $checkQuery = "SELECT thumbnail FROM courses WHERE id = ? AND instructor_id = ?";
@@ -42,13 +49,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mkdir($upload_dir, 0755, true);
         }
 
-        $file_name = uniqid() . '_' . basename($_FILES['thumbnail']['name']);
+        $file_name = uniqid();
         $file_tmp = $_FILES['thumbnail']['tmp_name'];
         $new_file_path = 'uploads/' . $file_name;
 
         // Validasi ekstensi file
         $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
-        $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
+        $file_extension = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
         if (!in_array(strtolower($file_extension), $allowed_extensions)) {
             die("Ekstensi file tidak diizinkan.");
         }
@@ -69,9 +76,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Update database
     $query = "UPDATE courses SET name = ?, category_id = ?, level = ?, description = ?, price = ?, thumbnail = ? 
               WHERE id = ? AND instructor_id = ?";
+    $queryMaterial = "UPDATE course_materials SET title = ?, video_link = ? WHERE course_id = ?";
     $stmt = $conn->prepare($query);
+    $stmtMaterial = $conn->prepare($queryMaterial);
     $stmt->bind_param("ssssssss", $judul_kursus, $kategori_kelas, $tingkat_kursus, $deskripsi_kursus, $harga,
         $file_path, $course_id, $instructor_id);
+    foreach ($courseMaterials as $material) {
+        $ordinal = intval($material['ordinal']);
+        $title = $conn->real_escape_string($material['title']);
+        $video_link = str_replace("https://www.youtube.com/watch?v=", "", $conn->real_escape_string($material['video-link']));
+
+        if (in_array($ordinal, $existingMaterialOrdinals)) {
+            // Update materi yang sudah ada
+            $queryMaterialUpdate = "UPDATE course_materials SET title = ?, video_link = ? WHERE course_id = ? AND ordinal = ?";
+            $stmtMaterialUpdate = $conn->prepare($queryMaterialUpdate);
+            $stmtMaterialUpdate->bind_param("ssii", $title, $video_link, $course_id, $ordinal);
+            $stmtMaterialUpdate->execute();
+        } else {
+            // Tambahkan materi baru
+            $queryMaterialInsert = "INSERT INTO course_materials (course_id, title, video_link, ordinal) VALUES (?, ?, ?, ?)";
+            $stmtMaterialInsert = $conn->prepare($queryMaterialInsert);
+            $stmtMaterialInsert->bind_param("issi", $course_id, $title, $video_link, $ordinal);
+            $stmtMaterialInsert->execute();
+        }
+    }
 
     if ($stmt->execute()) {
         header("Location: my-courses.php?message=updated");
