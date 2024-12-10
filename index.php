@@ -179,10 +179,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
 
     <section class="hero">
         <div class="hero-content">
-            <h1>Selangkah menjadi <span> <br> Programmer</span></h1>
-            <p>Djangourse adalah salah satu penyedia layanan kursus bagi programmer pemula</p>
+            <h1>Selangkah menjadi <span><br> Programmer</span></h1>
+            <p>Djangourse adalah salah satu penyedia layanan kursus bagi programmer pemula.</p>
             <div class="buttons">
-                <button class="filled">Cari Kursus</button>
+                <button class="filled" onclick="location.href='pages/student/course-list.php'">Cari Kursus</button>
                 <button class="outlined">Jelajahi</button>
             </div>
             <div class="trusted-by">
