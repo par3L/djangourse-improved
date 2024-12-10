@@ -859,7 +859,7 @@ if (isset($_POST['buy-course'])) {
                         <?php if (empty($enrolledCourse)): ?>
                         <button onclick="<?= ($student['coin_balance'] >= ($course['price'] / 1000)) ? 'showConfirmation()' : 'showErrorModal()' ?>">Gabung Kursus</button>
                         <?php else: ?>
-                        <a href="course-player.php?id=<?= $courseId ?>&lesson=1"><button>Masuk ke Dasbor Kursus</button></a>
+                        <a href="course-player.php?id=<?= $courseId ?>"><button>Masuk ke Dasbor Kursus</button></a>
                         <?php endif; ?>
                     </div>
                 </div>

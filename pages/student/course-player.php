@@ -4,16 +4,51 @@ require '../../utils/database/helper.php';
 
 session_start();
 
-if (!isset($_GET['id']) && !isset($_GET['lesson'])) {
+$studentId = $_SESSION['user']['id'];
+
+if (!isset($_GET['id'])) {
     echo 'ID harus dilampirkan';
     die;
 }
 
-$studentId = $_SESSION['user']['id'];
-$courseId = $_GET['id'];
-$lessonId = $_GET['lesson'];
+if (!isset($_GET['lesson'])) {
+    $lessonOrdinal = 1;
+} else {
+    $lessonOrdinal = $_GET['lesson'];
+}
 
+if (isset($_GET['from'])) {
+    $fromCourse = $_GET['from'];
+    $checkMaterial = fetch("SELECT course_material_id FROM course_finished_materials WHERE student_id = $studentId AND course_material_id = $fromCourse");
+    if (!$checkMaterial) {
+        execDML("INSERT INTO course_finished_materials (student_id, course_material_id) VALUES ($studentId, $fromCourse)");
+    }
+}
+
+$courseId = $_GET['id'];
 $student = fetch("SELECT coin_balance FROM students WHERE id = $studentId")[0];
+$courseMaterials = fetch(
+    "SELECT * FROM course_materials WHERE course_id = $courseId ORDER BY ordinal ASC"
+);
+$courseMaterial = fetch(
+    "SELECT * FROM course_materials WHERE ordinal = $lessonOrdinal"
+)[0];
+$courseFinishedMaterial = fetch(
+    "SELECT * FROM course_finished_materials
+    JOIN course_materials ON course_finished_materials.course_material_id = course_materials.id
+    WHERE course_finished_materials.student_id = $studentId AND course_materials.course_id = $courseId"
+);
+
+if (isset($_POST['finish-class'])) {
+    $courseMaterialId = $courseMaterial['id'];
+    $checkMaterial = fetch("SELECT course_material_id FROM course_finished_materials WHERE student_id = $studentId AND course_material_id = $courseMaterialId");
+    if (!$checkMaterial) {
+        execDML("INSERT INTO course_finished_materials (student_id, course_material_id) VALUES ($studentId, $courseMaterialId)");
+        execDML("UPDATE enrolled_courses SET finished_at = NOW() WHERE student_id = $studentId AND course_id = $courseId");
+    }
+    header("Location: course-player.php?id=$courseId&lesson=$lessonOrdinal");
+
+}
 
 ?>
 
@@ -188,7 +223,6 @@ $student = fetch("SELECT coin_balance FROM students WHERE id = $studentId")[0];
         height: 100vh;
         flex-direction: row;
         margin-top: 82px;
-        padding-bottom: 250px;
     }
 
     /* Sidebar styling */
@@ -212,13 +246,16 @@ $student = fetch("SELECT coin_balance FROM students WHERE id = $studentId")[0];
         list-style: none;
     }
 
+    .course-list a {
+        display: inline-block;
+    }
+
     .course-list li {
         display: flex;
         align-items: center;
         justify-content: space-between;
         margin-bottom: 15px;
-        padding-left: 16px;
-        padding-right: 16px;
+        padding: 8px 16px 8px 16px;
     }
 
     .course-list li iconify-icon {
@@ -232,7 +269,6 @@ $student = fetch("SELECT coin_balance FROM students WHERE id = $studentId")[0];
         color: #ecf0f1;
         font-size: 18px;
         display: block;
-        padding: 10px;
         border-radius: 5px;
         transition: background-color 0.3s;
     }
@@ -249,10 +285,6 @@ $student = fetch("SELECT coin_balance FROM students WHERE id = $studentId")[0];
     .video-section {
         margin-left: 20%;
         width: 80%;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
         padding: 20px;
         overflow-x: hidden;
     }
@@ -295,6 +327,10 @@ $student = fetch("SELECT coin_balance FROM students WHERE id = $studentId")[0];
         margin-left: 100%;
     }
 
+    .next-button-container a {
+        text-decoration: none;
+    }
+
     .next-button-container button {
         display: flex;
         gap: 8px;
@@ -305,8 +341,8 @@ $student = fetch("SELECT coin_balance FROM students WHERE id = $studentId")[0];
 <body>
     <div class="navbar">
         <a href="course-detail.php?id=<?= $courseId ?>" class="back-to-course-detail-button">
-        <iconify-icon icon="ep:back"></iconify-icon>
-        <p>Kembali ke Detail Kursus</p>
+            <iconify-icon icon="ep:back"></iconify-icon>
+            <p>Kembali ke Detail Kursus</p>
         </a>
         <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
         <?php if (isset($_SESSION['login'])): ?>
@@ -372,56 +408,54 @@ $student = fetch("SELECT coin_balance FROM students WHERE id = $studentId")[0];
         <div class="sidebar">
             <h2>Modul Kursus</h2>
             <ul class="course-list">
-                <li class="active">
-                    <a href="#" data-video="assets/videos/lesson1.mp4">Lesson 1: Introduction</a>
-                    <iconify-icon icon="lets-icons:check-fill"></iconify-icon>
-                </li>
-                <li><a href="#" data-video="assets/videos/lesson2.mp4">Lesson 2: Basics</a></li>
-                <li><a href="#" data-video="assets/videos/lesson3.mp4">Lesson 3: Advanced Topics</a></li>
+                <?php foreach ($courseMaterials as $material): ?>
+                <a href="?id=<?= $courseId ?>&lesson=<?=$material['ordinal'] ?>">
+                    <li class="<?= ($material['ordinal'] == $lessonOrdinal) ? 'active' : ''  ?>">
+                        <?= $material['title'] ?>
+                        <?= (in_array($material['id'], array_column($courseFinishedMaterial, 'course_material_id'))) ? '<iconify-icon icon="lets-icons:check-fill"></iconify-icon>' : '' ?>
+                    </li>
+                </a>
+                <?php endforeach; ?>
             </ul>
         </div>
 
         <div class="video-section">
-            <iframe width="100%" height="100%"
+            <iframe width="100%" height="84%"
                 src="https://www.youtube.com/embed/NBZ9Ro6UKV8?si=Qjuuv5c-2EtEcQxs?autoplay=1&mute=1"
                 title="YouTube video player" frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             <div class="next-button-container">
-                <p></p>
-                <p>Lesson 1: Introduction</p>
-                <a href="">
-                <button>
-                    <span>Selanjutnya</span>
-                    <iconify-icon style="border: 1px solid #fff; border-radius: 50%" icon="ic:round-navigate-next" id="btn-next-lesson"></iconify-icon>
-                </button>
+            <a href="?id=<?= $courseId ?>&lesson=<?=$lessonOrdinal-1?>">
+                    <button>
+                    <iconify-icon style="border: 1px solid #fff; border-radius: 50%" icon="ic:round-navigate-before"
+                    id="btn-next-lesson"></iconify-icon>
+                        <span>Sebelumnya</span>
+                    </button>
                 </a>
-                
+                <p><?= $courseMaterial['title'] ?></p>
+                <?php if ($lessonOrdinal < count($courseMaterials)): ?>
+                <a href="?id=<?= $courseId ?>&lesson=<?=$lessonOrdinal+1?>&from=<?= $courseMaterial['id'] ?>">
+                    <button>
+                        <span>Selanjutnya</span>
+                        <iconify-icon style="border: 1px solid #fff; border-radius: 50%" icon="ic:round-navigate-next"
+                            id="btn-next-lesson"></iconify-icon>
+                    </button>
+                </a>
+                <?php else: ?>
+                    <form action="" method="post">
+                    <button name="finish-class">
+                        <span>Selesaikan Kelas</span>
+                        <iconify-icon style="border: 1px solid #fff; border-radius: 50%" icon="ic:round-navigate-next"
+                            id="btn-next-lesson"></iconify-icon>
+                    </button>
+                    </form>
+                <?php endif; ?>
+
             </div>
         </div>
     </div>
     <script src="../../navbar.js"></script>
-    <script>
-    // Select video element and buttons
-    const video = document.getElementById("courseVideo");
-    const playPauseBtn = document.getElementById("playPauseBtn");
-    const restartBtn = document.getElementById("restartBtn");
-
-    // Sidebar navigation links
-    const courseLinks = document.querySelectorAll(".course-list a");
-
-    // Change video source on sidebar click
-    courseLinks.forEach(link => {
-        link.addEventListener("click", (e) => {
-            e.preventDefault();
-            const videoSrc = link.getAttribute("data-video");
-            video.querySelector("source").src = videoSrc;
-            video.load();
-            video.play();
-            playPauseBtn.textContent = "Pause";
-        });
-    });
-    </script>
 </body>
 
 </html>
