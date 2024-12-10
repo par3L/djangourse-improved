@@ -15,6 +15,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $judul_kursus = $conn->real_escape_string(ucwords($_POST['judul_kursus']));
+    $subtitle = $conn->real_escape_string($_POST['subtitle_kursus']);
+    $courseMaterials = $_POST['materi'];
+    $courseTools = $_POST['alat_kursus'];
     $kategori_kelas = intval($_POST['kategori_kelas']); // Validasi kategori sebagai integer
     $tingkat_kursus = $conn->real_escape_string($_POST['tingkat_kursus']);
     $deskripsi_kursus = $conn->real_escape_string($_POST['deskripsi_kursus']);
@@ -59,24 +62,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         $now = time();
-        $query = "INSERT INTO courses (name, category_id, level, description, price, instructor_id, thumbnail, created_at, status)
-          VALUES (?, ?, ?, ?, ?, ?, ?, ?, 'Menunggu')";
-    $stmt = $conn->prepare($query);
+        $query = "INSERT INTO courses (name, subtitle, category_id, level, description, price, instructor_id, thumbnail, created_at, status)
+          VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'Menunggu')";
+        $queryMaterials = "INSERT INTO course_materials (course_id, ordinal, title, video_link) VALUES (?, ?, ?, ?)";
+        $queryTools = "INSERT INTO course_tool_galleries (course_id, tool_id) VALUES (?, ?)";
+        $stmt = $conn->prepare($query);
+        $stmtMaterials = $conn->prepare($queryMaterials);
+        $stmtTools = $conn->prepare($queryTools);
 
-if (!$stmt) {
-    die("Query preparation failed: " . $conn->error);
-}
+        if (!$stmt) {
+            die("Query preparation failed: " . $conn->error);
+        }
 
-$stmt->bind_param("ssssssss", $judul_kursus, $kategori_kelas, $tingkat_kursus, 
-    $deskripsi_kursus, $harga, $instructor_id, $file_path, $now);
+        $stmt->bind_param("sssssssss", $judul_kursus, $subtitle, $kategori_kelas, $tingkat_kursus, 
+            $deskripsi_kursus, $harga, $instructor_id, $file_path, $now);
 
-if ($stmt->execute()) {
-    // Redirect ke halaman setelah sukses
-    header("Location: my-courses.php?message=success");
-    exit();
-} else {
-    echo "Error: " . $stmt->error;
-}
+        if ($stmt->execute()) {
+            $course_id = $conn->insert_id;
+            foreach ($courseMaterials as $material) {
+                $ordinal = (int) $material['ordinal'];
+                $title = $material['title'];
+                $video_link = $material['video-link'];
+                $stmtMaterials->bind_param("ssss", $course_id, $ordinal, $title, $video_link);
+                $stmtMaterials->execute();
+            }
+            foreach ($courseTools as $tool) {
+                $stmtTools->bind_param("ss", $course_id, $tool);
+                $stmtTools->execute();
+            }
+            // Redirect ke halaman setelah sukses
+            header("Location: my-courses.php?message=success");
+            exit();
+        } else {
+            echo "Error: " . $stmt->error;
+        }
     }
 
     

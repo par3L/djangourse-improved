@@ -3,6 +3,7 @@
 require '../../utils/database/helper.php';
 
 $categories = fetch("SELECT * FROM course_categories");
+$courseTools = fetch("SELECT * FROM course_tools");
 
 ?>
 
@@ -13,7 +14,9 @@ $categories = fetch("SELECT * FROM course_categories");
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="./styles/multi-select-tag.css">
     <title>Tambah Kursus Baru</title>
+    <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
     <style>
     /* CSS perbaikan */
     body {
@@ -172,14 +175,15 @@ $categories = fetch("SELECT * FROM course_categories");
             <div class="progress-bar">
                 <div class="step active" data-step="informasi-dasar">Informasi Dasar</div>
                 <div class="step" data-step="sampul-kursus">Sampul Kursus</div>
-                <div class="step" data-step="pengaturan">Pengaturan</div>
+                <div class="step" data-step="pengaturan">Lainnya</div>
             </div>
 
             <!-- Informasi Dasar -->
             <div class="content-section active" id="informasi-dasar">
                 <label for="judul-kursus">Judul Kursus</label>
-                <input type="text" name="judul_kursus" id="judul-kursus" placeholder="Masukkan judul kursus" required>
-
+                <input type="text" name="judul_kursus" id="judul-kursus" placeholder="Kursus Jago Koding dalam Satu Malam" required>
+                <label for="subtitle-kursus">Subtitle Kursus</label>
+                <input type="text" name="subtitle_kursus" id="subtitle-kursus" placeholder="Subtitle akan muncul di bawah judul" required>
                 <label for="kategori_kelas">Kategori Kelas</label>
                 <select name="kategori_kelas" id="kategori_kelas">
                     <option disabled selected>Pilih Kategori</option>
@@ -194,8 +198,15 @@ $categories = fetch("SELECT * FROM course_categories");
                     <option value="advanced">Sulit</option>
                 </select>
 
+                <label for="alat_kursus">Alat</label>
+                <select name="alat_kursus[]" id="alat_kursus" multiple>
+                    <?php foreach ($courseTools as $tool): ?>
+                        <option value="<?= $tool['id'] ?>"><?= $tool['name'] ?></option>
+                    <?php endforeach; ?>
+                </select>
+
                 <label for="deskripsi_kursus">Deskripsi Kursus</label>
-                <textarea name="deskripsi_kursus" id="deskripsi_kursus" placeholder="Masukkan deskripsi kursus"
+                <textarea name="deskripsi_kursus" style="height: 200px" id="deskripsi_kursus" placeholder="Kursus ini menjelaskan bagaimana cara membuat aplikasi web dengan PHP dan MySQL dalam satu malam seperti halnya membangun candi."
                     required></textarea>
             </div>
 
@@ -203,7 +214,6 @@ $categories = fetch("SELECT * FROM course_categories");
             <div class="content-section" id="sampul-kursus">
                 <label for="file-upload">Sampul Kursus</label>
                 <div class="upload-wrapper">
-                    <div class="file-display">Tidak ada file yang dipilih</div>
                     <input type="file" name="thumbnail" id="file-upload" accept="image/*" required>
                 </div>
                 <div id="preview">
@@ -215,6 +225,8 @@ $categories = fetch("SELECT * FROM course_categories");
             <div class="content-section" id="pengaturan">
                 <label for="harga">Harga</label>
                 <input type="text" name="harga" id="harga" placeholder="Masukkan harga kursus" required>
+                <label for="materi">Materi</label>
+                <button onclick="addMaterial()"><iconify-icon icon="ic:round-add"></iconify-icon>Tambah Materi</button>
             </div>
 
             <!-- Navigasi Form -->
@@ -266,6 +278,25 @@ $categories = fetch("SELECT * FROM course_categories");
             reader.readAsDataURL(file);
         }
     });
+
+    let materialCount = 0;
+    function addMaterial() {
+        const material = document.createElement('div');
+        material.innerHTML = `
+            <label for="materi">Materi ${materialCount+1}</label>
+            <input type="text" name="materi[${materialCount}][title]" placeholder="Judul materi" required>
+            <input type="text" name="materi[${materialCount}][video-link]" placeholder="Tautan video Youtube" required>
+            <input type="hidden" name="materi[${materialCount}][ordinal]" value="${materialCount+1}" placeholder="order" required>
+        `;
+        document.getElementById('pengaturan').appendChild(material);
+        materialCount++;
+    }
+    </script>
+    <script src="scripts/multi-select-tag.js"></script>
+    <script>
+        new MultiSelectTag('alat_kursus', {
+            placeholder: 'Cari...',
+        })
     </script>
 </body>
 
