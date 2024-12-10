@@ -51,59 +51,6 @@ if ($student_id) {
     }
 }
 
-// Tangani pembelian kursus
-$success_message = null;
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['course_id'])) {
-    $course_id = intval($_POST['course_id']);
-    $student_id = $_SESSION['user']['id']; // ID siswa dari session
-
-    // Ambil harga kursus
-    $course = fetch("SELECT price, name FROM courses WHERE id = '$course_id' AND status = 'Disetujui'");
-    if (empty($course)) {
-        die("Kursus tidak ditemukan atau belum disetujui.");
-    }
-    $price = floatval($course[0]['price'] / 1000); // Harga kursus dalam koin
-    $course_name = $course[0]['name'];
-
-    // Cek saldo koin siswa
-    $student = fetch("SELECT coin_balance FROM students WHERE id = '$student_id'");
-    if (empty($student)) {
-        die("Data siswa tidak ditemukan.");
-    }
-    $saldo_koin = intval($student[0]['coin_balance']);
-
-    // Debugging saldo dan harga
-    $log_message = "Saldo koin siswa: $saldo_koin, Harga kursus: $price";
-    error_log($log_message);
-
-    if ($saldo_koin < $price) {
-        die("Saldo koin Anda tidak mencukupi untuk membeli kursus ini.");
-    }
-
-    // Cek apakah kursus sudah dibeli
-    $existing_purchase = fetch("SELECT * FROM transactions WHERE student_id = '$student_id' AND course_id = '$course_id'");
-    if (!empty($existing_purchase)) {
-        die("Anda sudah membeli kursus ini.");
-    }
-
-    // Kurangi saldo koin siswa
-    $query_update_balance = "
-        UPDATE students
-        SET coin_balance = coin_balance - $price
-        WHERE id = '$student_id'";
-    execDML($query_update_balance);
-
-    // Catat pembelian di tabel transactions
-    $query_transaction = "
-        INSERT INTO transactions (student_id, course_id, price)
-        VALUES ('$student_id', '$course_id', '$price')";
-    execDML($query_transaction);
-
-    // Pesan sukses
-    $success_message = "Anda berhasil membeli kursus: $course_name.";
-}
-
-
 // handle dml to favourite_courses
 $temp = $_SESSION['user']['id'] ?? null; // temorary variable to store user id
 
@@ -392,7 +339,7 @@ if ($temp != null) // check if user is logged in
     }
 
     .course-image {
-        width: 220px; 
+        width: 220px;
         height: 150px;
         object-fit: cover;
         border-radius: 10px;
@@ -666,7 +613,7 @@ if ($temp != null) // check if user is logged in
         <p style="color: green; text-align: center;"><?= $success_message ?></p>
         <?php endif; ?>
         <div class="search-bar">
-            <input placeholder="Cari..." type="text" id="searchInput" autofocus/>
+            <input placeholder="Cari..." type="text" id="searchInput" autofocus />
         </div>
 
         <div class="tabs">
@@ -681,10 +628,8 @@ if ($temp != null) // check if user is logged in
         </div>
 
         <?php if (!empty($courses)): ?>
-        
-
         <div class="pilihan" id="courses-container">
-            
+
             <?php foreach ($courses as $course): ?>
             <div class="catalog" data-category="<?= htmlspecialchars($course['category_name']) ?>">
                 <div class="catalog-header">
@@ -706,19 +651,20 @@ if ($temp != null) // check if user is logged in
                     </form>
                     <?php endif; ?>
                 </div>
-                <img class="course-image" src="<?= $course['thumbnail'] ? "../instructor/".$course['thumbnail'] : "https://placehold.co/600x400?text=Tidak+Ada+Gambar" ?>" alt="Thumbnail Kursus">
+                <img class="course-image"
+                    src="<?= $course['thumbnail'] ? "../instructor/".$course['thumbnail'] : "https://placehold.co/600x400?text=Tidak+Ada+Gambar" ?>"
+                    alt="Thumbnail Kursus">
                 <div class="catalog-footer">
                     <div class="koin"><?= number_format($course['price'] / 1000, 0, ',', '.') ?> Koin</div>
-                    <form method="POST" action="course-list.php" style="display: inline;">
-                        <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
-                        <button type="submit" class="button-rental">Beli</button>
-                    </form>
-                    </div>
+                    <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
+                    <a href="../student/course-detail.php?id=<?= $course['id'] ?>"><button
+                            class="button-rental">Beli</button></a>
+                </div>
             </div>
             <?php endforeach; ?>
         </div>
         <?php else: ?>
-            <p style="height: 300px; padding-top: 24px;">Belum ada kursus yang tersedia.</p>
+        <p style="height: 300px; padding-top: 24px;">Belum ada kursus yang tersedia.</p>
         <?php endif; ?>
     </main>
 
@@ -799,18 +745,18 @@ if ($temp != null) // check if user is logged in
                 formData.append('fav', !isActive);
 
                 fetch('course-list.php', {
-                    method: 'POST',
-                    body: formData
-                })
-                .then(response => response.text())
-                .then(data => {
-                    if (data === 'success') {
-                        this.classList.toggle('active');
-                    } else {
-                        console.error('Failed to update favorite status');
-                    }
-                })
-                .catch(error => console.error('Error:', error));
+                        method: 'POST',
+                        body: formData
+                    })
+                    .then(response => response.text())
+                    .then(data => {
+                        if (data === 'success') {
+                            this.classList.toggle('active');
+                        } else {
+                            console.error('Failed to update favorite status');
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
             });
         });
     });
