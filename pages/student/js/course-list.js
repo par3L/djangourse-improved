@@ -3,6 +3,22 @@ document.getElementById("btn-dropdown").addEventListener("click", () => {
   document.getElementById("navbar-info-dropdown").classList.toggle("hide");
 });
 
+const searchInput = document.getElementById("searchInput");
+const items = document.querySelectorAll(".catalog");
+const searchNotFoundMessage = document.getElementById(
+  "search-not-found-message"
+);
+
+searchInput.addEventListener("input", (el) => {
+  items.forEach((item) => {
+    if (item.innerText.toLowerCase().includes(el.target.value.toLowerCase())) {
+      item.classList.remove("hide");
+    } else {
+      item.classList.add("hide");
+    }
+  });
+});
+
 let currentCategory = null; // Kategori aktif
 let offset = 0; // Posisi awal
 const limit = 4; // Jumlah kursus per batch
@@ -73,18 +89,3 @@ document.getElementById("loadMore").addEventListener("click", function () {
 // Muat data awal saat halaman pertama kali dibuka
 loadCourses();
 
-const searchInput = document.getElementById("searchInput");
-const items = document.querySelectorAll(".catalog");
-const searchNotFoundMessage = document.getElementById(
-  "search-not-found-message"
-);
-
-searchInput.addEventListener("input", (el) => {
-  items.forEach((item) => {
-    if (item.innerText.toLowerCase().includes(el.target.value.toLowerCase())) {
-      item.classList.remove("hide");
-    } else {
-      item.classList.add("hide");
-    }
-  });
-});
