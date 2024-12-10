@@ -420,19 +420,22 @@ if (isset($_POST['finish-class'])) {
         </div>
 
         <div class="video-section">
-            <iframe width="100%" height="84%"
-                src="https://www.youtube.com/embed/<?= $courseMaterial['video_link'] ?>"
+            <iframe width="100%" height="84%" src="https://www.youtube.com/embed/<?= $courseMaterial['video_link'] ?>"
                 title="YouTube video player" frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             <div class="next-button-container">
-            <a href="?id=<?= $courseId ?>&lesson=<?=$lessonOrdinal-1?>">
+                <?php if ($lessonOrdinal >= count($courseMaterials)): ?>
+                <a href="?id=<?= $courseId ?>&lesson=<?=$lessonOrdinal-1?>">
                     <button>
-                    <iconify-icon style="border: 1px solid #fff; border-radius: 50%" icon="ic:round-navigate-before"
-                    id="btn-next-lesson"></iconify-icon>
+                        <iconify-icon style="border: 1px solid #fff; border-radius: 50%" icon="ic:round-navigate-before"
+                            id="btn-next-lesson"></iconify-icon>
                         <span>Sebelumnya</span>
                     </button>
                 </a>
+                <?php else: ?>
+                <p></p>
+                <?php endif; ?>
                 <p><?= $courseMaterial['title'] ?></p>
                 <?php if ($lessonOrdinal < count($courseMaterials)): ?>
                 <a href="?id=<?= $courseId ?>&lesson=<?=$lessonOrdinal+1?>&from=<?= $courseMaterial['id'] ?>">
@@ -443,13 +446,13 @@ if (isset($_POST['finish-class'])) {
                     </button>
                 </a>
                 <?php else: ?>
-                    <form action="" method="post">
+                <form action="" method="post">
                     <button name="finish-class">
                         <span>Selesaikan Kelas</span>
                         <iconify-icon style="border: 1px solid #fff; border-radius: 50%" icon="ic:round-navigate-next"
                             id="btn-next-lesson"></iconify-icon>
                     </button>
-                    </form>
+                </form>
                 <?php endif; ?>
 
             </div>
