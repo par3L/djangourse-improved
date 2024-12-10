@@ -666,7 +666,7 @@ if ($temp != null) // check if user is logged in
         <p style="color: green; text-align: center;"><?= $success_message ?></p>
         <?php endif; ?>
         <div class="search-bar">
-            <input placeholder="Cari..." type="text" id="searchInput"/>
+            <input placeholder="Cari..." type="text" id="searchInput" autofocus/>
         </div>
 
         <div class="tabs">
