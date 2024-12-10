@@ -23,6 +23,7 @@ $courseTools = fetch("SELECT * FROM course_tools");
         font-family: 'Poppins', sans-serif;
         padding: 0;
         background-color: #f8f9fa;
+        margin-top: 100px;
     }
 
     .container {
@@ -34,15 +35,21 @@ $courseTools = fetch("SELECT * FROM course_tools");
         box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     }
 
+    .logo-container {
+        /* display: flex;
+        justify-content: center;
+        margin-bottom: 20px; */
+        text-align: center;
+    }
+
     .navbar {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         display: flex;
-        justify-content: center;
         align-items: center;
-        padding: 1rem;
+        padding: 8px;
         background-color: #245044;
     }
 
@@ -50,6 +57,14 @@ $courseTools = fetch("SELECT * FROM course_tools");
         text-decoration: none;
         color: #fff;
         transition: color 0.3s ease;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        margin-left: 16px;
+    }
+
+    .navbar a iconify-icon {
+        font-size: 20px;
     }
 
     .navbar a:hover {
@@ -169,6 +184,15 @@ $courseTools = fetch("SELECT * FROM course_tools");
 
 <body>
     <div class="container">
+        <div class="navbar">
+            <a href="dashboard.php">
+                <iconify-icon icon="ion:arrow-back"></iconify-icon>
+                <p>Kembali ke Dasbor</p>
+            </a>
+        </div>
+        <div class="logo-container">
+        <img src="../../assets/img/logo-django.png" alt="">
+        </div>
         <h1>Tambahkan Kursus Baru</h1>
         <form action="add-course-action.php" method="POST" enctype="multipart/form-data">
             <!-- Progress Bar -->
