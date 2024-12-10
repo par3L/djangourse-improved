@@ -313,6 +313,10 @@ if ($temp != null) // check if user is logged in
         align-items: center;
     }
 
+    .catalog-header a {
+        text-decoration: none;
+    }
+
     .catalog-title {
         color: #1a202c;
         font-family: "Poppins-Bold", sans-serif;
@@ -427,6 +431,10 @@ if ($temp != null) // check if user is logged in
         flex-direction: column;
         margin: 0 auto;
         width: 100%;
+    }
+
+    .controls a {
+        text-decoration: none;
     }
 
     .catalog.hidden {

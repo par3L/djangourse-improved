@@ -234,6 +234,10 @@ if ($student_id) {
         align-items: center;
     }
 
+    .catalog-header a {
+        text-decoration: none;
+    }
+
     .catalog-title {
         color: #1a202c;
         font-family: "Poppins-Bold", sans-serif;
