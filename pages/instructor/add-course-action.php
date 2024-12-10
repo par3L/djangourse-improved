@@ -50,7 +50,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Validasi ekstensi file
         $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
-        $file_extension = pathinfo($file_name, PATHINFO_EXTENSION);
+        $file_extension = pathinfo($_FILES['thumbnail']['name'], PATHINFO_EXTENSION);
         if (!in_array(strtolower($file_extension), $allowed_extensions)) {
             die("Ekstensi file tidak diizinkan.");
         }
