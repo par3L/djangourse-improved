@@ -31,7 +31,7 @@ $courseMaterials = fetch(
     "SELECT * FROM course_materials WHERE course_id = $courseId ORDER BY ordinal ASC"
 );
 $courseMaterial = fetch(
-    "SELECT * FROM course_materials WHERE ordinal = $lessonOrdinal"
+    "SELECT * FROM course_materials WHERE ordinal = $lessonOrdinal AND course_id = $courseId"
 )[0];
 $courseFinishedMaterial = fetch(
     "SELECT * FROM course_finished_materials
@@ -421,7 +421,7 @@ if (isset($_POST['finish-class'])) {
 
         <div class="video-section">
             <iframe width="100%" height="84%"
-                src="https://www.youtube.com/embed/NBZ9Ro6UKV8?si=Qjuuv5c-2EtEcQxs?autoplay=1&mute=1"
+                src="https://www.youtube.com/embed/<?= $courseMaterial['video_link'] ?>"
                 title="YouTube video player" frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
