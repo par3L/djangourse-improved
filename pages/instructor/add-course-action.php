@@ -83,6 +83,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $ordinal = (int) $material['ordinal'];
                 $title = $material['title'];
                 $video_link = $material['video-link'];
+                $video_link = str_replace("https://www.youtube.com/watch?v=", "", $video_link);
                 $stmtMaterials->bind_param("ssss", $course_id, $ordinal, $title, $video_link);
                 $stmtMaterials->execute();
             }
