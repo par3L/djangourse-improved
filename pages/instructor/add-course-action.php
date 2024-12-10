@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mkdir($upload_dir, 0755, true);
         }
 
-        $file_name = uniqid() . '_' . basename($_FILES['thumbnail']['name']);
+        $file_name = uniqid();
         $file_tmp = $_FILES['thumbnail']['tmp_name'];
         $file_path = 'uploads/' . $file_name;
 
