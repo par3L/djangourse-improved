@@ -18,6 +18,14 @@ $withdrawal_requests = fetch(
     "SELECT * FROM withdrawal_requests WHERE instructor_id = $instructorId ORDER BY created_at DESC");
 if (isset($_POST["submit"])){
     $amount = $_POST["amount"];
+    if ($amount < 50000) {
+        echo "<script>alert('Jumlah penarikan minimal Rp50.000');location.href='withdrawal-record.php'</script>";
+        return;
+    }
+    if ($amount > $instructor['balance']) {
+        echo "<script>alert('Saldo tidak mencukupi');location.href='withdrawal-record.php'</script>";
+        return;
+    }
     $payment_method = $instructor['preferred_withdrawal_method'];
     $status = 'pending';
     $datetime = time();
