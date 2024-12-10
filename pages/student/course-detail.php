@@ -26,7 +26,12 @@ if (!isset($_GET['id'])) {
 $courseId = $_GET['id'];
 $course = fetch("SELECT * FROM courses WHERE id = $courseId");
 $enrolledCourse = fetch("SELECT * FROM enrolled_courses WHERE student_id = $student_id AND course_id = $courseId");
-$courseSections = fetch("SELECT * FROM course_sections WHERE course_id = $courseId");
+$courseMaterials = fetch("SELECT * FROM course_materials WHERE course_id = $courseId");
+$courseToolGalleries = fetch(
+    "SELECT * FROM course_tool_galleries
+    JOIN courses ON course_tool_galleries.course_id = courses.id
+    JOIN course_tools ON course_tool_galleries.tool_id = course_tools.id
+    WHERE course_tool_galleries.course_id = $courseId");
 
 if ($course) {
     $course = $course[0];
@@ -524,7 +529,6 @@ if (isset($_POST['buy-course'])) {
     .penggunaan,
     .alat {
         margin-top: 20px;
-        text-align: center;
         margin-bottom: 20px;
     }
 
@@ -838,62 +842,24 @@ if (isset($_POST['buy-course'])) {
                 <!-- Right Section -->
                 <div class="right">
                     <ul>
+                        <?php foreach ($courseMaterials as $courseMaterial): ?>
                         <li>
                             <div class="title-wrapper" onclick="toggleContent(this)">
                                 <div>
                                     <i class="fas fa-play-circle"></i>
-                                    <span>Sejarah HTML</span>
+                                    <span><?= $courseMaterial['title'] ?></span>
                                 </div>
                                 <span>5 Menit</span>
                             </div>
                             <div class="content">Penjelasan detail tentang Sejarah HTML.</div>
                         </li>
-                        <li>
-                            <div class="title-wrapper" onclick="toggleContent(this)">
-                                <div>
-                                    <i class="fas fa-lock"></i>
-                                    <span>Anatomi Elemen HTML</span>
-                                </div>
-                                <span>3 Menit</span>
-                            </div>
-                            <div class="content">Penjelasan detail tentang Anatomi Elemen HTML.</div>
-                        </li>
-                        <li>
-                            <div class="title-wrapper" onclick="toggleContent(this)">
-                                <div>
-                                    <i class="fas fa-lock"></i>
-                                    <span>Struktur Dokumen HTML</span>
-                                </div>
-                                <span>7 Menit</span>
-                            </div>
-                            <div class="content">Penjelasan detail tentang Struktur Dokumen HTML.</div>
-                        </li>
-                        <li>
-                            <div class="title-wrapper" onclick="toggleContent(this)">
-                                <div>
-                                    <i class="fas fa-lock"></i>
-                                    <span>Struktur Dokumen HTML</span>
-                                </div>
-                                <span>7 Menit</span>
-                            </div>
-                            <div class="content">Penjelasan detail tentang Struktur Dokumen HTML.</div>
-                        </li>
-                        <li>
-                            <div class="title-wrapper" onclick="toggleContent(this)">
-                                <div>
-                                    <i class="fas fa-lock"></i>
-                                    <span>Struktur Dokumen HTML</span>
-                                </div>
-                                <span>7 Menit</span>
-                            </div>
-                            <div class="content">Penjelasan detail tentang Struktur Dokumen HTML.</div>
-                        </li>
+                        <?php endforeach; ?>
                     </ul>
                     <div class="button">
                         <?php if (empty($enrolledCourse)): ?>
                         <button onclick="<?= ($student['coin_balance'] >= ($course['price'] / 1000)) ? 'showConfirmation()' : 'showErrorModal()' ?>">Gabung Kursus</button>
                         <?php else: ?>
-                        <a href="course-player.php?id=<?= $courseId ?>&lesson=<?= 'kiw' ?>"><button>Masuk ke Dasbor Kursus</button></a>
+                        <a href="course-player.php?id=<?= $courseId ?>&lesson=1"><button>Masuk ke Dasbor Kursus</button></a>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -908,34 +874,15 @@ if (isset($_POST['buy-course'])) {
             </div>
             <div class="alat" id="alat">
                 <div class="item">
+                    <?php foreach ($courseToolGalleries as $courseToolGallery): ?>
                     <div class="card">
-                        <img src="assets/vscode.png" alt="Visual Studio Code">
+                        <img src="assets/<?= $courseToolGallery['logo'] ?>" alt="Visual Studio Code">
                         <div class="card-content">
-                            <span>Visual Studio Code</span>
-                            <span>Code Editor</span>
+                            <span><?= $courseToolGallery['name'] ?></span>
+                            <span><?= $courseToolGallery['type'] ?></span>
                         </div>
                     </div>
-                    <div class="card">
-                        <img src="assets/apache.png" alt="Apache">
-                        <div class="card-content">
-                            <span>Apache</span>
-                            <span>Web Server</span>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img src="assets/chrome.png" alt="Google Chrome">
-                        <div class="card-content">
-                            <span>Google Chrome</span>
-                            <span>Web Browser</span>
-                        </div>
-                    </div>
-                    <div class="card">
-                        <img src="assets/sql.png" alt="MySQL">
-                        <div class="card-content">
-                            <span>MySQL</span>
-                            <span>Database</span>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </div>
