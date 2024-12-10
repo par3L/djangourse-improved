@@ -498,6 +498,12 @@ if (isset($_POST['buy-course'])) {
         background-color: #4a7c59;
     }
 
+    .content .right .button button.disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+        box-shadow: none;
+    }
+
     .button-lanjut button {
         background-color: #2c8577;
         color: #ffffff;
@@ -856,10 +862,14 @@ if (isset($_POST['buy-course'])) {
                         <?php endforeach; ?>
                     </ul>
                     <div class="button">
+                        <?php if ($_SESSION['user']['role_id'] == 1): ?>
                         <?php if (empty($enrolledCourse)): ?>
                         <button onclick="<?= ($student['coin_balance'] >= ($course['price'] / 1000)) ? 'showConfirmation()' : 'showErrorModal()' ?>">Gabung Kursus</button>
                         <?php else: ?>
                         <a href="course-player.php?id=<?= $courseId ?>"><button>Masuk ke Dasbor Kursus</button></a>
+                        <?php endif; ?>
+                        <?php else: ?>
+                        <button class="disabled" disabled>Silakan Masuk sebagai Siswa untuk Membeli Kursus</button></a>
                         <?php endif; ?>
                     </div>
                 </div>
