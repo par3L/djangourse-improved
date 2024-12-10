@@ -15,6 +15,11 @@ $userName = htmlspecialchars($_SESSION['user']['name'], ENT_QUOTES, 'UTF-8');
 
 $studentId = $_SESSION['user']['id'];
 $student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
+$enrolledCourses = fetch(
+    "SELECT courses.name, courses.thumbnail FROM enrolled_courses
+    JOIN courses ON enrolled_courses.course_id=courses.id
+    WHERE student_id=$studentId"
+);
 
 ?>
 
@@ -29,17 +34,9 @@ $student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
     <style>
-    *,
-    *::before,
-    *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-    }
+    @import url('../style.css');
 
     body {
-        font-family: "poppins", sans-serif;
-        margin: 0;
         background-color: #f5f5f5;
         line-height: 1.6;
     }
@@ -232,9 +229,9 @@ $student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
     }
 
     .tab.active {
-    background-color: #2b4e4e;
-    color: white;
-}
+        background-color: #2b4e4e;
+        color: white;
+    }
 
     .tab:hover {
         color: white;
@@ -298,8 +295,8 @@ $student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
     }
 
     .course-card img {
-        width: 100%;
-        height: auto;
+        width: 220px;
+        height: 150px;
         border-radius: 8px;
         margin-bottom: 10px;
     }
@@ -467,49 +464,25 @@ $student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
         </a>
     </section>
 
-    <!-- Courses Section -->
+
+    <?php if (!empty($enrolledCourses)): ?>
     <div class="courses-container">
+        <?php foreach ($enrolledCourses as $enrolledCourse): ?>
         <div class="course-card">
-            <h3>HTML</h3>
-            <img src="https://via.placeholder.com/200x150" alt="HTML Course">
+            <h3><?= $enrolledCourse['name'] ?></h3>
+            <img src="<?= $enrolledCourse['thumbnail'] ?>" alt="<?= $enrolledCourse['name'] ?>">
             <div class="progress-bar">
                 <div class="progress" style="width: 100%;"></div>
             </div>
             <div class="progress-percentage">100%</div>
         </div>
-        <div class="course-card">
-            <h3>Vue JS</h3>
-            <img src="https://via.placeholder.com/200x150" alt="Vue JS Course">
-            <div class="progress-bar">
-                <div class="progress" style="width: 78%;"></div>
-            </div>
-            <div class="progress-percentage">78%</div>
-        </div>
-        <div class="course-card">
-            <h3>Vue JS</h3>
-            <img src="https://via.placeholder.com/200x150" alt="Vue JS Course">
-            <div class="progress-bar">
-                <div class="progress" style="width: 78%;"></div>
-            </div>
-            <div class="progress-percentage">78%</div>
-        </div>
-        <div class="course-card">
-            <h3>Vue JS</h3>
-            <img src="https://via.placeholder.com/200x150" alt="Vue JS Course">
-            <div class="progress-bar">
-                <div class="progress" style="width: 78%;"></div>
-            </div>
-            <div class="progress-percentage">78%</div>
-        </div>
-        <div class="course-card">
-            <h3>HTML</h3>
-            <img src="https://via.placeholder.com/200x150" alt="HTML Course">
-            <div class="progress-bar">
-                <div class="progress" style="width: 100%;"></div>
-            </div>
-            <div class="progress-percentage">100%</div>
-        </div>
+        <?php endforeach; ?>
     </div>
+
+    <?php else: ?>
+    <p style="margin-left:7.5rem; margin-top: 16px; font-size: 24px; margin-bottom: 6.5rem">Belum ada kursus yang diambil.</p>
+
+    <?php endif; ?>
 
     <footer>
         <div class="footer-content">
