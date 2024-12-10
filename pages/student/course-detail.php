@@ -47,7 +47,7 @@ if (isset($_POST['buy-course'])) {
         beginTransaction();
             execDML("INSERT INTO transactions (student_id, course_id, price) VALUES ($student_id, $courseId, $coursePrice)");
             execDML("UPDATE students SET coin_balance = coin_balance - ($coursePrice / 1000) WHERE id = $student_id");
-            execDML("UPDATE instructors SET balance = balance + ($coursePrice*1000) WHERE id = $instructorId");
+            execDML("UPDATE instructors SET balance = balance + ($coursePrice) WHERE id = $instructorId");
             execDML("INSERT INTO enrolled_courses (student_id, course_id) VALUES ($student_id, $courseId)");
         commitTransaction();
         header("Location: course-detail.php?id=$courseId");
