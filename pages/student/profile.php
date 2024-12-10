@@ -470,7 +470,7 @@ $enrolledCourses = fetch(
         <?php foreach ($enrolledCourses as $enrolledCourse): ?>
         <div class="course-card">
             <h3><?= $enrolledCourse['name'] ?></h3>
-            <img src="<?= $enrolledCourse['thumbnail'] ?>" alt="<?= $enrolledCourse['name'] ?>">
+            <img src="../instructor/<?= $enrolledCourse['thumbnail'] ?>" alt="<?= $enrolledCourse['name'] ?>">
             <div class="progress-bar">
                 <div class="progress" style="width: 100%;"></div>
             </div>
