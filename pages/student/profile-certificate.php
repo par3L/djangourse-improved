@@ -1,6 +1,7 @@
 <?php
 
 require '../../utils/database/helper.php';
+require '../../utils/date.php';
 
 session_start();
 
@@ -11,11 +12,16 @@ if (isset($_SESSION['login'])) {
     }
 }
 
-
 $userName = htmlspecialchars($_SESSION['user']['name'], ENT_QUOTES, 'UTF-8');
 
 $studentId = $_SESSION['user']['id'];
 $student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
+
+$certificates = fetch(
+    "SELECT courses.name AS course_name, enrolled_courses.finished_at FROM enrolled_courses
+    JOIN courses ON enrolled_courses.course_id = courses.id
+    WHERE enrolled_courses.student_id=$studentId AND enrolled_courses.finished_at IS NOT NULL"
+);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -432,40 +438,21 @@ footer {
     </section>
 
 
+    <?php if (!empty($certificates)): ?>
     <!-- sertifikat section  -->
     <section class="certificates-section">
-        <div class="certificate-card">
-            <h3>Sertifikat Penyelesaian</h3>
-            <p>HTML</p>
-            <img src="./assets/sertif.png" alt="Certificate Icon">
-            <p>27 Juni 2024</p>
-        </div>
-        <div class="certificate-card">
-            <h3>Sertifikat Penyelesaian</h3>
-            <p>HTML</p>
-            <img src="./assets/sertif.png" alt="Certificate Icon">
-            <p>27 Juni 2024</p>
-        </div>
-        <div class="certificate-card">
-            <h3>Sertifikat Penyelesaian</h3>
-            <p>HTML</p>
-            <img src="./assets/sertif.png" alt="Certificate Icon">
-            <p>27 Juni 2024</p>
-        </div>
-        <div class="certificate-card">
-            <h3>Sertifikat Penyelesaian</h3>
-            <p>HTML</p>
-            <img src="./assets/sertif.png" alt="Certificate Icon">
-            <p>27 Juni 2024</p>
-        </div>
-        <div class="certificate-card">
-            <h3>Sertifikat Penyelesaian</h3>
-            <p>HTML</p>
-            <img src="./assets/sertif.png" alt="Certificate Icon">
-            <p>27 Juni 2024</p>
-        </div>
+        <?php foreach ($certificates as $certificate): ?>
+            <div class="certificate-card">
+                <h3>Sertifikat Penyelesaian</h3>
+                <p><?= $certificate['course_name'] ?></p>
+                <img src="./assets/sertif.png" alt="Certificate Icon">
+                <p><?= convertToIndonesianDate($certificate['finished_at']) ?></p>
+            </div>
+        <?php endforeach; ?>
     </section>
-
+    <?php else: ?>
+    <p style="margin-left:7.5rem; margin-top: 16px; font-size: 24px; margin-bottom: 6.5rem">Kamu belum menyelesaikan satu pun kursus.</p>
+    <?php endif; ?>
     <footer>
         <div class="footer-content">
             <div class="logo-section">
