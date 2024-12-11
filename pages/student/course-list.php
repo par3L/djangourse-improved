@@ -624,17 +624,6 @@ if ($temp != null) // check if user is logged in
             <input placeholder="Cari..." type="text" id="searchInput" autofocus />
         </div>
 
-        <div class="tabs">
-            <?php if (!empty($categories)): ?>
-            <?php foreach ($categories as $category): ?>
-            <a href="#" class="tab <?= (isset($kategori) && $kategori === $category['name']) ? 'active' : '' ?>"
-                onclick="loadCourses('<?= htmlspecialchars($category['name']) ?>', true); return false;">
-                <?= htmlspecialchars($category['name']) ?>
-            </a>
-            <?php endforeach; ?>
-            <?php endif; ?>
-        </div>
-
         <?php if (!empty($courses)): ?>
         <div class="pilihan" id="courses-container">
 
