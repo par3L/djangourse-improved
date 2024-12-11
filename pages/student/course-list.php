@@ -233,10 +233,6 @@ if ($temp != null) // check if user is logged in
         margin-bottom: 30px;
     }
 
-    .search-bar {
-        margin-bottom: 30px;
-    }
-
     .search-bar input {
         width: 50%;
         padding: 10px;
