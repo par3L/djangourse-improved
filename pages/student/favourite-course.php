@@ -235,6 +235,7 @@ if ($student_id) {
     }
 
     .catalog-header a {
+        width: 80%;
         text-decoration: none;
     }
 
@@ -243,6 +244,10 @@ if ($student_id) {
         font-family: "Poppins-Bold", sans-serif;
         font-size: 20px;
         font-weight: 700;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     .heart {

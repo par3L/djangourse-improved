@@ -314,6 +314,7 @@ if ($temp != null) // check if user is logged in
     }
 
     .catalog-header a {
+        width: 80%;
         text-decoration: none;
     }
 
@@ -322,6 +323,10 @@ if ($temp != null) // check if user is logged in
         font-family: "Poppins-Bold", sans-serif;
         font-size: 20px;
         font-weight: 700;
+        text-align: left;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
     }
 
     .heart {
