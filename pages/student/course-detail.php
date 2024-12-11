@@ -27,6 +27,7 @@ $courseId = $_GET['id'];
 $course = fetch("SELECT * FROM courses WHERE id = $courseId");
 $enrolledCourse = fetch("SELECT * FROM enrolled_courses WHERE student_id = $student_id AND course_id = $courseId");
 $courseMaterials = fetch("SELECT * FROM course_materials WHERE course_id = $courseId");
+$courseFirstMaterial = fetch("SELECT video_link FROM course_materials WHERE course_id = $courseId LIMIT 1")[0];
 $courseToolGalleries = fetch(
     "SELECT * FROM course_tool_galleries
     JOIN courses ON course_tool_galleries.course_id = courses.id
@@ -831,18 +832,12 @@ if (isset($_POST['buy-course'])) {
 
         <!-- CONTENT SECTION -->
         <div class="container">
-            <div class="content">
+            <div class="content">   
                 <div class="left">
-                    <iframe width="560" height="315" src="https://www.youtube.com/embed/NBZ9Ro6UKV8?si=Qjuuv5c-2EtEcQxs"
+                    <iframe width="560" height="315" src="https://www.youtube.com/embed/<?= $courseFirstMaterial['video_link'] ?>"
                         title="YouTube video player" frameborder="0"
                         allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                         referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
-                    <p>
-                        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque sem magna, gravida eu eros in,
-                        fermentum vulputate sem. Quisque at ipsum pretium, ullamcorper tellus non, feugiat eros. Nunc
-                        euismod
-                        mauris ipsum.
-                    </p>
                 </div>
 
                 <!-- Right Section -->
