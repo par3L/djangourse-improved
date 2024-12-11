@@ -10,6 +10,7 @@ if (isset($_SESSION["login"])) {
 
     if ($_SESSION['user']['role_id'] == 1) {
         $student = fetch("SELECT coin_balance FROM students WHERE id=$student_id")[0];
+        $enrolledCourse = fetch("SELECT * FROM enrolled_courses WHERE student_id = $student_id AND course_id = $courseId");
     }
 
     if ($_SESSION['user']['role_id'] == 3) {
@@ -25,7 +26,6 @@ if (!isset($_GET['id'])) {
 
 $courseId = $_GET['id'];
 $course = fetch("SELECT * FROM courses WHERE id = $courseId");
-$enrolledCourse = fetch("SELECT * FROM enrolled_courses WHERE student_id = $student_id AND course_id = $courseId");
 $courseMaterials = fetch("SELECT * FROM course_materials WHERE course_id = $courseId");
 $courseFirstMaterial = fetch("SELECT video_link FROM course_materials WHERE course_id = $courseId LIMIT 1")[0];
 $courseToolGalleries = fetch(
