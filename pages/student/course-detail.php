@@ -880,7 +880,7 @@ if (isset($_POST['buy-course'])) {
                 <button onclick="showContent('alat')">Alat</button>
             </div>
             <div class="penggunaan" id="penggunaan">
-                <p><?= $course['description'] ?></p>
+                <p><?= str_replace(["\r", "\n"], '', $course['description']) ?></p>
             </div>
             <div class="alat" id="alat">
                 <div class="item">
