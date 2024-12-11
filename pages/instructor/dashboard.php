@@ -13,6 +13,11 @@ $instructor = fetch(
 
 $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
 $publishedCoruses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId AND status = 'Disetujui'");
+$counter = fetch(
+    "SELECT c.id as course_id, c.name, count(*) AS count from transactions t
+    JOIN courses c ON t.course_id = c.id
+    JOIN instructors i ON c.instructor_id = i.id WHERE i.id =$instructorId
+    GROUP BY c.id, c.name");
 
 ?>
 
@@ -367,8 +372,9 @@ $publishedCoruses = fetch("SELECT * FROM courses WHERE instructor_id = $instruct
     }
 
     .navbar-info-dropdown iconify-icon {
-    font-size: 24px;
-}
+        font-size: 24px;
+    }
+
     .navbar-cred {
         display: flex;
         align-items: center;
@@ -546,9 +552,21 @@ $publishedCoruses = fetch("SELECT * FROM courses WHERE instructor_id = $instruct
                     </thead>
                     <tbody>
                         <?php foreach ($courses as $course): ?>
+                        <?php
+                        
+                        $courseCount = 0;
+
+                        // Find the matching count for the current course
+                        foreach ($counter as $row) {
+                            if ($row['course_id'] == $course['id']) {
+                                $courseCount = $row['count'];
+                                break; // Exit the loop once a match is found
+                            }
+                        }
+                        ?>
                         <tr>
                             <td><?= $course['name'] ?></td>
-                            <td>0</td>
+                            <td><?= $courseCount ?></td>
                             <td><?= $course['status'] ?></td>
                         </tr>
                         <?php endforeach; ?>
