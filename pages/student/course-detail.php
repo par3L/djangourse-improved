@@ -823,7 +823,7 @@ if (isset($_POST['buy-course'])) {
     <div class="isi-content">
         <div class="description">
             <h1><?= $course['name'] ?></h1>
-            <p>Belajar Struktur Dasar dari Sebuah Website</p>
+            <p><?= $course['subtitle'] ?></p>
             <div class="info">
                 <div><i class="fas fa-signal"></i> Tingkat Kesulitan: <?= $course['level'] ?></div>
                 <div><i class="fas fa-calendar-alt"></i> Dipublikasi: <?= convertToWita($course['created_at']) ?></div>
