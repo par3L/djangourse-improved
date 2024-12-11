@@ -35,10 +35,10 @@ if (isset($_POST['submit-btn'])) {
             if ($fileError === 0) {
                 if ($fileSize < 1000000) {
                     $fileNameNew = "profile" . $instructorId . "." . $fileActualExt;
-                    $fileDestination = '../../assets/' . $fileNameNew;
+                    $fileDestination = 'uploads/' . $fileNameNew;
 
                     if (move_uploaded_file($fileTmpName, $fileDestination)) {
-                        $profileImg = $fileNameNew; 
+                        $profileImg = $fileNameNew;
                     } else {
                         echo "Failed to move uploaded file!";
                         exit();
@@ -385,6 +385,9 @@ if (isset($_POST['submit-btn'])) {
 
     .img img {
         width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
     }
 
     .right-hand {
@@ -627,7 +630,7 @@ if (isset($_POST['submit-btn'])) {
         <aside class="sidebar">
             <div class="profile">
                 <img id="profile-pic"
-                    src="<?= $instructor['profile_img'] ? '../../assets/' . $instructor['profile_img'] : 'https://artikel.rumah123.com/wp-content/uploads/sites/41/2023/09/12160753/gambar-foto-profil-whatsapp-kosong.jpg' ?>"
+                    src="<?= $instructor['profile_img'] ? 'uploads/' . $instructor['profile_img'] : 'https://artikel.rumah123.com/wp-content/uploads/sites/41/2023/09/12160753/gambar-foto-profil-whatsapp-kosong.jpg' ?>"
                     alt="Profile Picture">
                 <h3><?= $instructor['name'] ?></h3>
                 <p>Pengajar</p>
@@ -657,9 +660,10 @@ if (isset($_POST['submit-btn'])) {
             <div class="header">
                 <h5>Anda memiliki kontrol penuh untuk mengelola akun Anda sendiri!</h5>
             </div>
+            <form method="POST" enctype="multipart/form-data">
             <div class="content">
                 <div class="img">
-                    <img src="<?= $instructor['profile_img'] ? '../../assets/' . $instructor['profile_img'] : 'https://artikel.rumah123.com/wp-content/uploads/sites/41/2023/09/12160753/gambar-foto-profil-whatsapp-kosong.jpg' ?>"
+                    <img src="<?= $instructor['profile_img'] ? 'uploads/' . $instructor['profile_img'] : 'https://artikel.rumah123.com/wp-content/uploads/sites/41/2023/09/12160753/gambar-foto-profil-whatsapp-kosong.jpg' ?>"
                         alt="your photo">
                 </div>
                 <div class="right-hand">
@@ -672,11 +676,6 @@ if (isset($_POST['submit-btn'])) {
                             <i class="fas fa-cloud-upload-alt upload-icon"></i>
                             <input type="file" id="image-upload" accept="image/*" style="display: none;" name="img-upload" />
                         </label>
-
-                        <!-- Trash icon -->
-                        <button type="button" class="icon-btn reset-btn">
-                            <i class="fas fa-trash-alt trash-icon"></i>
-                        </button>
                     </div>
                 </div>
             </div>
@@ -686,7 +685,7 @@ if (isset($_POST['submit-btn'])) {
                     <h4>Edit informasi pribadi anda</h4>
                 </div>
                 <div class="form">
-                    <form method="POST" enctype="multipart/form-data">
+                    
                         <!-- Row for Nama Lengkap and Tanggal Lahir -->
                         <div class="form-row">
                             <div class="form-group half-width">
@@ -721,9 +720,10 @@ if (isset($_POST['submit-btn'])) {
                         <div class="end">
                             <button type="submit" class="submit-btn" name="submit-btn">Perbarui Profil</button>
                         </div>
-                    </form>
+                    
                 </div>
             </div>
+            </form>
         </main>
     </div>
     <footer>
