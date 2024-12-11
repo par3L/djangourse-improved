@@ -532,7 +532,7 @@ body {
             </div>
             <div class="profile-container">
                 <div class="profile-header">
-                    <img src="https://artikel.rumah123.com/wp-content/uploads/sites/41/2023/09/12160753/gambar-foto-profil-whatsapp-kosong.jpg"
+                    <img src="<?= $instructor['profile_img'] ? 'uploads/' . $instructor['profile_img'] : 'https://artikel.rumah123.com/wp-content/uploads/sites/41/2023/09/12160753/gambar-foto-profil-whatsapp-kosong.jpg' ?>"
                         alt="Profile Picture">
                     <h1><?= $instructor['name'] ?></h1>
                     <p>Pengajar</p>
