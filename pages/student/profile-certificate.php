@@ -221,6 +221,7 @@ header .user-info img {
 
 .certificates-section {
     display: flex;
+    align-items: flex-start;
     justify-content: center;
     gap: 20px;
     padding: 20px;
@@ -230,7 +231,6 @@ header .user-info img {
     background-color: #d9e6e6;
     padding: 20px;
     width: 221px;
-    height: 273px;
     text-align: center;
     border-radius: 0px;
 }
