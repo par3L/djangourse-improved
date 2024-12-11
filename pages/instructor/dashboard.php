@@ -12,7 +12,7 @@ $instructor = fetch(
     WHERE instructors.id = $instructorId")[0];
 
 $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
-
+$publishedCoruses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId AND status = 'Disetujui'");
 
 ?>
 
@@ -526,7 +526,7 @@ $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
                 </div>
                 <div class="card">
                     <h4>Kursus Terpublikasi</h4>
-                    <p>0</p>
+                    <p><?= count($publishedCoruses) ?></p>
                 </div>
                 <div class="card">
                     <h4>Jumlah Siswa</h4>
