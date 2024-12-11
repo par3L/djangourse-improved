@@ -424,11 +424,11 @@ if ($temp != null) // check if user is logged in
         background-color: #1e888c;
     }
 
-    .controls {
+  .controls {
         display: flex;
         justify-content: center;
         align-items: center;
-        flex-direction: column;
+        gap: 55px;
         margin: 0 auto;
         width: 100%;
     }
