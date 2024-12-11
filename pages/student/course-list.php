@@ -679,12 +679,10 @@ if ($temp != null) // check if user is logged in
     <!-- Tombol untuk Tampilkan Lebih Banyak -->
     <div class="controls">
         <?php if (count($courses) === $limit): ?>
-        <a href="?kategori=<?= urlencode($kategori) ?>&offset=<?= $offset + $limit ?>" id="loadMore">Tampilkan Lebih
-            Banyak</a>
+        <a href="?kategori=<?= urlencode($kategori) ?>&offset=<?= $offset + $limit ?>" id="loadMore">Selanjutnya <iconify-icon style="font-size: 24px" icon="ic:round-navigate-next"></iconify-icon></a>
         <?php endif; ?>
         <?php if ($offset > 0): ?>
-        <a href="?kategori=<?= urlencode($kategori) ?>&offset=<?= max($offset - $limit, 0) ?>" id="loadLess">Tampilkan
-            Lebih Sedikit</a>
+        <a href="?kategori=<?= urlencode($kategori) ?>&offset=<?= max($offset - $limit, 0) ?>" id="loadLess">Sebelumnya  <iconify-icon style="font-size: 24px" icon="ic:round-navigate-before"></iconify-icon></a>
         <?php endif; ?>
     </div>
 
