@@ -19,6 +19,15 @@ $counter = fetch(
     JOIN instructors i ON c.instructor_id = i.id WHERE i.id =$instructorId
     GROUP BY c.id, c.name");
 
+$students = fetch(
+    "SELECT s.id, s.name
+    FROM students s
+    JOIN transactions t ON s.id = t.student_id
+    JOIN courses c ON t.course_id = c.id
+    WHERE c.instructor_id = $instructorId
+    GROUP BY s.id
+");
+
 ?>
 
 <!DOCTYPE html>
@@ -536,7 +545,7 @@ $counter = fetch(
                 </div>
                 <div class="card">
                     <h4>Jumlah Siswa</h4>
-                    <p>0</p>
+                    <p><?= count($students) ?></p>
                 </div>
             </div>
             <div class="table-section">
