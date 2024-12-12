@@ -132,7 +132,7 @@ $success_message = null;
             <h1>Selangkah menjadi <span><br> Programmer</span></h1>
             <p>Djangourse adalah salah satu penyedia layanan kursus bagi programmer pemula.</p>
             <div class="buttons">
-                <button class="filled" onclick="location.href='pages/student/course-list.php'">Cari Kursus</button>
+                <button class="filled" onclick="location.href='pages/course-list.php'">Cari Kursus</button>
                 <button class="outlined">Jelajahi</button>
             </div>
             <div class="trusted-by">
