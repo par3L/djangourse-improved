@@ -409,7 +409,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             <nav>
                 <ul>
                     <li><a href="../../index.php">Beranda</a></li>
-                    <li><a href="course-list.php">Kursus</a></li>
+                    <li><a href="../course-list.php">Kursus</a></li>
                     <li><a href="../how-to-use.php">Cara Penggunaan</a></li>
                 </ul>
             </nav>

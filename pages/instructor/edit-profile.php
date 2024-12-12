@@ -598,7 +598,7 @@ if (isset($_POST['submit-btn'])) {
             <nav>
                 <ul id="navbar-menu">
                     <li><a href="../../index.php">Beranda</a></li>
-                    <li><a href="../student/course-list.php">Kursus</a></li>
+                    <li><a href="../course-list.php">Kursus</a></li>
                     <li><a href="../how-to-use.php">Cara Penggunaan</a></li>
                 </ul>
             </nav>

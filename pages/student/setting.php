@@ -857,8 +857,8 @@ if (isset($_SESSION['login'])) {
             <nav>
                 <ul>
                     <li><a href="../../index.php">Beranda</a></li>
-                    <li><a href="../student/course-list.php">Kursus</a></li>
-                    <li><a href="#">Cara Penggunaan</a></li>
+                    <li><a href="../course-list.php">Kursus</a></li>
+                    <li><a href="../how-to-use.php">Cara Penggunaan</a></li>
                 </ul>
             </nav>
             <?php if (isset($_SESSION['login'])): ?>

@@ -1,6 +1,6 @@
 <?php
 
-require '../../utils/database/helper.php';
+require '../utils/database/helper.php';
 
 session_start();
 
@@ -12,7 +12,7 @@ if (isset($_SESSION["login"])) {
     }
 
     if ($_SESSION['user']['role_id'] == 3) {
-        header('Location: pages/admin/views/dashboard.php');
+        header('Location: admin/views/dashboard.php');
         die;
     }
 }
@@ -444,7 +444,7 @@ if ($temp != null) // check if user is logged in
     }
 
     footer {
-        background-image: url('../../assets/img/footer.png');
+        background-image: url('../assets/img/footer.png');
         background-size: cover;
         background-position: center;
         color: #fff;
@@ -550,12 +550,12 @@ if ($temp != null) // check if user is logged in
     <!-- HEADER -->
     <header>
         <div class="navbar">
-            <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
+            <img src="../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
             <nav>
                 <ul>
-                    <li><a href="../../index.php">Beranda</a></li>
+                    <li><a href="../index.php">Beranda</a></li>
                     <li><a href="course-list.php">Kursus</a></li>
-                    <li><a href="../how-to-use.php">Cara Penggunaan</a></li>
+                    <li><a href="how-to-use.php">Cara Penggunaan</a></li>
                 </ul>
             </nav>
             <?php if (isset($_SESSION['login'])): ?>
@@ -563,27 +563,27 @@ if ($temp != null) // check if user is logged in
                 <p>Hai, <?= $_SESSION['user']['name'] ?></p>
                 <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
                 <?php if ($_SESSION['user']['role_id'] == 1): ?>
-                <a href="coin-dashboard.php"><?= $student['coin_balance'] ?> Koin</a>
+                <a href="student/coin-dashboard.php"><?= $student['coin_balance'] ?> Koin</a>
                 <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
-                    <a href="profile.php">
+                    <a href="student/profile.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
                             <span>Profil</span>
                         </div>
                     </a>
-                    <a href="favourite-course.php">
+                    <a href="student/favourite-course.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="weui:like-filled"></iconify-icon>
                             <span>Wishlist</span>
                         </div>
                     </a>
-                    <a href="setting.php">
+                    <a href="student/setting.php">
                         <div class=" navbar-info-dropdown-content">
                             <iconify-icon icon="uil:setting"></iconify-icon>
                             <span>Pengaturan</span>
                         </div>
                     </a>
-                    <a href="../logout.php">
+                    <a href="logout.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
                             <span>Keluar</span>
@@ -592,13 +592,13 @@ if ($temp != null) // check if user is logged in
                 </div>
                 <?php elseif ($_SESSION['user']['role_id'] == 2): ?>
                 <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
-                    <a href="../../pages/instructor/dashboard.php">
+                    <a href="instructor/dashboard.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
                             <span>Dasbor</span>
                         </div>
                     </a>
-                    <a href="../../pages/logout.php">
+                    <a href="logout.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
                             <span>Keluar</span>
@@ -610,8 +610,8 @@ if ($temp != null) // check if user is logged in
 
             <?php else: ?>
             <div class="auth-buttons">
-                <button class="style-daftar" onclick="location.href='../auth.php'">Daftar</button>
-                <button class="style-masuk" onclick="location.href='../auth.php'">Masuk</button>
+                <button class="style-daftar" onclick="location.href='auth.php'">Daftar</button>
+                <button class="style-masuk" onclick="location.href='auth.php'">Masuk</button>
             </div>
             <?php endif; ?>
         </div>
@@ -632,7 +632,7 @@ if ($temp != null) // check if user is logged in
             <?php foreach ($courses as $course): ?>
             <div class="catalog" data-category="<?= htmlspecialchars($course['category_name']) ?>">
                 <div class="catalog-header">
-                    <a href="../student/course-detail.php?id=<?= $course['id'] ?>" class="catalog-link">
+                    <a href="student/course-detail.php?id=<?= $course['id'] ?>" class="catalog-link">
                         <div class="catalog-title"><?= $course['name'] ?></div>
                     </a>
                     <?php if ($_SESSION['user']['role_id'] == 1): ?>
@@ -651,12 +651,12 @@ if ($temp != null) // check if user is logged in
                     <?php endif; ?>
                 </div>
                 <img class="course-image"
-                    src="<?= $course['thumbnail'] ? "../instructor/".$course['thumbnail'] : "https://placehold.co/600x400?text=Tidak+Ada+Gambar" ?>"
+                    src="<?= $course['thumbnail'] ? "instructor/".$course['thumbnail'] : "https://placehold.co/600x400?text=Tidak+Ada+Gambar" ?>"
                     alt="Thumbnail Kursus">
                 <div class="catalog-footer">
                     <div class="koin"><?= number_format($course['price'] / 1000, 0, ',', '.') ?> Koin</div>
                     <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
-                    <a href="../student/course-detail.php?id=<?= $course['id'] ?>"><button
+                    <a href="student/course-detail.php?id=<?= $course['id'] ?>"><button
                             class="button-rental">Beli</button></a>
                 </div>
             </div>
@@ -680,7 +680,7 @@ if ($temp != null) // check if user is logged in
     <footer>
         <div class="footer-content">
             <div class="logo-section">
-                <img src="../../assets/img/logo-django.png" alt="Logo" class="footer-logo">
+                <img src="../assets/img/logo-django.png" alt="Logo" class="footer-logo">
                 <p>Bergabunglah bersama kami untuk menguasai<br> berbagai keahlian
                     dibidang teknologi dan membuka<br>peluang karier di dunia teknologi
                     yang terus berkembang.<br><br> Kami menyediakan kursus
@@ -729,7 +729,7 @@ if ($temp != null) // check if user is logged in
 
         </div>
     </footer>
-    <script src="./js/course-list.js"></script>
+    <script src="./course-list.js"></script>
     <script>
     document.addEventListener('DOMContentLoaded', function() {
         const hearts = document.querySelectorAll('.heart');

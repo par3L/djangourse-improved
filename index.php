@@ -63,7 +63,7 @@ $success_message = null;
             <nav>
                 <ul>
                     <li><a href="index.php">Beranda</a></li>
-                    <li><a href="pages/student/course-list.php">Kursus</a></li>
+                    <li><a href="pages/course-list.php">Kursus</a></li>
                     <li><a href="pages/how-to-use.php">Cara Penggunaan</a></li>
                 </ul>
             </nav>
