@@ -5,6 +5,13 @@ require '../../utils/date.php';
 
 session_start();
 
+if (!isset($_GET['id'])) {
+    echo "ID kursus harus dilampirkan.";
+    die;
+}
+
+$courseId = $_GET['id'];
+
 if (isset($_SESSION["login"])) {
     $student_id = $_SESSION['user']['id'];
 
@@ -19,12 +26,6 @@ if (isset($_SESSION["login"])) {
     }
 }
 
-if (!isset($_GET['id'])) {
-    echo "ID kursus harus dilampirkan.";
-    die;
-}
-
-$courseId = $_GET['id'];
 $course = fetch("SELECT * FROM courses WHERE id = $courseId");
 $courseMaterials = fetch("SELECT * FROM course_materials WHERE course_id = $courseId");
 $courseFirstMaterial = fetch("SELECT video_link FROM course_materials WHERE course_id = $courseId LIMIT 1")[0];
