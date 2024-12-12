@@ -425,7 +425,7 @@ if (isset($_POST['finish-class'])) {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
             <div class="next-button-container">
-                <?php if ($lessonOrdinal >= count($courseMaterials)): ?>
+                <?php if ($lessonOrdinal > 1 && $lessonOrdinal <= count($courseMaterials)): ?>
                 <a href="?id=<?= $courseId ?>&lesson=<?=$lessonOrdinal-1?>">
                     <button>
                         <iconify-icon style="border: 1px solid #fff; border-radius: 50%" icon="ic:round-navigate-before"
