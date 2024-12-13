@@ -16,9 +16,21 @@ $userName = htmlspecialchars($_SESSION['user']['name'], ENT_QUOTES, 'UTF-8');
 $studentId = $_SESSION['user']['id'];
 $student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
 $enrolledCourses = fetch(
-    "SELECT courses.name, courses.thumbnail FROM enrolled_courses
+    "SELECT courses.id, courses.name, courses.thumbnail FROM enrolled_courses
     JOIN courses ON enrolled_courses.course_id=courses.id
     WHERE student_id=$studentId"
+);
+$courseFinishedMaterial = fetch(
+    "SELECT courses.id as course_id, courses.name, COUNT(*) as count FROM course_finished_materials
+    JOIN course_materials ON course_finished_materials.course_material_id=course_materials.id
+    JOIN courses ON course_materials.course_id=courses.id
+    WHERE course_finished_materials.student_id=$studentId
+    GROUP BY courses.id"
+);
+$courseMaterial = fetch(
+    "SELECT courses.id as course_id, courses.name, COUNT(*) as count FROM course_materials
+    JOIN courses ON course_materials.course_id=courses.id
+    GROUP BY courses.id"
 );
 
 ?>
@@ -37,7 +49,6 @@ $enrolledCourses = fetch(
     @import url('../style.css');
 
     body {
-        background-color: #f5f5f5;
         line-height: 1.6;
     }
 
@@ -286,34 +297,35 @@ $enrolledCourses = fetch(
     }
 
     .course-card {
-        background: #B3B3B3;
+        background-color: #ffffff;
         border-radius: 10px;
         box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        padding: 15px;
-        height: 350px;
-        text-align: center;
+        width: 240px;
+        padding: 20px 16px;
+        
     }
 
     .course-card img {
-        width: 220px;
+        width: 100%;
         height: 150px;
         border-radius: 8px;
-        margin-bottom: 10px;
     }
 
     .course-card h3 {
         font-size: 16px;
         font-weight: 600;
-        margin-top: 5px;
-        margin-bottom: 30px;
+        margin-bottom: 24px;
         color: #333;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
     }
 
     .progress-bar {
-        background-color: #ffffff;
+        background-color:#d9e6e6;
         border-radius: 10px;
         overflow: hidden;
-        margin: 20px 0;
+        margin: 24px 0 8px 0;
         height: 8px;
         position: relative;
     }
@@ -329,6 +341,7 @@ $enrolledCourses = fetch(
         font-weight: 500;
         color: #333;
         text-align: right;
+        margin-bottom: 4px;
     }
 
     footer {
@@ -468,13 +481,32 @@ $enrolledCourses = fetch(
     <?php if (!empty($enrolledCourses)): ?>
     <div class="courses-container">
         <?php foreach ($enrolledCourses as $enrolledCourse): ?>
+        <?php 
+            $courseFinishedMaterialCounter = 0;
+            $courseMaterialTotalCounter = 0;
+
+            // Find the matching count for the current course
+            foreach ($courseFinishedMaterial as $row) {
+                if ($row['course_id'] == $enrolledCourse['id']) {
+                    $courseFinishedMaterialCounter = $row['count'];
+                    break; // Exit the loop once a match is found
+                }
+            }
+
+            foreach ($courseMaterial as $row) {
+                if ($row['course_id'] == $enrolledCourse['id']) {
+                    $courseMaterialTotalCounter = $row['count'];
+                    break; // Exit the loop once a match is found
+                }
+            }
+        ?>
         <div class="course-card">
             <h3><?= $enrolledCourse['name'] ?></h3>
             <img src="../instructor/<?= $enrolledCourse['thumbnail'] ?>" alt="<?= $enrolledCourse['name'] ?>">
             <div class="progress-bar">
-                <div class="progress" style="width: 100%;"></div>
+                <div class="progress" style="width: <?= ($courseMaterialTotalCounter !== 0) ? round($courseFinishedMaterialCounter / $courseMaterialTotalCounter * 100, 2) : $courseFinishedMaterialCounter ?>%;"></div>
             </div>
-            <div class="progress-percentage">100%</div>
+            <div class="progress-percentage"><?= ($courseMaterialTotalCounter !== 0) ? round($courseFinishedMaterialCounter / $courseMaterialTotalCounter * 100, 2) : $courseFinishedMaterialCounter ?>%</div>
         </div>
         <?php endforeach; ?>
     </div>
