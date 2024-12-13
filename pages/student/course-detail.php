@@ -295,12 +295,6 @@ if (isset($_POST['buy-course'])) {
         color: #d6e4f8;
     }
 
-    /* Authentication Buttons */
-    .auth-buttons {
-        display: flex;
-        gap: 16px;
-    }
-
     .style-daftar,
     .style-masuk {
         border: none;
@@ -813,8 +807,8 @@ if (isset($_POST['buy-course'])) {
 
             <?php else: ?>
             <div class="auth-buttons">
-                <button class="style-daftar" onclick="location.href='pages/auth.php'">Daftar</button>
-                <button class="style-masuk" onclick="location.href='pages/auth.php'">Masuk</button>
+                <button class="style-daftar" onclick="location.href='../auth.php'">Daftar</button>
+                <button class="style-masuk" onclick="location.href='../auth.php'">Masuk</button>
             </div>
             <?php endif; ?>
         </div>
