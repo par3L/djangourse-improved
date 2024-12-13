@@ -27,7 +27,7 @@ if (isset($_SESSION["login"])) {
 }
 
 $course = fetch("SELECT * FROM courses WHERE id = $courseId");
-$courseMaterials = fetch("SELECT * FROM course_materials WHERE course_id = $courseId");
+$courseMaterials = fetch("SELECT * FROM course_materials WHERE course_id = $courseId LIMIT 5");
 $courseFirstMaterial = fetch("SELECT video_link FROM course_materials WHERE course_id = $courseId LIMIT 1")[0];
 $courseToolGalleries = fetch(
     "SELECT * FROM course_tool_galleries
@@ -844,17 +844,18 @@ if (isset($_POST['buy-course'])) {
                 <!-- Right Section -->
                 <div class="right">
                     <ul>
+                        <?php $counter = 1; ?>
                         <?php foreach ($courseMaterials as $courseMaterial): ?>
                         <li>
                             <div class="title-wrapper" onclick="toggleContent(this)">
                                 <div>
-                                    <i class="fas fa-play-circle"></i>
+                                    <i class="fas <?= ($counter === 1) ? 'fa-play-circle' : 'fa-lock' ?>"></i>
                                     <span><?= $courseMaterial['title'] ?></span>
                                 </div>
                                 <span>5 Menit</span>
                             </div>
-                            <div class="content">Penjelasan detail tentang Sejarah HTML.</div>
                         </li>
+                        <?php $counter++; ?>
                         <?php endforeach; ?>
                     </ul>
                     <div class="button">
