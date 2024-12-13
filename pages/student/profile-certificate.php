@@ -220,11 +220,12 @@ header .user-info img {
 
 
 .certificates-section {
-    display: flex;
-    align-items: flex-start;
-    justify-content: center;
-    gap: 20px;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 25px;
     padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .certificate-card {
