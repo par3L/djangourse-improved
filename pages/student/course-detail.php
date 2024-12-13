@@ -523,7 +523,6 @@ if (isset($_POST['buy-course'])) {
     .penggunaan p {
         font-size: 20px;
         letter-spacing: 0.15px;
-        font-weight: 500;
         margin-top: 20px;
         text-align: left;
     }
@@ -853,14 +852,18 @@ if (isset($_POST['buy-course'])) {
                         <?php endforeach; ?>
                     </ul>
                     <div class="button">
-                        <?php if ($_SESSION['user']['role_id'] == 1): ?>
-                        <?php if (empty($enrolledCourse)): ?>
-                        <button onclick="<?= ($student['coin_balance'] >= ($course['price'] / 1000)) ? 'showConfirmation()' : 'showErrorModal()' ?>">Gabung Kursus</button>
+                        <?php if (isset($_SESSION['user'])): ?>
+                            <?php if ($_SESSION['user']['role_id'] == 1): ?>
+                                <?php if (empty($enrolledCourse)): ?>
+                                    <button onclick="<?= ($student['coin_balance'] >= ($course['price'] / 1000)) ? 'showConfirmation()' : 'showErrorModal()' ?>">Gabung Kursus</button>
+                                <?php else: ?>
+                                    <a href="course-player.php?id=<?= $courseId ?>"><button>Masuk ke Dasbor Kursus</button></a>
+                                <?php endif; ?>
+                            <?php else: ?>
+                                <button class="disabled" disabled>Silakan Masuk sebagai Siswa untuk Membeli Kursus</button></a>
+                            <?php endif; ?>
                         <?php else: ?>
-                        <a href="course-player.php?id=<?= $courseId ?>"><button>Masuk ke Dasbor Kursus</button></a>
-                        <?php endif; ?>
-                        <?php else: ?>
-                        <button class="disabled" disabled>Silakan Masuk sebagai Siswa untuk Membeli Kursus</button></a>
+                            <button class="disabled" disabled>Silakan Masuk sebagai Siswa untuk Membeli Kursus</button></a>
                         <?php endif; ?>
                     </div>
                 </div>
