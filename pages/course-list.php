@@ -627,43 +627,44 @@ if ($temp != null) // check if user is logged in
         </div>
 
         <?php if (!empty($courses)): ?>
-        <div class="pilihan" id="courses-container">
-
-            <?php foreach ($courses as $course): ?>
-            <div class="catalog" data-category="<?= htmlspecialchars($course['category_name']) ?>">
-                <div class="catalog-header">
-                    <a href="student/course-detail.php?id=<?= $course['id'] ?>" class="catalog-link">
-                        <div class="catalog-title"><?= $course['name'] ?></div>
-                    </a>
-                    <?php if ($_SESSION['user']['role_id'] == 1): ?>
-                    <form method="POST">
-                        <input type="hidden" name='course-fav' value="<?= $course['id'] ?>">
-                        <?php if (isset($isFav[$course['id']]) && !empty($isFav[$course['id']])): ?>
-                        <button class="heart active" name="heart">
-                            <i class="fas fa-heart"></i>
-                        </button>
-                        <?php else: ?>
-                        <button class="heart" name="heart">
-                            <i class="far fa-heart"></i>
-                        </button>
-                        <?php endif; ?>
-                    </form>
-                    <?php endif; ?>
-                </div>
-                <img class="course-image"
-                    src="<?= $course['thumbnail'] ? "instructor/".$course['thumbnail'] : "https://placehold.co/600x400?text=Tidak+Ada+Gambar" ?>"
-                    alt="Thumbnail Kursus">
-                <div class="catalog-footer">
-                    <div class="koin"><?= number_format($course['price'] / 1000, 0, ',', '.') ?> Koin</div>
-                    <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
-                    <a href="student/course-detail.php?id=<?= $course['id'] ?>"><button
-                            class="button-rental">Beli</button></a>
-                </div>
+            <div class="pilihan" id="courses-container">
+                <?php foreach ($courses as $course): ?>
+                    <div class="catalog" data-category="<?= htmlspecialchars($course['category_name']) ?>">
+                        <div class="catalog-header">
+                            <a href="student/course-detail.php?id=<?= $course['id'] ?>" class="catalog-link">
+                                <div class="catalog-title"><?= $course['name'] ?></div>
+                            </a>
+                            <?php if (isset($_SESSION['user'])): ?>
+                                <?php if ($_SESSION['user']['role_id'] == 1): ?>
+                                    <form method="POST">
+                                        <input type="hidden" name='course-fav' value="<?= $course['id'] ?>">
+                                        <?php if (isset($isFav[$course['id']]) && !empty($isFav[$course['id']])): ?>
+                                        <button class="heart active" name="heart">
+                                            <i class="fas fa-heart"></i>
+                                        </button>
+                                        <?php else: ?>
+                                        <button class="heart" name="heart">
+                                            <i class="far fa-heart"></i>
+                                        </button>
+                                        <?php endif; ?>
+                                    </form>
+                                <?php endif; ?>
+                            <?php endif; ?>
+                        </div>
+                        <img class="course-image"
+                            src="<?= $course['thumbnail'] ? "instructor/".$course['thumbnail'] : "https://placehold.co/600x400?text=Tidak+Ada+Gambar" ?>"
+                            alt="Thumbnail Kursus">
+                        <div class="catalog-footer">
+                            <div class="koin"><?= number_format($course['price'] / 1000, 0, ',', '.') ?> Koin</div>
+                            <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
+                            <a href="student/course-detail.php?id=<?= $course['id'] ?>"><button
+                                    class="button-rental">Beli</button></a>
+                        </div>
+                    </div>
+                <?php endforeach; ?>
             </div>
-            <?php endforeach; ?>
-        </div>
         <?php else: ?>
-        <p style="height: 300px; padding-top: 24px;">Belum ada kursus yang tersedia.</p>
+            <p style="height: 300px; padding-top: 24px;">Belum ada kursus yang tersedia.</p>
         <?php endif; ?>
     </main>
 
