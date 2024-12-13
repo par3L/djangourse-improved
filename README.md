@@ -1,6 +1,25 @@
 # Djangourse
-<img src="assets/img/django-logo.png" style="width: 300px; display: block; margin: 0 auto">
-Djangourse adalah website pembelajaran online yang berfokus pada materi-materi berkaitan dengan teknologi informasi. Website ini dibangun menggunakan bahasa pemrograman PHP.
+<img src="assets/img/landing-page.png" style="width: 100%">
+Djangourse adalah website pembelajaran online yang menyediakan materi-materi berkaitan dengan teknologi informasi. Website ini dibangun dengan HTML, CSS, JavaScript, dan PHP.
+
+## Fitur
+### Role Siswa
+1. Beli koin
+2. Beli kursus
+3. Putar kursus
+4. Sertifikat kursus
+5. Edit profil
+6. Ubah kata sandi
+
+### Role Pengajar
+1. Membuat, mengubah, dan menghapus kursus
+2. Tarik saldo
+4. Edit profil
+5. Ubah kata sandi
+
+### Role Admin
+1. Persetujuan penambahan kursus baru
+2. Persetujuan penarikan
 
 ## Struktur Folder
 
@@ -63,8 +82,11 @@ Berikut ini adalah rincian dari setiap fungsi yang terdapat di dalam `helper.php
 ### `utils/date.php`
 File ini mengandung fungsi `convert($epoch)` untuk mengubah Unix Epoch Time ke dalam bentuk string yang dapat dibaca.
 
+### `utils/number.php`
+Di dalamnya tersedia fungsi `convertAsCurrency($value)` untuk melakukan formatting sebagai mata uang.
+
 ## Petunjuk
-Untuk mengunduh dan memulai pengembangan pada repositori ini, buka terminal VSCode, lalu jalankan perintah:
+Untuk mengunduh dan memulai pengembangan pada repositori ini, buka terminal VSCode, lalu ketikkan perintah:
 ```
 git clone https://github.com/abdalrizky/djangourse.git
 ```
@@ -89,6 +111,7 @@ git switch <branch-name>  (untuk pindah branch di local repo)
 ```
 
 ## Tim Pengembang
+<img src="assets/img/django-logo.png" style="width: 200px; display: block;">
 
 1. [Muhammad Abdal Rizky](https://github.com/abdalrizky) - 2309106012
 2. [Sanniyah Intan Salsabiila](https://github.com/SnyhIntan) - 2309106004
