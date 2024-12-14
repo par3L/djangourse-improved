@@ -13,7 +13,7 @@ $instructor = fetch(
 if (isset($_POST['submit-btn'])) {
     $name = mysqli_real_escape_string($conn, $_POST['nama-lengkap']);
     $email = mysqli_real_escape_string($conn, $_POST['email']);
-    $dateOfBirth = mysqli_real_escape_string($conn, $_POST['tanggal-lahir']);
+    $dateOfBirth = mysqli_real_escape_string($conn, !empty($_POST['tanggal-lahir']) ? "'" . $_POST['tanggal-lahir'] . "'" : "NULL");
     $phoneNumber = mysqli_real_escape_string($conn, $_POST['nomor-telp']);
     $bio = mysqli_real_escape_string($conn, $_POST['bio']);
     $profileImg = $instructor['profile_img'];
@@ -58,7 +58,7 @@ if (isset($_POST['submit-btn'])) {
     }
 
     $updateInstructor = execDML("UPDATE instructors SET 
-                                    name = '$name', date_of_birth = '$dateOfBirth', phone_number = '$phoneNumber', 
+                                    name = '$name', date_of_birth = $dateOfBirth, phone_number = '$phoneNumber', 
                                     bio = '$bio', profile_img = '$profileImg' WHERE id = $instructorId");
     if ($updateInstructor > 0) {
         echo "<script>alert('Detail profil berhasil diperbarui!'); location.href='edit-profile.php'</script>";
@@ -690,7 +690,7 @@ if (isset($_POST['submit-btn'])) {
                         <div class="form-row">
                             <div class="form-group half-width">
                                 <label for="nama">Nama Lengkap</label>
-                                <input type="text" id="nama" placeholder="Nama Lengkap" value="<?= $instructor['name'] ?>" name="nama-lengkap"/>
+                                <input type="text" id="nama" placeholder="Nama Lengkap" value="<?= $instructor['name'] ?>" name="nama-lengkap" required/>
                             </div>
                             <div class="form-group half-width">
                                 <label for="tanggal-lahir">Tanggal Lahir</label>
