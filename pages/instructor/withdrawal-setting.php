@@ -371,6 +371,15 @@ if (isset($_POST['btn-form'])) {
         background-color: #1A534E;
     }
 
+    .submit-btn:disabled {
+        background-color: #ccc;
+        cursor: not-allowed;
+    }
+
+    .submit-btn:disabled:hover {
+        background-color: #ccc;
+    }
+
     .navbar-info-dropdown {
         position: absolute;
         top: 80px;
@@ -465,15 +474,6 @@ if (isset($_POST['btn-form'])) {
     .contact-section a:hover {
         color: #A1D1B6;
         text-decoration: underline;
-    }
-
-    .disabled {
-        background-color: #ccc;
-        cursor: not-allowed;
-    }
-
-    .disabled:hover {
-        background-color: #ccc;
     }
     </style>
 </head>
@@ -572,7 +572,7 @@ if (isset($_POST['btn-form'])) {
                             </div>
                             <p>Kami akan menggunakan alamat email ini untuk mengirimkan uang ke akun PayPal Anda.</p>
                             
-                            <button type="submit" id="paypal-btn-form" name="btn-form" class="submit-btn">Gunakan sebagai Akun Penarikan</button>
+                            <button type="submit" id="paypal-btn-form" name="btn-form" class="submit-btn" <?= ($instructor['preferred_withdrawal_method'] == 'paypal') ? 'disabled':'' ?>>Gunakan sebagai Akun Penarikan</button>
                         </div>
                         <div id="dana-form" class="hidden">
                             <div class="form-group">
@@ -587,7 +587,7 @@ if (isset($_POST['btn-form'])) {
                                 echo '<p>Anda belum menambahkan nomor DANA. Silakan tambahkan nomor DANA Anda di <a href="edit-profile.php">Edit Profil</a>.</p>';
                             }
                             ?>
-                            <button type="submit" id="dana-btn-form" name="btn-form" class="submit-btn <?= (!$instructor['phone_number']) ? 'disabled': '' ?>" <?= (!$instructor['phone_number']) ? 'disabled': '' ?>>Gunakan sebagai Akun Penarikan</button>
+                            <button type="submit" id="dana-btn-form" name="btn-form" class="submit-btn" <?= (!$instructor['phone_number'] || $instructor['preferred_withdrawal_method'] == 'dana') ? 'disabled': '' ?>>Gunakan sebagai Akun Penarikan</button>
                         </div>
                     
                 </div>
