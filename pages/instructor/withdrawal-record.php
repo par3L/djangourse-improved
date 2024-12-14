@@ -5,6 +5,7 @@ require '../../utils/date.php';
 require '../../utils/number.php';
 
 session_start();
+
 $instructorId = $_SESSION['user']['id'];
 
 $instructor = fetch(
@@ -16,6 +17,7 @@ $courses = fetch("SELECT * FROM courses WHERE instructor_id = $instructorId");
 
 $withdrawal_requests = fetch(
     "SELECT * FROM withdrawal_requests WHERE instructor_id = $instructorId ORDER BY created_at DESC");
+
 if (isset($_POST["submit"])){
     $amount = $_POST["amount"];
     if ($amount < 50000) {
@@ -32,12 +34,9 @@ if (isset($_POST["submit"])){
     $sql = execDML(
         "INSERT INTO withdrawal_requests (instructor_id, created_at, amount, payment_method, status) VALUES ($instructorId, '$datetime',$amount, '$payment_method', '$status');"
     );
-    $update = execDML("UPDATE instructors
-    SET balance = balance - $amount
-    WHERE id = $instructorId");
     header("Location: withdrawal-record.php");
-    
 }   
+
 ?>
 
 <!DOCTYPE html>

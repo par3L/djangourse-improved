@@ -52,7 +52,8 @@ $Approved = fetch('SELECT
 
 $withdrawalRequests = fetch('SELECT 
                                 w.id, 
-                                i.name AS instructor_name, 
+                                i.id AS instructor_id,
+                                i.name AS instructor_name,
                                 w.amount, 
                                 w.payment_method
                             FROM 
@@ -160,11 +161,11 @@ $withdrawalRequests = fetch('SELECT
                             <td><?= 'Rp' . formatAsCurrency($withdrawalRequest['amount']) ?></td>
                             <td><?= $withdrawalRequest['payment_method'] ?></td>
                             <td>
-                                <a href="#" class="btn-approve withdrawal-approvement" data-id="<?php echo $withdrawalRequest['id']; ?>">
+                                <a href="#" class="btn-approve withdrawal-approvement" data-id="<?php echo $withdrawalRequest['id']; ?>" data-instructor_id="<?= $withdrawalRequest['instructor_id'] ?>" data-amount="<?= $withdrawalRequest['amount'] ?>">
                                     <iconify-icon icon="si:check-fill"></iconify-icon>
                                     <span>Setujui</span>
                                 </a>
-                                <a href="#" class="btn-reject withdrawal-approvement" data-id="<?php echo $withdrawalRequest['id']; ?>">
+                                <a href="#" class="btn-reject withdrawal-approvement" data-id="<?php echo $withdrawalRequest['id']; ?>" data-instructor_id="<?= $withdrawalRequest['instructor_id'] ?>" data-amount="<?= $withdrawalRequest['amount'] ?>">
                                     <iconify-icon icon="streamline:delete-1-solid"></iconify-icon>
                                     <span>Tolak</span>
                                 </a>
@@ -320,8 +321,9 @@ $withdrawalRequests = fetch('SELECT
             document.querySelectorAll('.btn-approve.withdrawal-approvement, .btn-reject.withdrawal-approvement').forEach(button => {
                 button.addEventListener('click', function(e) {
                     e.preventDefault();
-                    const $withdrawalRequestId = this.dataset.id;
-                    console.log($withdrawalRequestId);
+                    const withdrawalRequestId = this.dataset.id;
+                    const amount = this.dataset.amount;
+                    const instructorId = this.dataset.instructor_id;
                     const status = this.classList.contains('btn-approve') ? 'approved' : 'rejected';
 
                     fetch('update-withdrawal-status.php', {
@@ -330,7 +332,9 @@ $withdrawalRequests = fetch('SELECT
                                 'Content-Type': 'application/json',
                             },
                             body: JSON.stringify({
-                                id: $withdrawalRequestId,
+                                id: withdrawalRequestId,
+                                instructorId,
+                                amount,
                                 status
                             }),
                         })
