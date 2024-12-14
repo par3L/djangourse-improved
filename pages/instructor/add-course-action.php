@@ -44,7 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             mkdir($upload_dir, 0755, true);
         }
 
-        $file_name = uniqid();
+        $file_name = uniqid() . '_' . $instructor_id;
         $file_tmp = $_FILES['thumbnail']['tmp_name'];
 
         // Validasi ekstensi file
