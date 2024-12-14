@@ -14,13 +14,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         die("Semua field harus diisi.");
     }
 
-    $judul_kursus = $conn->real_escape_string(ucwords($_POST['judul_kursus']));
-    $subtitle = $conn->real_escape_string($_POST['subtitle_kursus']);
+    $judul_kursus = ucwords($_POST['judul_kursus']);
+    $subtitle = $_POST['subtitle_kursus'];
     $courseMaterials = $_POST['materi'];
     $courseTools = $_POST['alat_kursus'];
     $kategori_kelas = intval($_POST['kategori_kelas']); // Validasi kategori sebagai integer
-    $tingkat_kursus = $conn->real_escape_string($_POST['tingkat_kursus']);
-    $deskripsi_kursus = $conn->real_escape_string($_POST['deskripsi_kursus']);
+    $tingkat_kursus = $_POST['tingkat_kursus'];
+    $deskripsi_kursus = $_POST['deskripsi_kursus'];
     $harga = intval(str_replace(["IDR", ".", ","], "", $_POST['harga']));
     $instructor_id = $_SESSION['user']['id'];
 

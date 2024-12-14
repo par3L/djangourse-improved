@@ -14,8 +14,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     $course_id = intval($_POST['id']);
-    $judul_kursus = $conn->real_escape_string(ucwords($_POST['judul_kursus']));
-    $subtitle = $conn->real_escape_string($_POST['subtitle_kursus']);
+    $judul_kursus = ucwords($_POST['judul_kursus']);
+    $subtitle = $_POST['subtitle_kursus'];
     $courseMaterials = $_POST['materi'];
     $existingMaterials = fetch("SELECT * FROM course_materials WHERE course_id = $course_id");
     $existingMaterialOrdinals = array_map(function($material) {
@@ -23,8 +23,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }, $existingMaterials);
     $courseTools = $_POST['alat_kursus'];
     $kategori_kelas = intval($_POST['kategori_kelas']);
-    $tingkat_kursus = $conn->real_escape_string($_POST['tingkat_kursus']);
-    $deskripsi_kursus = $conn->real_escape_string($_POST['deskripsi_kursus']);
+    $tingkat_kursus = $_POST['tingkat_kursus'];
+    $deskripsi_kursus = $_POST['deskripsi_kursus'];
     $harga = intval($_POST['harga']);
     $instructor_id = intval($_SESSION['user']['id']);
 

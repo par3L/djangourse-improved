@@ -252,7 +252,7 @@ $courses = fetch(
 
                 <label for="deskripsi_kursus">Deskripsi Kursus</label>
                 <textarea name="deskripsi_kursus" style="height: 200px" id="deskripsi_kursus" placeholder="Kursus ini menjelaskan bagaimana cara membuat aplikasi web dengan PHP dan MySQL dalam satu malam seperti halnya membangun candi."
-                    required><?= $courses['description'] ?></textarea>
+                    required><?= htmlspecialchars($courses['description']) ?></textarea>
             </div>
 
             <!-- Sampul Kursus -->
