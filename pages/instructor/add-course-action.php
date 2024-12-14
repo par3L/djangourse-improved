@@ -46,7 +46,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $file_name = uniqid();
         $file_tmp = $_FILES['thumbnail']['tmp_name'];
-        $file_path = 'uploads/' . $file_name;
 
         // Validasi ekstensi file
         $allowed_extensions = ['jpg', 'jpeg', 'png', 'gif'];
@@ -55,8 +54,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             die("Ekstensi file tidak diizinkan.");
         }
 
+        $file_path = 'uploads/' . $file_name . '.' . $file_extension;
+
         // Simpan file
-        $upload_target = $upload_dir . $file_name;
+        $upload_target = $upload_dir . $file_name . '.' . $file_extension;
         if (!move_uploaded_file($file_tmp, $upload_target)) {
             die("Gagal mengunggah file.");
         }
