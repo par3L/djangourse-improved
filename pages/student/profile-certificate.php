@@ -225,7 +225,7 @@ header .user-info img {
     gap: 25px;
     padding: 20px;
     max-width: 1200px;
-    margin: 0 auto;
+    margin-left: 7.5rem;
 }
 
 .certificate-card {
