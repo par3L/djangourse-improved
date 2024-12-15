@@ -781,7 +781,8 @@ if (isset($_POST['submit-btn'])) {
 
         </div>
     </footer>
-    <script src="./scripts/editprofile.js"></script>
+    <script src="../../navbar.js"></script>
+    <script src="./scripts/edit-profile.js"></script>
 </body>
 
 </html>
