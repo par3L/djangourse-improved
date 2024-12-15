@@ -504,8 +504,8 @@ if (isset($_POST['buy-course'])) {
     }
 
     .button-lanjut button {
-        background-color: #2c8577;
-        color: #ffffff;
+        background-color: #e0e0e0;
+        color: #000;
         padding: 12px 20px;
         border-radius: 30px;
         margin-top: 20px;
@@ -514,12 +514,12 @@ if (isset($_POST['buy-course'])) {
     }
 
     .button-lanjut button.active {
-        background-color: #ef991f;
+        background-color: #2b4e4e;
         color: #ffffff;
     }
 
     .button-lanjut button:hover {
-        background-color: #ef991f;
+        background-color: #2b4e4e;
         color: #ffffff;
     }
 
