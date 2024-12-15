@@ -102,6 +102,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     .navbar a:hover {
         color: #A1D1B6;
+    }
+
+    .navbar nav a:hover, .navbar .coin-balance:hover {
         border-bottom: 2px solid #A1D1B6;
     }
 
@@ -421,7 +424,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $coin_balance = fetch("SELECT coin_balance FROM students WHERE id = '$student_id'");
                 $balance = $coin_balance ? $coin_balance[0]['coin_balance'] : 0;
                 ?>
-                <a href="coin-dashboard.php"><?= $balance ?> Koin</a>
+                <a href="coin-dashboard.php" class="coin-balance"><?= $balance ?> Koin</a>
                 <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
                     <a href="profile.php">
                         <div class="navbar-info-dropdown-content">

@@ -86,11 +86,6 @@ body {
   transition: color 0.3s ease, border-bottom 0.3s ease;
 }
 
-.navbar a:hover {
-  color: #A1D1B6;
-  border-bottom: 2px solid #A1D1B6;
-}
-
 .navbar-info {
   display: flex;
   align-items: center;

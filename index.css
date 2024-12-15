@@ -68,6 +68,9 @@ body {
 
 .navbar a:hover {
     color: #A1D1B6;
+}
+
+.navbar nav a:hover, .navbar .coin-balance:hover {
     border-bottom: 2px solid #A1D1B6;
 }
 

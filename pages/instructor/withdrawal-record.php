@@ -140,6 +140,9 @@ if (isset($_POST["submit"])){
 
     .navbar a:hover {
         color: #A1D1B6;
+    }
+
+    .navbar nav a:hover {
         border-bottom: 2px solid #A1D1B6;
     }
 

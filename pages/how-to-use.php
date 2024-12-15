@@ -47,7 +47,7 @@ if (isset($_SESSION["login"])) {
             <p>Hai, <?= $_SESSION['user']['name'] ?></p>
             <iconify-icon icon="iconamoon:arrow-down-2-bold" id="btn-dropdown"></iconify-icon>
             <?php if ($_SESSION['user']['role_id'] == 1): ?>
-            <a href="student/coin-dashboard.php"><?= $student['coin_balance'] ?> Koin</a>
+            <a href="student/coin-dashboard.php" class="coin-balance"><?= $student['coin_balance'] ?> Koin</a>
             <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
                 <a href="student/profile.php">
                     <div class="navbar-info-dropdown-content">

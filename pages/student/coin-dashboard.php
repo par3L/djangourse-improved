@@ -57,17 +57,6 @@ $transactions = fetch("
         background-color: #245044;
     }
 
-    .style-daftar,
-    .style-masuk {
-        border: none;
-        border-radius: 50px;
-        padding: 10px 24px;
-        font-size: 16px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
     .navbar ul {
         display: flex;
         list-style: none;
@@ -86,76 +75,9 @@ $transactions = fetch("
 
     .navbar a:hover {
         color: #A1D1B6;
-        border-bottom: 2px solid #A1D1B6;
     }
 
-    .navbar-info {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-        color: white;
-    }
-
-    .navbar-info-dropdown {
-        position: absolute;
-        top: 80px;
-        right: 48px;
-        width: 220px;
-        display: block;
-        padding: 16px;
-        background-color: #005955;
-    }
-
-    .hide {
-        display: none;
-    }
-
-    .navbar-info-dropdown a {
-        display: block;
-        padding: 16px;
-    }
-
-    .navbar-info-dropdown iconify-icon {
-        font-size: 24px;
-    }
-
-    .navbar-info-dropdown .navbar-info-dropdown-content {
-        display: flex;
-        gap: 16px;
-    }
-
-
-    .navbar {
-        position: fixed;
-        z-index: 9999;
-        top: 0;
-        left: 0;
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        padding: 1rem 4rem;
-        background-color: #245044;
-    }
-
-    .navbar ul {
-        display: flex;
-        list-style: none;
-        gap: 30px;
-    }
-
-    .navbar ul li {
-        margin-left: 20px;
-    }
-
-    .navbar a {
-        text-decoration: none;
-        color: #fff;
-        transition: color 0.3s ease, border-bottom 0.3s ease;
-    }
-
-    .navbar a:hover {
-        color: #A1D1B6;
+    .navbar nav a:hover, .navbar .coin-balance:hover {
         border-bottom: 2px solid #A1D1B6;
     }
 
@@ -320,8 +242,7 @@ $transactions = fetch("
         background-color: #24594d;
     }
 
-    .saldo-card,
-    .riwayat-card {
+    .saldo-card, .riwayat-card {
         background-color: white;
         padding: 20px;
         border-radius: 10px;
@@ -519,7 +440,7 @@ $transactions = fetch("
                 $coin_balance = fetch("SELECT coin_balance FROM students WHERE id = '$student_id'");
                 $balance = $coin_balance ? $coin_balance[0]['coin_balance'] : 0;
                 ?>
-                <p><?php echo $balance; ?> Koin</p>
+                <a href="student/coin-dashboard.php" class="coin-balance"><?= $balance ?> Koin</a>
 
                 <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
                     <a href="profile.php">
