@@ -2,10 +2,10 @@
 -- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:8889
--- Generation Time: Dec 10, 2024 at 12:42 PM
+-- Host: localhost
+-- Generation Time: Dec 15, 2024 at 01:35 PM
 -- Server version: 8.0.35
--- PHP Version: 8.2.20
+-- PHP Version: 8.3.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,7 +20,7 @@ SET time_zone = "+00:00";
 --
 -- Database: `djangourse`
 --
-CREATE DATABASE IF NOT EXISTS `djangourse` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;
+CREATE DATABASE IF NOT EXISTS `djangourse` DEFAULT CHARACTER SET utf8mb3 COLLATE utf8mb3_general_ci;
 USE `djangourse`;
 
 -- --------------------------------------------------------
@@ -404,7 +404,7 @@ ALTER TABLE `courses`
 -- AUTO_INCREMENT for table `course_categories`
 --
 ALTER TABLE `course_categories`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `course_finished_materials`
@@ -422,7 +422,7 @@ ALTER TABLE `course_materials`
 -- AUTO_INCREMENT for table `course_tools`
 --
 ALTER TABLE `course_tools`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `course_tool_galleries`
@@ -464,7 +464,7 @@ ALTER TABLE `password_resets`
 -- AUTO_INCREMENT for table `roles`
 --
 ALTER TABLE `roles`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `students`
@@ -506,7 +506,7 @@ ALTER TABLE `course_finished_materials`
 -- Constraints for table `course_materials`
 --
 ALTER TABLE `course_materials`
-  ADD CONSTRAINT `fk_course_materials_to_courses` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
+  ADD CONSTRAINT `fk_course_materials_to_courses` FOREIGN KEY (`course_id`) REFERENCES `courses` (`id`) ON DELETE CASCADE ON UPDATE RESTRICT;
 
 --
 -- Constraints for table `course_tool_galleries`
