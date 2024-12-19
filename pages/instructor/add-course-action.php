@@ -1,10 +1,13 @@
 <?php
-session_start();
-include '../../utils/database/helper.php';
-include '../../utils/middleware.php';
 
-ensureAuthenticated();
-ensureRole(2);
+session_start();
+
+if (!isset($_SESSION['login']) || $_SESSION['user']['role_id'] != 2) {
+    header('Location: ../auth.php');
+    exit;
+}
+
+include '../../utils/database/helper.php';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // Validasi input wajib

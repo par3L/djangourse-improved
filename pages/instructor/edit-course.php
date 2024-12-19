@@ -1,12 +1,13 @@
 <?php
+
 session_start();
 
-// Include helper dan middleware
-include '../../utils/database/helper.php';
-include '../../utils/middleware.php';
+if (!isset($_SESSION['login']) || $_SESSION['user']['role_id'] != 2) {
+    header('Location: ../auth.php');
+    exit;
+}
 
-ensureAuthenticated();
-ensureRole(2);
+include '../../utils/database/helper.php';
 
 if (!isset($_GET['id'])) {
     echo 'ID kursus tidak ditemukan';

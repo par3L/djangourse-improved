@@ -1,5 +1,12 @@
 <?php
 
+session_start();
+
+if (!isset($_SESSION['login']) || $_SESSION['user']['role_id'] != 2) {
+    header('Location: ../auth.php');
+    exit;
+}
+
 require '../../utils/database/helper.php';
 
 $categories = fetch("SELECT * FROM course_categories");

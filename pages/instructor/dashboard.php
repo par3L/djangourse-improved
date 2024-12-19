@@ -4,6 +4,11 @@ require '../../utils/database/helper.php';
 
 session_start();
 
+if (!isset($_SESSION['login']) || $_SESSION['user']['role_id'] != 2) {
+    header('Location: ../auth.php');
+    exit;
+}
+
 $instructorId = $_SESSION['user']['id'];
 
 $instructor = fetch(
