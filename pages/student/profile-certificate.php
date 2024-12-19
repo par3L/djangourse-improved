@@ -10,8 +10,6 @@ if (!isset($_SESSION['login']) || $_SESSION['user']['role_id'] != 1) {
 require '../../utils/database/helper.php';
 require '../../utils/date.php';
 
-$userName = htmlspecialchars($_SESSION['user']['name'], ENT_QUOTES, 'UTF-8');
-
 $studentId = $_SESSION['user']['id'];
 $student = fetch("SELECT * FROM students WHERE id=$studentId")[0];
 
@@ -425,7 +423,7 @@ footer {
     <div class="profil">
         <div class="profile-container">
             <img src="./assets/pictprofil.png" alt="Profile Picture">
-            <p class="profile-name"><?= $userName; ?></p>
+            <p class="profile-name"><?= $student['name'] ?></p>
         </div>
     </div>
 
