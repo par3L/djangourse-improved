@@ -66,6 +66,7 @@ if (isset($_POST['submit-btn'])) {
                                     name = '$name', date_of_birth = $dateOfBirth, phone_number = '$phoneNumber', 
                                     bio = '$bio', profile_img = '$profileImg' WHERE id = $instructorId");
     if ($updateInstructor > 0) {
+        $_SESSION['user']['name'] = $name;
         echo "<script>alert('Detail profil berhasil diperbarui!'); location.href='edit-profile.php'</script>";
     } else {
         echo "<script>alert('Detail profil gagal diperbarui!'); location.href='edit-profile.php'</script>";

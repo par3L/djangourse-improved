@@ -32,6 +32,7 @@ if (isset($_POST["save-changed"])) {
     );
     
     if ($sql2 > 0) {
+        $_SESSION['user']['name'] = $name;
         echo "<script>alert('Berhasil memperbarui data!'); location.href='setting.php'</script>";
     } else {
         echo "<script>alert('Gagal memperbarui data!'); location.href='setting.php'</script>";
