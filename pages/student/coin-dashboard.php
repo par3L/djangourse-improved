@@ -441,7 +441,7 @@ $transactions = fetch("
                 $coin_balance = fetch("SELECT coin_balance FROM students WHERE id = '$student_id'");
                 $balance = $coin_balance ? $coin_balance[0]['coin_balance'] : 0;
                 ?>
-                <a href="student/coin-dashboard.php" class="coin-balance"><?= $balance ?> Koin</a>
+                <a href="coin-dashboard.php" class="coin-balance"><?= $balance ?> Koin</a>
 
                 <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
                     <a href="profile.php">
