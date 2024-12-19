@@ -1,5 +1,12 @@
 <?php
 
+session_start();
+
+if (!isset($_SESSION['login']) || $_SESSION['user']['role_id'] !== 3) {
+    header('Location: ../../auth.php');
+    exit;
+}
+
 include '../../../utils/database/helper.php';
 include '../../../utils/date.php';
 include '../../../utils/number.php';

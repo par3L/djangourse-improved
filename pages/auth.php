@@ -62,7 +62,6 @@ if (isset($_POST['login'])) {
     $password = $_POST['password'];
 
     if ($email === 'admin@gmail.com' && $password === 'admin') {
-        header('Location: admin/views/dashboard.php');
         $user = [
             'role_id' => 3
         ];
@@ -70,6 +69,7 @@ if (isset($_POST['login'])) {
             "login" => true,
             "user" => $user
         ];
+        header('Location: admin/views/dashboard.php');
         exit;
     }
 

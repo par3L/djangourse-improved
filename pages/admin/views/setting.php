@@ -1,3 +1,14 @@
+<?php
+
+session_start();
+
+if (!isset($_SESSION['login']) || $_SESSION['user']['role_id'] !== 3) {
+    header('Location: ../../auth.php');
+    exit;
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="id">
 
