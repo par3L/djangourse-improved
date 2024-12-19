@@ -63,16 +63,22 @@ if ($temp != null) // check if user is logged in
     
         $query = "SELECT * FROM favourite_courses WHERE student_id = $student_id AND course_id = $course_id";
         $result = fetch($query);
+
+        $redirectUrl = 'course-list.php';
+
+        $category = $_GET['category'];
+        $offset = $_GET['offset'];
+
+        if (isset($_GET['category']) && isset($_GET['offset'])) {
+            $redirectUrl .= "?category=$category&offset=$offset";
+        } 
     
-        if (empty($result)) 
-        {
+        if (empty($result)) {
             execDML("INSERT INTO favourite_courses (student_id, course_id) VALUES ($student_id, $course_id)");
-            header("Location: course-list.php");
-        } else 
-        {
+        } else {
             execDML("DELETE FROM favourite_courses WHERE student_id = $student_id AND course_id = $course_id");
-            header("Location: course-list.php");
         }
+        header("Location: $redirectUrl");
     }
 }
 ?>
