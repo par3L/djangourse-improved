@@ -18,7 +18,10 @@ $instructorId = $_SESSION['user']['id'];
 $courseId = $_GET['id'];
 $categories = fetch("SELECT * FROM course_categories");
 $courseTools = fetch("SELECT * FROM course_tools");
-$courseToolGalleries = fetch("SELECT * FROM course_tool_galleries WHERE course_id = $courseId")[0];
+$courseToolGalleries = fetch("SELECT * FROM course_tool_galleries WHERE course_id = $courseId");
+if (!empty($courseToolGalleries)) {
+    $courseToolGalleries = $courseToolGalleries[0];
+}
 $courseMaterials = fetch("SELECT * FROM course_materials WHERE course_id = $courseId");
 $courses = fetch(
     "SELECT courses.id, courses.name, courses.subtitle, courses.price, courses.level, courses.description, courses.thumbnail, course_categories.name as category_name, course_categories.id as category_id  FROM courses
@@ -247,7 +250,12 @@ $courses = fetch(
                 <label for="alat_kursus">Alat</label>
                 <select name="alat_kursus[]" id="alat_kursus" multiple>
                     <?php foreach ($courseTools as $tool): ?>
-                        <option value="<?= $tool['id'] ?>" <?= ($courseToolGalleries['tool_id'] == $tool['id']) ? 'selected': '' ?>><?= $tool['name'] ?></option>
+                        <option value="<?= $tool['id'] ?>"
+                            <?= (!empty($courseToolGalleries)) ? (
+                                ($courseToolGalleries['tool_id'] == $tool['id']) ? 'selected': '') : '' ?>
+                            >
+                            <?= $tool['name'] ?>
+                        </option>
                     <?php endforeach; ?>
                 </select>
 
