@@ -26,7 +26,7 @@ if (!isset($categories) || !is_array($categories)) {
 }
 
 // Ambil kursus sesuai kategori
-$kategori = $_GET['kategori'] ?? null;
+$category = $_GET['category'] ?? null;
 $offset = intval($_GET['offset'] ?? 0);
 $limit = 4;
 
@@ -35,8 +35,8 @@ $query = "SELECT c.*, cc.name AS category_name
           JOIN course_categories cc ON c.category_id = cc.id
           WHERE c.status = 'Disetujui'";
 
-if ($kategori) {
-    $query .= " AND cc.name = '$kategori'";
+if ($category) {
+    $query .= " AND cc.name = '$category'";
 }
 
 $query .= " LIMIT $limit OFFSET $offset";
@@ -674,10 +674,10 @@ if ($temp != null) // check if user is logged in
     <!-- Tombol untuk Tampilkan Lebih Banyak -->
     <div class="controls">
         <?php if (count($courses) === $limit): ?>
-        <a href="?kategori=<?= $kategori ?>&offset=<?= $offset + $limit ?>" id="loadMore">Selanjutnya <iconify-icon style="font-size: 24px" icon="ic:round-navigate-next"></iconify-icon></a>
+        <a href="?category=<?= $category ?>&offset=<?= $offset + $limit ?>" id="loadMore">Selanjutnya <iconify-icon style="font-size: 24px" icon="ic:round-navigate-next"></iconify-icon></a>
         <?php endif; ?>
         <?php if ($offset > 0): ?>
-        <a href="?kategori=<?= $kategori ?>&offset=<?= max($offset - $limit, 0) ?>" id="loadLess"><iconify-icon style="font-size: 24px" icon="ic:round-navigate-before"></iconify-icon> Sebelumnya</a>
+        <a href="?category=<?= $category ?>&offset=<?= max($offset - $limit, 0) ?>" id="loadLess"><iconify-icon style="font-size: 24px" icon="ic:round-navigate-before"></iconify-icon> Sebelumnya</a>
         <?php endif; ?>
     </div>
 
