@@ -763,20 +763,20 @@ if (isset($_POST['buy-course'])) {
                 <?php if ($_SESSION['user']['role_id'] == 1): ?>
                 <a href="coin-dashboard.php" class="coin-balance"><?= $student['coin_balance'] ?> Koin</a>
                 <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
-                    <a href="profile.php">
+                    <a href="student/profile.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
                             <span>Profil</span>
                         </div>
                     </a>
-                    <a href="favourite-course.php">
+                    <a href="student/favourite-course.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="weui:like-filled"></iconify-icon>
                             <span>Wishlist</span>
                         </div>
 
                     </a>
-                    <a href="setting.php">
+                    <a href="student/setting.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="uil:setting"></iconify-icon>
                             <span>Pengaturan</span>
