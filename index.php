@@ -176,7 +176,7 @@ $success_message = null;
             <?php foreach ($courses as $course): ?>
             <div class="catalog">
                 <div class="catalog-header">
-                    <a href="pages/student/course-detail.php?id=<?= $course['course_id'] ?>" class="catalog-link">
+                    <a href="pages/course-detail.php?id=<?= $course['course_id'] ?>" class="catalog-link">
                         <div class="catalog-title"><?= $course['course_name'] ?></div>
                     </a>
                     <button class="flame" name="flame">
@@ -188,7 +188,7 @@ $success_message = null;
                     alt="Thumbnail Kursus">
                 <div class="catalog-footer">
                     <div class="koin"><?= number_format($course['course_price'] / 1000, 0, ',', '.') ?> Koin</div>
-                    <a href="pages/student/course-detail.php?id=<?= $course['course_id'] ?>"><button type="submit"
+                    <a href="pages/course-detail.php?id=<?= $course['course_id'] ?>"><button type="submit"
                             class="button-rental">Beli</button></a>
                 </div>
             </div>

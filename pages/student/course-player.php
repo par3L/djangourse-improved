@@ -345,7 +345,7 @@ if (isset($_POST['finish-class'])) {
 
 <body>
     <div class="navbar">
-        <a href="course-detail.php?id=<?= $courseId ?>" class="back-to-course-detail-button">
+        <a href="../course-detail.php?id=<?= $courseId ?>" class="back-to-course-detail-button">
             <iconify-icon icon="ep:back"></iconify-icon>
             <p>Kembali ke Detail Kursus</p>
         </a>

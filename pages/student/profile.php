@@ -505,7 +505,7 @@ $courseMaterial = fetch(
                 }
             }
         ?>
-        <div class="course-card" onclick="location.href='course-detail.php?id=<?= $enrolledCourse['id'] ?>'">
+        <div class="course-card" onclick="location.href='../course-detail.php?id=<?= $enrolledCourse['id'] ?>'">
             <h3><?= $enrolledCourse['name'] ?></h3>
             <img src="../instructor/<?= $enrolledCourse['thumbnail'] ?>" alt="<?= $enrolledCourse['name'] ?>">
             <div class="progress-bar">

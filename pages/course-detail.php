@@ -1,7 +1,7 @@
 <?php
 
-require '../../utils/database/helper.php';
-require '../../utils/date.php';
+require '../utils/database/helper.php';
+require '../utils/date.php';
 
 session_start();
 
@@ -21,7 +21,7 @@ if (isset($_SESSION["login"])) {
     }
 
     if ($_SESSION['user']['role_id'] == 3) {
-        header('Location: pages/admin/views/dashboard.php');
+        header('Location: admin/views/dashboard.php');
         die;
     }
 }
@@ -329,7 +329,7 @@ if (isset($_POST['buy-course'])) {
 
     /* Content Section */
     .isi-content {
-        background-image: url("../../assets/img/bg.png");
+        background-image: url("../assets/img/bg.png");
         background-size: cover;
         background-position: center;
         background-repeat: repeat;
@@ -586,7 +586,7 @@ if (isset($_POST['buy-course'])) {
     }
 
     footer {
-        background-image: url('../../assets/img/bg-footer.png');
+        background-image: url('../assets/img/bg-footer.png');
         background-size: cover;
         background-position: center;
         color: #fff;
@@ -748,12 +748,12 @@ if (isset($_POST['buy-course'])) {
 <body>
     <header>
         <div class="navbar">
-            <img src="../../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
+            <img src="../assets/img/logo-django.png" alt="Logo" class="logo" style="  width: 110px; ">
             <nav>
                 <ul>
-                    <li><a href="../../index.php">Beranda</a></li>
-                    <li><a href="../course-list.php">Kursus</a></li>
-                    <li><a href="../how-to-use.php">Cara Penggunaan</a></li>
+                    <li><a href="../index.php">Beranda</a></li>
+                    <li><a href="course-list.php">Kursus</a></li>
+                    <li><a href="how-to-use.php">Cara Penggunaan</a></li>
                 </ul>
             </nav>
             <?php if (isset($_SESSION['login'])): ?>
@@ -782,7 +782,7 @@ if (isset($_POST['buy-course'])) {
                             <span>Pengaturan</span>
                         </div>
                     </a>
-                    <a href="../logout.php">
+                    <a href="logout.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
                             <span>Keluar</span>
@@ -791,13 +791,13 @@ if (isset($_POST['buy-course'])) {
                 </div>
                 <?php elseif ($_SESSION['user']['role_id'] == 2): ?>
                 <div class="navbar-info-dropdown hide" id="navbar-info-dropdown">
-                    <a href="../instructor/dashboard.php">
+                    <a href="instructor/dashboard.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="iconoir:profile-circle"></iconify-icon>
                             <span>Dasbor</span>
                         </div>
                     </a>
-                    <a href="../logout.php">
+                    <a href="logout.php">
                         <div class="navbar-info-dropdown-content">
                             <iconify-icon icon="material-symbols:logout" class="sidebar-icon"></iconify-icon>
                             <span>Keluar</span>
@@ -809,8 +809,8 @@ if (isset($_POST['buy-course'])) {
 
             <?php else: ?>
             <div class="auth-buttons">
-                <button class="style-daftar" onclick="location.href='../auth.php'">Daftar</button>
-                <button class="style-masuk" onclick="location.href='../auth.php'">Masuk</button>
+                <button class="style-daftar" onclick="location.href='auth.php'">Daftar</button>
+                <button class="style-masuk" onclick="location.href='auth.php'">Masuk</button>
             </div>
             <?php endif; ?>
         </div>
@@ -860,7 +860,7 @@ if (isset($_POST['buy-course'])) {
                                 <?php if (empty($enrolledCourse)): ?>
                                     <button onclick="<?= ($student['coin_balance'] >= ($course['price'] / 1000)) ? 'showConfirmation()' : 'showErrorModal()' ?>">Gabung Kursus</button>
                                 <?php else: ?>
-                                    <a href="course-player.php?id=<?= $courseId ?>"><button>Masuk ke Dasbor Kursus</button></a>
+                                    <a href="student/course-player.php?id=<?= $courseId ?>"><button>Masuk ke Dasbor Kursus</button></a>
                                 <?php endif; ?>
                             <?php else: ?>
                                 <button class="disabled" disabled>Silakan Masuk sebagai Siswa untuk Membeli Kursus</button></a>
@@ -883,7 +883,7 @@ if (isset($_POST['buy-course'])) {
                 <div class="item">
                     <?php foreach ($courseToolGalleries as $courseToolGallery): ?>
                     <div class="card">
-                        <img src="assets/<?= $courseToolGallery['logo'] ?>" alt="Visual Studio Code">
+                        <img src="student/assets/<?= $courseToolGallery['logo'] ?>" alt="Visual Studio Code">
                         <div class="card-content">
                             <span><?= $courseToolGallery['name'] ?></span>
                             <span><?= $courseToolGallery['type'] ?></span>
@@ -916,7 +916,7 @@ if (isset($_POST['buy-course'])) {
     <footer>
         <div class="footer-content">
             <div class="logo-section">
-                <img src="../../assets/img/logo-django.png" alt="Logo" class="footer-logo">
+                <img src="../assets/img/logo-django.png" alt="Logo" class="footer-logo">
                 <p>Bergabunglah bersama kami untuk menguasai<br> berbagai keahlian
                     dibidang teknologi dan membuka<br>peluang karier di dunia teknologi
                     yang terus berkembang.<br><br> Kami menyediakan kursus
@@ -1023,7 +1023,7 @@ if (isset($_POST['buy-course'])) {
     }
     // modal confirmation end
     </script>
-    <script src="../../navbar.js"></script>
+    <script src="../navbar.js"></script>
 </body>
 
 </html>

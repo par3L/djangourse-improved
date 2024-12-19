@@ -634,7 +634,7 @@ if ($temp != null) // check if user is logged in
                 <?php foreach ($courses as $course): ?>
                     <div class="catalog" data-category="<?= htmlspecialchars($course['category_name']) ?>">
                         <div class="catalog-header">
-                            <a href="student/course-detail.php?id=<?= $course['id'] ?>" class="catalog-link">
+                            <a href="course-detail.php?id=<?= $course['id'] ?>" class="catalog-link">
                                 <div class="catalog-title"><?= $course['name'] ?></div>
                             </a>
                             <?php if (isset($_SESSION['user'])): ?>
@@ -660,7 +660,7 @@ if ($temp != null) // check if user is logged in
                         <div class="catalog-footer">
                             <div class="koin"><?= number_format($course['price'] / 1000, 0, ',', '.') ?> Koin</div>
                             <input type="hidden" name="course_id" value="<?= $course['id'] ?>">
-                            <a href="student/course-detail.php?id=<?= $course['id'] ?>"><button
+                            <a href="course-detail.php?id=<?= $course['id'] ?>"><button
                                     class="button-rental">Beli</button></a>
                         </div>
                     </div>

@@ -371,7 +371,7 @@ if ($student_id) {
                             <?php foreach ($courses as $course): ?>
                                 <div class="catalog">
                                     <div class="catalog-header">
-                                        <a href="../student/course-detail.php?id=<?= $course['id'] ?>" class="catalog-link">
+                                        <a href="../course-detail.php?id=<?= $course['id'] ?>" class="catalog-link">
                                             <div class="catalog-title"><?= $course['name'] ?></div>
                                         </a>
                                         <form method="POST">
@@ -384,7 +384,7 @@ if ($student_id) {
                                     <img class="course-image" src="<?= $course['thumbnail'] ? "../instructor/" . $course['thumbnail'] : "https://placehold.co/600x400?text=Tidak+Ada+Gambar" ?>" alt="Thumbnail Kursus">
                                     <div class="catalog-footer">
                                         <div class="koin"><?= number_format($course['price'] / 1000, 0, ',', '.') ?> Koin</div>
-                                            <a href="../student/course-detail.php?id=<?= $course['id'] ?>"><button type="submit" class="button-rental">Beli</button></a>
+                                            <a href="../course-detail.php?id=<?= $course['id'] ?>"><button type="submit" class="button-rental">Beli</button></a>
                                     </div>
                                 </div>
                             <?php endforeach; ?>
