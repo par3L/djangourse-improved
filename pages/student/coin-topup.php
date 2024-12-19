@@ -1,11 +1,13 @@
 <?php
-session_start();
-require_once '../../utils/database/helper.php';
 
-if (!isset($_SESSION['user']['id'])) {
-    header("Location: ../../auth.php");
+session_start();
+
+if (!isset($_SESSION['login']) || $_SESSION['user']['role_id'] != 1) {
+    header('Location: ../auth.php');
     exit;
 }
+
+require_once '../../utils/database/helper.php';
 
 $student_id = $_SESSION['user']['id'];
 

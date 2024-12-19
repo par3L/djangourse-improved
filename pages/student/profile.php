@@ -1,15 +1,13 @@
 <?php
 
-require '../../utils/database/helper.php';
-
 session_start();
 
-// Pastikan pengguna sudah login
-if (isset($_SESSION['login'])) {
-    if ($_SESSION['user']['role_id'] == 3) {
-        header('Location: pages/admin/views/dashboard.php');
-    }
+if (!isset($_SESSION['login']) || $_SESSION['user']['role_id'] != 1) {
+    header('Location: ../auth.php');
+    exit;
 }
+
+require '../../utils/database/helper.php';
 
 $userName = htmlspecialchars($_SESSION['user']['name'], ENT_QUOTES, 'UTF-8');
 

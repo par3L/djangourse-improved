@@ -1,12 +1,13 @@
 <?php
-session_start();
-require '../../utils/database/helper.php';
 
-// Pastikan pengguna login sebagai siswa
-if (!isset($_SESSION['user']['id'])) {
-    header("Location: ../../auth.php");
+session_start();
+
+if (!isset($_SESSION['login']) || $_SESSION['user']['role_id'] != 1) {
+    header('Location: ../auth.php');
     exit;
 }
+
+require '../../utils/database/helper.php';
 
 // Ambil student_id dari session
 $student_id = $_SESSION['user']['id'];
