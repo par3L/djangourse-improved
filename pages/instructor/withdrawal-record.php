@@ -544,32 +544,31 @@ if (isset($_POST["submit"])){
         color: white;
         font-size: 14px;
         text-align: center;
+        border-style: none;
     }
 
-    .withdrawal-table .status.selesai {
+    .withdrawal-table .status.approved {
         background-color: #28a745;
         border-style: none;
     }
 
-    .withdrawal-table .status.selesai:hover {
+    .withdrawal-table .status.approved:hover {
         background-color: #218838;
     }
 
     .withdrawal-table .status.pending {
         background-color: #ffc107;
-        color: #333;
-        border-style: none;
     }
 
     .withdrawal-table .status.pending:hover {
         background-color: #bd8f07;
     }
 
-    .withdrawal-table .status.gagal {
+    .withdrawal-table .status.rejected {
         background-color: #dc3545;
     }
 
-    .withdrawal-table .status.gagal:hover {
+    .withdrawal-table .status.rejected:hover {
         background-color: #92222d;
     }
 
@@ -885,7 +884,7 @@ if (isset($_POST["submit"])){
                                 <?php endif; ?>
                                 <td> <?= htmlspecialchars(convertToWita($w['created_at'])) ?></td>
                                 <td>Rp<?= formatAsCurrency($w["amount"]) ?></td>
-                                <td><button class="status selesai"><?= $w["status"] ?></button></td>
+                                <td><button class="status <?= $w["status"] ?>"><?= $w["status"] ?></button></td>
                             </tr>
                             <?php endforeach; ?>
                             <?php else: ?>
