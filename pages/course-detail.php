@@ -822,7 +822,21 @@ if (isset($_POST['buy-course'])) {
             <h1><?= $course['name'] ?></h1>
             <p><?= $course['subtitle'] ?></p>
             <div class="info">
-                <div><i class="fas fa-signal"></i> Tingkat Kesulitan: <?= $course['level'] ?></div>
+                <?php
+                    $courseLevel = '';
+                    switch ($course['level']) {
+                        case 'beginner':
+                            $courseLevel = 'Pemula';
+                            break;
+                        case 'intermediate':
+                            $courseLevel = 'Menengah';
+                            break;
+                        case 'advanced':
+                            $courseLevel = 'Mahir';
+                            break;
+                    }
+                ?>
+                <div><i class="fas fa-signal"></i> Tingkat Kesulitan: <?= $courseLevel ?></div>
                 <div><i class="fas fa-calendar-alt"></i> Dipublikasi: <?= convertToWita($course['created_at']) ?></div>
             </div>
         </div>
