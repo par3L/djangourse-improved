@@ -884,7 +884,21 @@ if (isset($_POST["submit"])){
                                 <?php endif; ?>
                                 <td> <?= htmlspecialchars(convertToWita($w['created_at'])) ?></td>
                                 <td>Rp<?= formatAsCurrency($w["amount"]) ?></td>
-                                <td><button class="status <?= $w["status"] ?>"><?= $w["status"] ?></button></td>
+                                <?php
+                                    $withdrawalStatus = $w["status"];
+                                    switch ($withdrawalStatus) {
+                                        case 'pending':
+                                            $withdrawalStatus = 'Menunggu';
+                                            break;
+                                        case 'approved':
+                                            $withdrawalStatus = 'Disetujui';
+                                            break;
+                                        case 'rejected':
+                                            $withdrawalStatus = 'Ditolak';
+                                            break;
+                                    }
+                                ?>
+                                <td><button class="status <?= $w["status"] ?>"><?= $withdrawalStatus ?></button></td>
                             </tr>
                             <?php endforeach; ?>
                             <?php else: ?>
