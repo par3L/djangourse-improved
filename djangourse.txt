@@ -1,0 +1,161 @@
+@startuml
+skinparam linetype ortho
+hide circle
+
+entity credentials {
+  *id : int <<PK>>
+  --
+  role_id : int <<FK>>
+  email : varchar
+  password : varchar
+  created_at : int
+}
+
+entity roles {
+  *id : int <<PK>>
+  --
+  name : varchar
+}
+
+entity instructors {
+  *id : int <<PK>>
+  --
+  credential_id : int <<FK>>
+  name : varchar
+  date_of_birth : date
+  phone_number : varchar
+  bio : text
+  profile_img : varchar
+  preferred_withdrawal_method : enum
+  balance : int
+}
+
+entity students {
+  *id : int <<PK>>
+  --
+  credential_id : int <<FK>>
+  name : varchar
+  date_of_birth : date
+  city : varchar
+  phone_number : varchar
+  coin_balance : int
+}
+
+entity courses {
+  *id : int <<PK>>
+  --
+  category_id : int <<FK>>
+  instructor_id : int <<FK>>
+  created_at : int
+  name : varchar
+  subtitle : varchar
+  price : int
+  level : enum
+  description : text
+  thumbnail : varchar
+  status : enum
+}
+
+entity course_categories {
+  *id : int <<PK>>
+  --
+  name : varchar
+}
+
+entity course_materials {
+  *id : int <<PK>>
+  --
+  course_id : int <<FK>>
+  ordinal : int
+  title : varchar
+  video_link : varchar
+}
+
+entity course_finished_materials {
+  *id : int <<PK>>
+  --
+  student_id : int <<FK>>
+  course_material_id : int <<FK>>
+}
+
+entity course_tools {
+  *id : int <<PK>>
+  --
+  name : varchar
+  type : varchar
+  logo : varchar
+}
+
+entity course_tool_galleries {
+  *id : int <<PK>>
+  --
+  course_id : int <<FK>>
+  tool_id : int <<FK>>
+}
+
+entity enrolled_courses {
+  *id : int <<PK>>
+  --
+  student_id : int <<FK>>
+  course_id : int <<FK>>
+  finished_at : date
+}
+
+entity favourite_courses {
+  *id : int <<PK>>
+  --
+  student_id : int <<FK>>
+  course_id : int <<FK>>
+}
+
+entity transactions {
+  *id : int <<PK>>
+  --
+  student_id : int <<FK>>
+  course_id : int <<FK>>
+  price : int
+  purchase_date : datetime
+  transaction_type : enum
+}
+
+entity withdrawal_requests {
+  *id : int <<PK>>
+  --
+  instructor_id : int <<FK>>
+  created_at : int
+  amount : int
+  payment_method : enum
+  status : enum
+}
+
+entity password_resets {
+  *id : int <<PK>>
+  --
+  email : varchar
+  expired_at : int
+}
+
+' Relasi dengan kardinalitas
+credentials ||--o{ instructors : "1 to 0..*"
+credentials ||--o{ students : "1 to 0..*"
+credentials }o--|| roles : "N to 1"
+
+instructors ||--o{ courses : "1 to many"
+instructors ||--o{ withdrawal_requests : "1 to many"
+
+students ||--o{ enrolled_courses : "1 to many"
+students ||--o{ favourite_courses : "1 to many"
+students ||--o{ transactions : "1 to many"
+students ||--o{ course_finished_materials : "1 to many"
+
+courses }o--|| course_categories : "N to 1"
+courses ||--o{ course_materials : "1 to many"
+courses ||--o{ enrolled_courses : "1 to many"
+courses ||--o{ favourite_courses : "1 to many"
+courses ||--o{ course_tool_galleries : "1 to many"
+courses ||--o{ transactions : "1 to many"
+
+course_materials ||--o{ course_finished_materials : "1 to 0..*"
+
+course_tool_galleries }o--|| course_tools : "N to 1"
+@enduml
